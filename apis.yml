@@ -1,23 +1,174 @@
 aid: autoleadstar
 name: AutoLeadStar
-description: 'AutoLeadStar is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'AutoLeadStar is an automotive marketing technology company founded in
+  2015 in Jerusalem, Israel, that rebranded as Fullpath in March 2023 after raising
+  a $40M Series C. It builds an enhanced Customer Data Platform (CDP) and AI ecosystem
+  for franchise car dealerships, unifying first-party data from the dealership CRM,
+  DMS, website, inventory feed and advertising accounts into a single shopper profile,
+  then activating it through digital advertising, VIN-specific campaigns, equity mining,
+  email/SMS audience activation, website personalization and an AI chat agent. The
+  company opened a public API for the platform in November 2022 and today publishes
+  a Scalar-rendered OpenAPI 3.0 reference at developers.fullpath.com covering shoppers,
+  audiences, leads, tasks, appointments, activities and a vendor Consent Management
+  API, alongside a downloadable Model Context Protocol tool manifest. Fullpath reports
+  more than 2,000 dealership clients across North America and 200+ pre-built integrations,
+  and was acquired by Cox Automotive.'
 url: https://raw.githubusercontent.com/api-evangelist/autoleadstar/refs/heads/main/apis.yml
+image: https://developers.fullpath.com/fullpath-logo.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
-apis: []
+- Automotive
+- Customer Data Platform
+- Marketing Automation
+- Dealerships
+- Advertising
+- Artificial Intelligence
+- Consent Management
+- CRM
+- Israel
+apis:
+- aid: autoleadstar:fullpath-api
+  name: Fullpath API v1
+  description: 'The Fullpath Platform API. Read dealership shopper profiles and their
+    associated emails, phones, events and audience memberships; list audiences and
+    their members; and list tasks, leads, appointments and activities for a dealership.
+    Also carries the vendor Consent Management API for listing integrated dealers
+    and reading/writing communication consent per contact channel. Bearer-token authenticated,
+    page/per_page paginated, sortable, rate limited at 100 requests per minute per
+    API key.'
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - Shoppers
+  - Audiences
+  - Leads
+  - Tasks
+  - Appointments
+  - Activities
+  - Consent Management
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-fullpath-api-openapi.yml
+  - type: Overlay
+    url: overlays/autoleadstar-fullpath-api-overlay.yaml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+- aid: autoleadstar:fullpath-consent-management
+  name: Fullpath Consent Management Vendor API
+  description: 'The vendor-facing Consent Management API. Lists the dealers that have
+    a consent-management integration with the authenticated vendor, reads the current
+    communication-consent status for a single contact (email, phone_sms or phone_call)
+    at a target dealer, and stores consent records in bulk for up to 500 contacts
+    per call. Authenticated with a vendor API key issued at consent-management provisioning.'
+  humanURL: https://developers.fullpath.com/consent.html
+  baseURL: https://fullpath.com/api/v2/external/consent-management
+  tags:
+  - Consent Management
+  - Compliance
+  - TCPA
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-fullpath-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:fullpath-mcp-tools
+  name: Fullpath MCP Tools
+  description: 'A first-party Model Context Protocol tool manifest published by Fullpath
+    for AI assistants. Thirteen tools with real JSON Schema inputSchemas covering
+    consent management, shoppers, audiences, tasks, leads, appointments and activities.
+    Distributed as a downloadable mcp-tools.json for local MCP clients rather than
+    as a hosted remote MCP endpoint.'
+  humanURL: https://developers.fullpath.com/mcp.html
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - MCP
+  - Agents
+  - Tools
+  properties:
+  - type: MCPServer
+    url: mcp/autoleadstar-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/autoleadstar-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/mcp.html
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/autoleadstar-domain-security.yml
 - type: Website
+  url: https://www.fullpath.com/
+- type: DeveloperPortal
+  url: https://developers.fullpath.com/
+- type: Documentation
+  url: https://developers.fullpath.com/
+- type: APIReference
+  url: https://developers.fullpath.com/
+- type: Blog
+  url: https://www.fullpath.com/blog/
+- type: Support
+  url: https://fullpath.zendesk.com/hc/en-us
+- type: SignUp
+  url: https://app.fullpath.com/
+- type: TermsOfService
+  url: https://www.fullpath.com/legal-and-trust/?nav=websiteterms
+- type: PrivacyPolicy
+  url: https://www.fullpath.com/legal-and-trust/?nav=privacypolicy
+- type: Integrations
+  url: https://www.fullpath.com/integrations/
+- type: ChangeLog
+  url: https://www.fullpath.com/feature-releases/
+- type: ChangeLog
+  url: changelog/autoleadstar-changelog.yml
+- type: LLMsTxt
+  url: llms/autoleadstar-llms.txt
+- type: WellKnown
+  url: well-known/autoleadstar-well-known.yml
+- type: SecurityTxt
+  url: well-known/autoleadstar-security.txt
+- type: Security
+  url: https://www.fullpath.com/vulnerability-disclosure-policy
+- type: VulnerabilityDisclosure
+  url: security/autoleadstar-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/autoleadstar-trust-center.yml
+- type: Compliance
+  url: https://www.fullpath.com/legal-and-trust/
+- type: Conformance
+  url: conformance/autoleadstar-conformance.yml
+- type: Conventions
+  url: conventions/autoleadstar-conventions.yml
+- type: Lifecycle
+  url: lifecycle/autoleadstar-lifecycle.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Website
+  name: Forge Global secondary-market listing (AutoLeadStar)
   url: https://forgeglobal.com/autoleadstar_stock/
+x-enrichment:
+  date: '2026-08-06'
+  status: enriched
+  artifacts_added: 27
+  pass: local-v1
