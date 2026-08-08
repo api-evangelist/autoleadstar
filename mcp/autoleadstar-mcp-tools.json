@@ -1,0 +1,347 @@
+{
+  "tools": [
+    {
+      "name": "list_dealers",
+      "description": "List dealers that have a consent-management integration with the authenticated vendor.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_consent",
+      "description": "Get the current consent status for a single contact at a target dealer. When no record exists, opt_in and consent_timestamp are null.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "contact_type": {
+            "type": "string",
+            "enum": ["email", "phone_sms", "phone_call"],
+            "description": "Channel the consent applies to"
+          },
+          "contact_value": {
+            "type": "string",
+            "description": "Raw contact identifier (email or phone)"
+          },
+          "client_key": {
+            "type": "string",
+            "pattern": "^40NM-\\d+-1$",
+            "description": "Fullpath client key for the target dealer"
+          }
+        },
+        "required": ["contact_type", "contact_value", "client_key"]
+      }
+    },
+    {
+      "name": "store_consents",
+      "description": "Store one or more consent records (1–500 contacts) for a target dealer and contact type.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "contact_type": {
+            "type": "string",
+            "enum": ["email", "phone_sms", "phone_call"],
+            "description": "Channel the consent applies to"
+          },
+          "client_key": {
+            "type": "string",
+            "pattern": "^40NM-\\d+-1$",
+            "description": "Fullpath client key for the target dealer"
+          },
+          "contacts": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 500,
+            "items": {
+              "type": "object",
+              "properties": {
+                "contact_value": {
+                  "type": "string",
+                  "description": "Raw contact identifier"
+                },
+                "opt_in": {
+                  "type": "boolean",
+                  "description": "true for opt-in; false for opt-out"
+                },
+                "consent_timestamp": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When the consent event occurred (ISO 8601)"
+                }
+              },
+              "required": ["contact_value", "opt_in", "consent_timestamp"]
+            }
+          }
+        },
+        "required": ["contact_type", "client_key", "contacts"]
+      }
+    },
+    {
+      "name": "list_shoppers",
+      "description": "List shoppers for a dealership with pagination, search, filtering, and sorting support",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Page number (1-based)"
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10,
+            "description": "Number of items per page"
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+          },
+          "search": {
+            "type": "string",
+            "description": "Search query to filter shoppers"
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    },
+    {
+      "name": "get_shopper",
+      "description": "Retrieve a single shopper by ID with optional embedded data",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Shopper identifier"
+          },
+          "embed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response"
+          }
+        },
+        "required": ["dealershipId", "id"]
+      }
+    },
+    {
+      "name": "get_shopper_audiences",
+      "description": "Get audiences associated with a specific shopper",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Shopper identifier"
+          }
+        },
+        "required": ["dealershipId", "id"]
+      }
+    },
+    {
+      "name": "list_audiences",
+      "description": "List audiences for a dealership",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    },
+    {
+      "name": "get_audience",
+      "description": "Retrieve a single audience by ID",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Audience identifier"
+          }
+        },
+        "required": ["dealershipId", "id"]
+      }
+    },
+    {
+      "name": "get_audience_shoppers",
+      "description": "Get shoppers associated with a specific audience",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Audience identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          }
+        },
+        "required": ["dealershipId", "id"]
+      }
+    },
+    {
+      "name": "list_tasks",
+      "description": "List tasks for a dealership with pagination and filtering",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort order"
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    },
+    {
+      "name": "list_leads",
+      "description": "List leads for a dealership with pagination and filtering",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort order"
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    },
+    {
+      "name": "list_appointments",
+      "description": "List appointments for a dealership with pagination and filtering",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort order"
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    },
+    {
+      "name": "list_activities",
+      "description": "List activities for a dealership with pagination and filtering",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "dealershipId": {
+            "type": "integer",
+            "description": "Dealership identifier"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          },
+          "sort": {
+            "type": "string",
+            "description": "Sort order"
+          }
+        },
+        "required": ["dealershipId"]
+      }
+    }
+  ]
+}

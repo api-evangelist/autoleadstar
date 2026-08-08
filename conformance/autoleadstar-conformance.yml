@@ -1,0 +1,125 @@
+generated: '2026-08-06'
+method: searched
+source: https://www.fullpath.com/legal-and-trust/
+derived_from: openapi/autoleadstar-fullpath-api-openapi.yml
+docs: https://developers.fullpath.com/
+summary: >-
+  Cross-cutting standards and compliance posture. Certification claims are searched from
+  Fullpath's own Legal & Trust Center; protocol conformance is derived from the published
+  OpenAPI.
+
+certifications:
+- id: iso-27001
+  name: ISO/IEC 27001 — Information Security Management
+  claimed: true
+  evidence: >-
+    "Fullpath is ISO 27001 and ISO 42001 certified, the top international standard of
+    information security and AI governance." — https://www.fullpath.com/legal-and-trust/
+    (Security section), corroborated at https://www.fullpath.com/cdp-for-enterprise/
+  certificate_published: false
+  note: >-
+    The claim is asserted in prose. No certificate number, certifying body, scope statement,
+    or audit date is published, and there is no downloadable report or Trust-Center portal
+    (Vanta/Drata/SafeBase) behind an NDA gate. Fullpath does commit publicly to "regular
+    surveillance audits and recertification audits".
+- id: iso-42001
+  name: ISO/IEC 42001 — AI Management Systems
+  claimed: true
+  evidence: https://www.fullpath.com/legal-and-trust/
+  certificate_published: false
+  note: >-
+    Notable — ISO 42001 is still rare in the catalog, and for a company whose product is an
+    AI agent acting on consumer data it is the more relevant of the two certifications.
+- id: soc-2
+  name: SOC 2
+  claimed: false
+  note: No SOC 2 Type I or Type II claim appears on any Fullpath page.
+
+regulatory:
+- id: ccpa
+  conforms: true
+  evidence: >-
+    Privacy Policy names Fullpath a "Service Provider" and the dealership client a
+    "Business" under the CCPA; states no sale or sharing of personal information in the
+    preceding 12 months. https://www.fullpath.com/legal-and-trust/?nav=privacypolicy
+- id: gdpr
+  conforms: partial
+  evidence: >-
+    A Data Processing Addendum is published and sub-processors are listed with locations,
+    data categories and Transfer Impact Assessments. All sub-processors are US-located.
+- id: us-state-privacy
+  conforms: true
+  evidence: >-
+    Privacy policy names VCDPA, CPA, CPDPA and UCPA explicitly and routes them through the DPA.
+- id: ftc-safeguards
+  conforms: claimed
+  evidence: >-
+    "ensures that you remain in compliance with FTC regulations" — Legal & Trust Center.
+    Relevant because auto dealers are covered financial institutions under the FTC
+    Safeguards Rule.
+- id: tcpa
+  conforms: relevant
+  evidence: >-
+    The entire Consent Management vendor API exists to record per-channel communication
+    consent (email / phone_sms / phone_call) with a timestamp — the operational shape of a
+    TCPA/CAN-SPAM consent ledger. No TCPA conformance statement is published, but the API
+    is a compliance artifact in practice.
+
+standards:
+- id: openapi
+  conforms: true
+  version: 3.0.0
+  evidence: openapi/autoleadstar-fullpath-api-openapi.yml — parses as OpenAPI 3.0.0, 16 operations,
+    55 schemas, every operation has an operationId, summary, description, tags and response examples.
+- id: mcp
+  conforms: partial
+  evidence: >-
+    mcp/autoleadstar-mcp-tools.json — a valid MCP tool manifest with JSON Schema inputSchemas,
+    but distributed as a static download rather than served over an MCP transport. No
+    initialize/tools/list handshake exists to conform against.
+- id: json-schema
+  conforms: true
+  evidence: OpenAPI 3.0 schema subset throughout; MCP inputSchemas are draft-style JSON Schema
+    with enum, pattern, minItems/maxItems constraints.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 or openIdConnect securityScheme. Auth is a static Bearer token
+    (JWT on /v1, vendor API key on /v2). No token endpoint, no scopes, no refresh flow published.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration -> 404 on www.fullpath.com.
+- id: rfc9457
+  conforms: false
+  evidence: Errors use a bespoke JSON envelope; no application/problem+json. See errors/.
+- id: rfc9116
+  conforms: partial
+  evidence: >-
+    /.well-known/security.txt exists at www.fullpath.com with Contact, Policy and
+    Preferred-Languages, but omits the REQUIRED Expires field and is not served from the
+    apex host. See well-known/.
+- id: rfc8594
+  conforms: false
+  evidence: No Sunset or Deprecation headers declared. See lifecycle/.
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key on the one write operation. See conventions/.
+- id: pagination
+  conforms: true
+  style: page/per_page with a pagination envelope (page, per_page, total, total_pages)
+  evidence: openapi/autoleadstar-fullpath-api-openapi.yml — declared on all 11 list operations.
+- id: rate-limit-headers
+  conforms: partial
+  evidence: Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining declared on 429 only, and
+    only on the Consent Management operations. Not IETF draft ratelimit-headers form.
+- id: json-api
+  conforms: false
+  evidence: Custom { data, pagination } envelope, not JSON:API.
+- id: fhir
+  conforms: false
+- id: odata
+  conforms: false
+- id: scim
+  conforms: false
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface published — N/A for this API rather than a failure.

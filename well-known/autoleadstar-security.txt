@@ -1,0 +1,3 @@
+Contact: mailto:security@fullpath.com
+Preferred-Languages: en, es
+Policy: https://www.fullpath.com/vulnerability-disclosure-policy

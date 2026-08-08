@@ -1,0 +1,172 @@
+generated: '2026-08-06'
+method: searched
+source: https://developers.fullpath.com/openapi.yaml
+docs: https://developers.fullpath.com/
+derived_from: openapi/autoleadstar-fullpath-api-openapi.yml
+summary: >-
+  Cross-cutting request/response semantics for the Fullpath API, read from the provider's
+  own OpenAPI info.description (which is a written developer guide, not boilerplate) and
+  confirmed against the operation-level parameters and response components.
+
+authentication:
+  style: http bearer
+  header: 'Authorization: Bearer <token>'
+  formats:
+  - Platform /v1 — JWT
+  - Consent Management /api/v2/external/consent-management — vendor API key issued at provisioning
+  applies_to: every operation; there are no anonymous endpoints
+  see: authentication/autoleadstar-authentication.yml
+
+idempotency:
+  supported: false
+  key_header: null
+  note: >-
+    No Idempotency-Key header, parameter, or documented replay semantics anywhere in the
+    spec or the docs. Fifteen of the sixteen operations are GETs, so the exposure is limited
+    to storeConsents (POST /{contact_type}/consents) — a bulk write of up to 500 consent
+    records with no de-duplication contract. A retried batch after a timeout has undefined
+    behavior from the client's point of view. This is the single clearest gap on an
+    otherwise well-documented API.
+
+pagination:
+  style: page-number (offset family)
+  request_params:
+  - name: page
+    in: query
+    type: integer
+    minimum: 1
+    default: 1
+    description: 1-based page number
+  - name: per_page
+    in: query
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 10
+    description: items per page
+  response_envelope:
+    data: array of resource objects
+    pagination:
+      page: current page number
+      per_page: items per page
+      total: total number of items
+      total_pages: total number of pages
+  applies_to:
+  - listShoppers
+  - listShopperAudiences
+  - listShopperEvents
+  - listShopperEmails
+  - listShopperPhones
+  - listAudiences
+  - listAudienceShoppers
+  - listTasks
+  - listLeads
+  - listAppointments
+  - listActivities
+  notes:
+  - All paginated responses carry default sorting.
+  - No cursor/keyset option, so deep pagination over a large dealership shopper base is
+    O(n) page walks with no stability guarantee against concurrent writes.
+  - 204 No Content is returned instead of an empty data array when a list has no records —
+    an unusual choice that clients must special-case (a JSON parser gets no body at all).
+
+sorting:
+  param: sort
+  style: comma-separated field list, `-` prefix for descending
+  examples:
+  - sort=name
+  - sort=-created_at
+  - sort=name,-created_at
+
+field_expansion:
+  param: embed
+  style: comma-separated field list
+  description: >-
+    Sparse-by-default responses that are widened on request. Distinct field sets per resource.
+  known_values:
+    shoppers:
+    - primary_contact
+    - latest_lead_date
+    - latest_sale_date
+    - latest_sale
+    - latest_lead
+    - adf_leads
+    - latest_marketing_touchpoint_date
+    - marketing_engagement_score
+    - loyalty_score
+    tasks:
+    - activities
+    - notes
+    - shopper
+    activities:
+    - shopper
+  note: >-
+    Several Shopper fields (score, public_link, customer_tags, is_enriched, salesperson,
+    group_shopper_id, financial_durability_index, aim_propensity_score, household_flag,
+    latest_sale_estimated_equity) are documented as "single shopper only" — they appear on
+    getShopperById but never on listShoppers, regardless of embed.
+
+filtering:
+  param: q
+  description: Exact-match query on email address or phone number (E.164) for listShoppers.
+
+metadata:
+  supported: false
+  note: No customer-defined metadata / custom-attribute bag on any resource.
+
+request_tracing:
+  request_id_header: null
+  note: No documented request-id or correlation-id header on requests or responses.
+
+versioning:
+  style: URI path
+  current: v1 (Platform), v2 (Consent Management)
+  servers:
+  - https://api.fullpath.com/v1
+  - https://fullpath.com/api/v2/external/consent-management
+  - https://staging-api.fullpath.com/v1
+  spec_version: 1.0.0
+  note: >-
+    Two different major versions coexist in one OpenAPI document, selected by the Scalar
+    server dropdown rather than by path. A client that picks the wrong server gets a 404
+    or a 401, not a helpful error.
+  see: lifecycle/autoleadstar-lifecycle.yml
+
+error_envelope:
+  primary:
+    shape: '{ "error": "<statusCode>", "message": "<summary>", "details": "<context>" }'
+    schema: ErrorResponse
+    content_type: application/json
+    rfc9457: false
+  consent_management:
+    shape: '{ "message": "<summary>" }'
+    schema: CmMessageResponse
+    validation_shape: '{ "message": "<summary>", "errors": { "<field>": ["<msg>"] } }'
+    schema_validation: CmValidationErrorResponse
+    note: Laravel-style field-keyed validation errors; a DIFFERENT envelope from the Platform API.
+  inconsistency: >-
+    The two surfaces in the same document do not share an error envelope. A client that
+    parses `error`/`details` on the Platform API gets only `message` from Consent Management,
+    and a 422 adds a nested `errors` map that appears nowhere on /v1.
+  see: errors/autoleadstar-problem-types.yml
+
+rate_limiting:
+  documented: true
+  limit: 100 requests per minute per API key
+  response: 429 Too Many Requests
+  headers:
+  - Retry-After (seconds until reset)
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  note: >-
+    Rate-limit headers are declared ONLY on the 429 response in the Consent Management
+    operations. They are not declared on 200 responses and not declared at all on the
+    Platform /v1 operations, so a well-behaved client cannot back off pre-emptively —
+    it can only react after being throttled.
+  see: rate-limits/autoleadstar-rate-limits.yml
+
+webhooks:
+  supported: false
+  note: >-
+    No webhooks, callbacks, or event-delivery surface in the spec or the docs. All data
+    movement is client-initiated polling. See asyncapi coverage — none published.

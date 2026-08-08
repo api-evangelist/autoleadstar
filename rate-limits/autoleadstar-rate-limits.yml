@@ -1,0 +1,77 @@
+generated: '2026-08-06'
+method: searched
+source: https://developers.fullpath.com/openapi.yaml
+derived_from: openapi/autoleadstar-fullpath-api-openapi.yml#/components/responses/CmTooManyRequests
+docs: https://developers.fullpath.com/
+summary: >-
+  Fullpath publishes a real, numeric rate limit in the OpenAPI itself rather than in prose —
+  100 requests per minute per API key — and declares the three signalling headers on the
+  429 response.
+
+rate_limits:
+- name: Consent Management vendor API
+  scope: per API key
+  limit_count: 100
+  interval: minute
+  window: 1m
+  response_status: 429
+  response_body: '{ "message": "Too Many Attempts." }'
+  headers:
+  - name: Retry-After
+    type: integer
+    description: Seconds until the rate limit resets.
+  - name: X-RateLimit-Limit
+    type: integer
+    description: The ceiling for the current window.
+  - name: X-RateLimit-Remaining
+    type: integer
+    description: Requests left in the current window.
+  applies_to:
+  - listDealers
+  - getConsent
+  - storeConsents
+  evidence:
+    file: openapi/autoleadstar-fullpath-api-openapi.yml
+    pointer: '#/components/responses/CmTooManyRequests'
+    text: Rate limit exceeded (100 requests per minute per API key).
+
+- name: Platform /v1 API
+  scope: unknown
+  limit_count: null
+  interval: null
+  response_status: null
+  headers: []
+  applies_to:
+  - listShoppers
+  - getShopperById
+  - listShopperAudiences
+  - listShopperEvents
+  - listShopperEmails
+  - listShopperPhones
+  - listAudiences
+  - getAudienceById
+  - listAudienceShoppers
+  - listTasks
+  - listLeads
+  - listAppointments
+  - listActivities
+  note: >-
+    No 429 response is declared on ANY Platform /v1 operation and no limit is published
+    for them. Either the /v1 surface is unlimited (unlikely) or the limit is undocumented.
+    An agent or SDK reading only the spec has no basis for a backoff strategy on the
+    thirteen operations that carry the actual shopper data.
+
+signalling:
+  headers_on_success: false
+  headers_on_429: true
+  retry_after: true
+  note: >-
+    Because the headers are declared only on the 429, a client learns its remaining budget
+    only after it has already been throttled. Declaring X-RateLimit-* on 2xx responses is
+    the standard fix and costs the provider nothing.
+
+x-evidence:
+  fetched: '2026-08-06'
+  url: https://developers.fullpath.com/openapi.yaml
+  http_status: 200
+  content_type: application/yaml

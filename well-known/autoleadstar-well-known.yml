@@ -1,0 +1,63 @@
+generated: '2026-08-06'
+method: probed
+source: Live GET of /.well-known/* against every AutoLeadStar/Fullpath host in apis.yml and the OpenAPI servers[]
+note: >-
+  Probed 2026-08-06. api.fullpath.com answers 401 with the same JSON body on EVERY path
+  including a deliberate nonsense control path, so a 401 on any /.well-known/* path on that
+  host is the blanket auth wall and is NOT evidence that the document exists. Only
+  www.fullpath.com/.well-known/security.txt returned a real 200 document.
+hosts:
+- host: www.fullpath.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: autoleadstar-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: fullpath.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+    note: Apex host does not serve security.txt; only the www host does.
+- host: api.fullpath.com
+  paths:
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+    note: Blanket auth wall — control path /zzz-bogus-control-path-12345 also returned 401. Not evidence.
+  - path: /.well-known/oauth-protected-resource
+    status: 401
+    note: Blanket auth wall. Not evidence.
+  - path: /.well-known/agent-card.json
+    status: 401
+    note: Blanket auth wall. Not evidence.
+- host: developers.fullpath.com
+  paths:
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: www.autoleadstar.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+documents:
+- file: autoleadstar-security.txt
+  type: SecurityTxt
+  url: https://www.fullpath.com/.well-known/security.txt
+  fields:
+    contact: mailto:security@fullpath.com
+    policy: https://www.fullpath.com/vulnerability-disclosure-policy
+    preferred_languages: en, es
+  gaps:
+  - No Expires field (RFC 9116 requires it).
+  - No Encryption, Acknowledgments, Canonical, or Hiring fields.
+  - Not served from the apex fullpath.com host (404 there).

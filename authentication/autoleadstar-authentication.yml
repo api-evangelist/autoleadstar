@@ -1,0 +1,16 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/autoleadstar-fullpath-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: Bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: |-
+    Platform JWT or Consent Management vendor API key.
+    In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+  sources:
+  - openapi/autoleadstar-fullpath-api-openapi.yml

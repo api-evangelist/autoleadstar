@@ -1,0 +1,32 @@
+generated: '2026-08-06'
+method: generated
+source: >-
+  Packaged Agent Skills generated from the Fullpath OpenAPI 3.0 saved verbatim at
+  openapi/autoleadstar-fullpath-api-openapi.yml (fetched from
+  https://developers.fullpath.com/openapi.yaml, 2026-08-06, HTTP 200). Every step is
+  grounded in an operationId verified verbatim in the spec; cross-cutting rules cite
+  ../authentication/, ../conventions/, ../errors/, ../rate-limits/, ../data-model/ and
+  ../mcp/. Nothing here is invented.
+skills:
+- file: autoleadstar-record-communication-consent.md
+  name: Record and verify communication consent
+  api: openapi/autoleadstar-fullpath-api-openapi.yml
+  operations: [listDealers, getConsent, storeConsents]
+  note: The only write flow on the entire Fullpath API surface.
+- file: autoleadstar-build-a-shopper-360.md
+  name: Build a shopper 360 profile
+  api: openapi/autoleadstar-fullpath-api-openapi.yml
+  operations: [listShoppers, getShopperById, listShopperEmails, listShopperPhones,
+    listShopperAudiences, listShopperEvents]
+- file: autoleadstar-export-an-audience.md
+  name: Export a dealership audience
+  api: openapi/autoleadstar-fullpath-api-openapi.yml
+  operations: [listAudiences, getAudienceById, listAudienceShoppers, getShopperById]
+- file: autoleadstar-sync-the-sales-pipeline.md
+  name: Sync the dealership sales pipeline
+  api: openapi/autoleadstar-fullpath-api-openapi.yml
+  operations: [listLeads, listAppointments, listTasks, listActivities]
+coverage:
+  operations_in_spec: 16
+  operations_covered: 16
+  coverage_rate: 1.0

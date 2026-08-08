@@ -1,0 +1,847 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Fullpath MCP Tools
+  description: |
+    # MCP Tools Reference
+
+    Model Context Protocol (MCP) tools for interacting with the Fullpath API.
+    These tools enable AI assistants to access Consent Management (dealers and
+    consent read/write), shoppers, audiences, tasks, leads, appointments, and activities.
+
+    ---
+
+    ## What is MCP?
+
+    The Model Context Protocol (MCP) provides a standardized interface for AI assistants 
+    to interact with external APIs. Each tool listed here corresponds to an API endpoint 
+    that can be invoked by MCP-compatible clients.
+
+    ---
+
+    ## Authentication
+
+    All tools require a Bearer token in the `Authorization` header.
+
+    ```http
+    Authorization: Bearer YOUR_TOKEN_HERE
+    ```
+
+    ---
+
+    ## Usage
+
+    To use these MCP tools, download the `mcp-tools.json` file and load it into your 
+    MCP-compatible client (e.g., Claude, Cursor, or other AI assistants).
+
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  contact:
+    name: API Support
+    email: support@fullpath.com
+
+servers:
+  - url: https://fullpath.com/api/v2/external/consent-management
+    description: Production (fullpath.com)
+  - url: https://api.fullpath.com/v1
+    description: Production (api.fullpath.com)
+  - url: https://staging-api.fullpath.com/v1
+    description: Staging (api.fullpath.com)
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Platform JWT or Consent Management vendor API key.
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+tags:
+  - name: consents
+    x-displayName: Consent Management
+    description: |
+      MCP tools for the vendor Consent Management API. These tools use
+      `https://fullpath.com/api/v2/external/consent-management` (not Platform `/v1`).
+  - name: shoppers
+    description: MCP tools for shopper data access
+  - name: audiences
+    description: MCP tools for audience management
+  - name: tasks
+    description: MCP tools for task management
+  - name: leads
+    description: MCP tools for lead management
+  - name: appointments
+    description: MCP tools for appointment management
+  - name: activities
+    description: MCP tools for activity tracking
+
+paths:
+  /dealers:
+    get:
+      operationId: list_dealers
+      summary: List integrated dealers
+      description: |
+        Returns all dealers that have a consent-management integration with the
+        authenticated vendor.
+
+        **MCP Tool Name:** `list_dealers`
+      tags:
+        - consents
+      responses:
+        '200':
+          description: Dealer list for the authenticated vendor
+          content:
+            application/json:
+              example:
+                dealers:
+                  - client_key: "40NM-00001-1"
+                    name: "Example Motors"
+                    status: "connected"
+                    connected_at: "2026-03-15T14:22:00+00:00"
+                  - client_key: "40NM-00002-1"
+                    name: "Downtown Auto"
+                    status: "pending"
+                    connected_at: null
+        '401':
+          description: Unauthorized
+        '429':
+          description: Too many requests
+
+  /{contact_type}/consent:
+    get:
+      operationId: get_consent
+      summary: Get consent for a contact
+      description: |
+        Returns the current consent status for a single contact at the target dealer.
+        When no record exists, `opt_in` and `consent_timestamp` are `null`.
+
+        **MCP Tool Name:** `get_consent`
+      tags:
+        - consents
+      parameters:
+        - name: contact_type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [email, phone_sms, phone_call]
+          description: Channel the consent applies to
+        - name: contact_value
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Raw contact identifier (email or phone)
+        - name: client_key
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^40NM-\d+-1$
+          description: Fullpath client key for the target dealer
+      responses:
+        '200':
+          description: Consent status for the contact
+          content:
+            application/json:
+              examples:
+                optedIn:
+                  value:
+                    contact_value: "user@example.com"
+                    opt_in: true
+                    consent_timestamp: "2026-05-12T18:30:00+00:00"
+                noRecord:
+                  value:
+                    contact_value: "user@example.com"
+                    opt_in: null
+                    consent_timestamp: null
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+        '429':
+          description: Too many requests
+
+  /{contact_type}/consents:
+    post:
+      operationId: store_consents
+      summary: Store consents in bulk
+      description: |
+        Stores one or more consent records (1–500 contacts) for the target dealer.
+
+        **MCP Tool Name:** `store_consents`
+      tags:
+        - consents
+      parameters:
+        - name: contact_type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [email, phone_sms, phone_call]
+          description: Channel the consent applies to
+        - name: client_key
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^40NM-\d+-1$
+          description: Fullpath client key for the target dealer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contacts
+              properties:
+                contacts:
+                  type: array
+                  minItems: 1
+                  maxItems: 500
+                  items:
+                    type: object
+                    required:
+                      - contact_value
+                      - opt_in
+                      - consent_timestamp
+                    properties:
+                      contact_value:
+                        type: string
+                      opt_in:
+                        type: boolean
+                      consent_timestamp:
+                        type: string
+                        format: date-time
+            example:
+              contacts:
+                - contact_value: "user@example.com"
+                  opt_in: true
+                  consent_timestamp: "2026-05-12T18:30:00Z"
+      responses:
+        '200':
+          description: Consents stored successfully
+          content:
+            application/json:
+              example: {}
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+        '429':
+          description: Too many requests
+
+  /dealerships/{dealershipId}/shoppers:
+    get:
+      operationId: list_shoppers
+      summary: List shoppers
+      description: |
+        List shoppers for a dealership with pagination, search, filtering, and sorting support.
+
+        **MCP Tool Name:** `list_shoppers`
+      tags:
+        - shoppers
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort order
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query to filter shoppers
+      responses:
+        '200':
+          description: A paginated list of shoppers
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 12345
+                    first_name: "John"
+                    last_name: "Doe"
+                    email: "john.doe@example.com"
+                    phone: "+15551234567"
+                    created_at: "2024-01-10T08:00:00Z"
+                  - id: 12346
+                    first_name: "Jane"
+                    last_name: "Smith"
+                    email: "jane.smith@example.com"
+                    phone: "+15559876543"
+                    created_at: "2024-01-11T09:30:00Z"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 156
+                  total_pages: 16
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/shoppers/{id}:
+    get:
+      operationId: get_shopper
+      summary: Get shopper
+      description: |
+        Retrieve a single shopper by ID with optional embedded data.
+
+        **MCP Tool Name:** `get_shopper`
+      tags:
+        - shoppers
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Shopper identifier
+        - name: embed
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: Comma-separated list of related resources to embed
+      responses:
+        '200':
+          description: Shopper details
+          content:
+            application/json:
+              example:
+                id: 12345
+                first_name: "John"
+                last_name: "Doe"
+                email: "john.doe@example.com"
+                phone: "+15551234567"
+                address:
+                  street: "123 Main St"
+                  city: "Los Angeles"
+                  state: "CA"
+                  zip: "90001"
+                created_at: "2024-01-10T08:00:00Z"
+                updated_at: "2024-01-15T14:30:00Z"
+        '404':
+          description: Shopper not found
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/shoppers/{id}/audiences:
+    get:
+      operationId: get_shopper_audiences
+      summary: Get shopper audiences
+      description: |
+        Get audiences associated with a specific shopper.
+
+        **MCP Tool Name:** `get_shopper_audiences`
+      tags:
+        - shoppers
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Shopper identifier
+      responses:
+        '200':
+          description: List of audiences for the shopper
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 101
+                    name: "High Value Customers"
+                    description: "Customers with lifetime value > $10,000"
+                    shopper_count: 245
+                  - id: 102
+                    name: "Service Due"
+                    description: "Customers due for service appointment"
+                    shopper_count: 89
+        '404':
+          description: Shopper not found
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/audiences:
+    get:
+      operationId: list_audiences
+      summary: List audiences
+      description: |
+        List audiences for a dealership with pagination.
+
+        **MCP Tool Name:** `list_audiences`
+      tags:
+        - audiences
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+      responses:
+        '200':
+          description: A paginated list of audiences
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 101
+                    name: "High Value Customers"
+                    description: "Customers with lifetime value > $10,000"
+                    shopper_count: 245
+                    created_at: "2024-01-01T00:00:00Z"
+                  - id: 102
+                    name: "Service Due"
+                    description: "Customers due for service appointment"
+                    shopper_count: 89
+                    created_at: "2024-01-05T00:00:00Z"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 15
+                  total_pages: 2
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/audiences/{id}:
+    get:
+      operationId: get_audience
+      summary: Get audience
+      description: |
+        Retrieve a single audience by ID.
+
+        **MCP Tool Name:** `get_audience`
+      tags:
+        - audiences
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Audience identifier
+      responses:
+        '200':
+          description: Audience details
+          content:
+            application/json:
+              example:
+                id: 101
+                name: "High Value Customers"
+                description: "Customers with lifetime value > $10,000"
+                shopper_count: 245
+                filters:
+                  lifetime_value_min: 10000
+                created_at: "2024-01-01T00:00:00Z"
+                updated_at: "2024-01-10T12:00:00Z"
+        '404':
+          description: Audience not found
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/audiences/{id}/shoppers:
+    get:
+      operationId: get_audience_shoppers
+      summary: Get audience shoppers
+      description: |
+        Get shoppers associated with a specific audience.
+
+        **MCP Tool Name:** `get_audience_shoppers`
+      tags:
+        - audiences
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Audience identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+      responses:
+        '200':
+          description: A paginated list of shoppers in the audience
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 12345
+                    first_name: "John"
+                    last_name: "Doe"
+                    email: "john.doe@example.com"
+                  - id: 12346
+                    first_name: "Jane"
+                    last_name: "Smith"
+                    email: "jane.smith@example.com"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 245
+                  total_pages: 25
+        '404':
+          description: Audience not found
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/tasks:
+    get:
+      operationId: list_tasks
+      summary: List tasks
+      description: |
+        List tasks for a dealership with pagination and filtering.
+
+        **MCP Tool Name:** `list_tasks`
+      tags:
+        - tasks
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort order
+      responses:
+        '200':
+          description: A paginated list of tasks
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 5001
+                    title: "Follow up call"
+                    description: "Call customer about service appointment"
+                    status: "pending"
+                    due_date: "2024-01-20T10:00:00Z"
+                    assigned_to: "agent_123"
+                    shopper_id: 12345
+                  - id: 5002
+                    title: "Send quote"
+                    description: "Email trade-in quote"
+                    status: "completed"
+                    due_date: "2024-01-18T14:00:00Z"
+                    assigned_to: "agent_456"
+                    shopper_id: 12346
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 28
+                  total_pages: 3
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/leads:
+    get:
+      operationId: list_leads
+      summary: List leads
+      description: |
+        List leads for a dealership with pagination and filtering.
+
+        **MCP Tool Name:** `list_leads`
+      tags:
+        - leads
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort order
+      responses:
+        '200':
+          description: A paginated list of leads
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 8001
+                    source: "Website"
+                    status: "new"
+                    shopper_id: 12345
+                    vehicle_interest: "2024 Honda Accord"
+                    created_at: "2024-01-15T09:30:00Z"
+                  - id: 8002
+                    source: "Phone"
+                    status: "contacted"
+                    shopper_id: 12346
+                    vehicle_interest: "2024 Toyota Camry"
+                    created_at: "2024-01-14T11:00:00Z"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 67
+                  total_pages: 7
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/appointments:
+    get:
+      operationId: list_appointments
+      summary: List appointments
+      description: |
+        List appointments for a dealership with pagination and filtering.
+
+        **MCP Tool Name:** `list_appointments`
+      tags:
+        - appointments
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort order
+      responses:
+        '200':
+          description: A paginated list of appointments
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 3001
+                    type: "sales"
+                    status: "confirmed"
+                    scheduled_at: "2024-01-22T14:00:00Z"
+                    shopper_id: 12345
+                    notes: "Test drive - 2024 Accord"
+                  - id: 3002
+                    type: "service"
+                    status: "pending"
+                    scheduled_at: "2024-01-23T09:30:00Z"
+                    shopper_id: 12346
+                    notes: "Oil change and tire rotation"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 34
+                  total_pages: 4
+        '401':
+          description: Unauthorized
+
+  /dealerships/{dealershipId}/activities:
+    get:
+      operationId: list_activities
+      summary: List activities
+      description: |
+        List activities for a dealership with pagination and filtering.
+
+        **MCP Tool Name:** `list_activities`
+      tags:
+        - activities
+      parameters:
+        - name: dealershipId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dealership identifier
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number (1-based)
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort order
+      responses:
+        '200':
+          description: A paginated list of activities
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 9001
+                    type: "email_sent"
+                    description: "Follow-up email sent"
+                    shopper_id: 12345
+                    created_at: "2024-01-15T16:30:00Z"
+                    created_by: "agent_123"
+                  - id: 9002
+                    type: "call_completed"
+                    description: "Outbound call - discussed financing options"
+                    shopper_id: 12346
+                    created_at: "2024-01-15T14:00:00Z"
+                    created_by: "agent_456"
+                meta:
+                  current_page: 1
+                  per_page: 10
+                  total: 523
+                  total_pages: 53
+        '401':
+          description: Unauthorized

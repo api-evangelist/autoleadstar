@@ -1,0 +1,81 @@
+generated: '2026-08-06'
+method: searched
+source: https://developers.fullpath.com/mcp-tools.json
+docs: https://developers.fullpath.com/mcp.html
+name: Fullpath MCP Tools
+status: published-manifest
+hosted: false
+summary: >-
+  Fullpath publishes a first-party Model Context Protocol tool manifest at
+  developers.fullpath.com/mcp-tools.json — thirteen tools with real JSON Schema
+  inputSchemas, saved verbatim here as autoleadstar-mcp-tools.json. It is a
+  DOWNLOADABLE manifest for local MCP clients, not a hosted remote MCP server:
+  the provider's own instructions are "download the mcp-tools.json file and load
+  it into your MCP-compatible client". Every tool calls the same Fullpath REST
+  API underneath with the same Bearer token.
+
+transport:
+  remote_endpoint: null
+  note: >-
+    No hosted remote MCP endpoint was found. Probes on 2026-08-06:
+    https://api.fullpath.com/mcp -> 401, https://api.fullpath.com/v1/mcp -> 401 — but
+    api.fullpath.com returns the identical 401 JSON for a deliberate nonsense control
+    path, so those 401s are the blanket auth wall and prove nothing.
+    https://mcp.fullpath.com/ -> 200 but serves the WordPress marketing homepage
+    (title "Fullpath | AI Ecosystem for Auto Dealerships") and 302s to fullpath.com on
+    POST — it is a vanity subdomain, not an MCP server.
+  client_setup: Download mcp-tools.json and load it into an MCP-compatible client (Claude, Cursor, etc.).
+
+authentication:
+  scheme: http bearer
+  header: 'Authorization: Bearer <token>'
+  note: Platform JWT for /v1 tools; Consent Management vendor API key for the consent tools.
+
+artifacts:
+  tool_manifest: mcp/autoleadstar-mcp-tools.json
+  tool_reference_openapi: mcp/autoleadstar-mcp-tools-openapi.yml
+  crosswalk: mcp/autoleadstar-tool-crosswalk.yml
+
+tool_count: 13
+tools:
+- name: list_dealers
+  description: List dealers that have a consent-management integration with the authenticated vendor.
+- name: get_consent
+  description: Get the current consent status for a single contact at a target dealer.
+- name: store_consents
+  description: Store one or more consent records (1-500 contacts) for a target dealer and contact type.
+- name: list_shoppers
+  description: List shoppers for a dealership with pagination, search, filtering, and sorting support.
+- name: get_shopper
+  description: Retrieve a single shopper by ID with optional embedded data.
+- name: get_shopper_audiences
+  description: Get audiences associated with a specific shopper.
+- name: list_audiences
+  description: List audiences for a dealership.
+- name: get_audience
+  description: Retrieve a single audience by ID.
+- name: get_audience_shoppers
+  description: Get shoppers associated with a specific audience.
+- name: list_tasks
+  description: List tasks for a dealership with pagination and filtering.
+- name: list_leads
+  description: List leads for a dealership with pagination and filtering.
+- name: list_appointments
+  description: List appointments for a dealership with pagination and filtering.
+- name: list_activities
+  description: List activities for a dealership with pagination and filtering.
+
+observations:
+- Every tool is READ-only except store_consents — the only write on the whole agent surface.
+- inputSchemas are real and constrained (client_key carries pattern ^40NM-\d+-1$, contacts array
+  is minItems 1 / maxItems 500), so an agent gets genuine validation without calling the API.
+- The manifest is a static file with no version field and no server URL; the binding to a base
+  server is left to the client, which is why the crosswalk in this repo names both servers.
+
+x-evidence:
+  fetched: '2026-08-06'
+  manifest_url: https://developers.fullpath.com/mcp-tools.json
+  manifest_http_status: 200
+  manifest_content_type: application/json
+  docs_url: https://developers.fullpath.com/mcp.html
+  docs_http_status: 200

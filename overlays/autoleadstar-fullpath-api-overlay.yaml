@@ -1,0 +1,145 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Fullpath API v1
+  version: 1.0.0
+extends: ../openapi/autoleadstar-fullpath-api-openapi.yml
+x-generated: '2026-08-06'
+x-method: generated
+x-source: >-
+  Authored by the API Evangelist enrichment pipeline from the verbatim spec at
+  https://developers.fullpath.com/openapi.yaml (fetched 2026-08-06, HTTP 200) plus the
+  artifacts derived alongside it in this repo. The original spec is never mutated.
+actions:
+- target: $.info
+  description: Attach API Evangelist provenance and cross-links to the sibling artifacts.
+  update:
+    x-apievangelist:
+      profile: https://github.com/api-evangelist/autoleadstar
+      provider: AutoLeadStar / Fullpath
+      artifacts:
+        authentication: authentication/autoleadstar-authentication.yml
+        conventions: conventions/autoleadstar-conventions.yml
+        errors: errors/autoleadstar-problem-types.yml
+        rate_limits: rate-limits/autoleadstar-rate-limits.yml
+        lifecycle: lifecycle/autoleadstar-lifecycle.yml
+        data_model: data-model/autoleadstar-data-model.yml
+        sandbox: sandbox/autoleadstar-sandbox.yml
+        conformance: conformance/autoleadstar-conformance.yml
+        mcp: mcp/autoleadstar-mcp.yml
+        tool_crosswalk: mcp/autoleadstar-tool-crosswalk.yml
+        skills: skills/_index.yml
+- target: $.info
+  description: Record the discovery path, because it is not obvious and round one of a naive crawl misses it.
+  update:
+    x-discovery:
+      docs_host: https://developers.fullpath.com/
+      spec_url: https://developers.fullpath.com/openapi.yaml
+      renderer: Scalar API Reference
+      mcp_manifest: https://developers.fullpath.com/mcp-tools.json
+      note: >-
+        The company name in this repo is AutoLeadStar; the live surface is entirely under
+        the Fullpath brand. api.fullpath.com/openapi.json returns 401 (blanket auth wall);
+        the readable spec is on the DOCS host, not the API host.
+- target: $.info
+  description: Flag the two-surface split that is the main integration hazard in this document.
+  update:
+    x-two-surfaces:
+      platform:
+        server: https://api.fullpath.com/v1
+        tags: [shoppers, audiences, tasks, leads, appointments, activities]
+        error_envelope: '{error, message, details}'
+        rate_limit_declared: false
+      consent_management:
+        server: https://fullpath.com/api/v2/external/consent-management
+        tags: [consents]
+        error_envelope: '{message} or {message, errors}'
+        rate_limit_declared: true
+      hazard: >-
+        One OpenAPI document describes two APIs on two hosts at two major versions with two
+        different error envelopes and two different identifier spaces (integer dealershipId
+        vs string client_key). Server selection is by UI dropdown, not by path, so a
+        generated client will silently point half its operations at the wrong host.
+- target: $.components.securitySchemes.Bearer
+  description: Record what the Bearer scheme actually is, per surface.
+  update:
+    x-auth-notes:
+      platform: JWT issued to a Fullpath platform account
+      consent_management: static vendor API key issued at consent-management provisioning
+      rotation_policy_published: false
+      scopes: none — the token is all-or-nothing for the dealerships it can reach
+      note: >-
+        No OAuth2, no OIDC, no scopes and no documented token lifetime or rotation path.
+        An agent holding this token can read every shopper record the dealership has.
+- target: $.paths['/{contact_type}/consents'].post
+  description: Mark the only write operation on the surface and its missing safety rails.
+  update:
+    x-write-risk:
+      is_write: true
+      only_write_in_spec: true
+      batch_max: 500
+      idempotency_key: none
+      confirmation_semantics: none
+      regulatory_weight: >-
+        Writes communication consent (email / phone_sms / phone_call) with a timestamp —
+        the record a TCPA or CAN-SPAM defense rests on. A retried batch after a timeout has
+        undefined de-duplication behavior.
+- target: $.paths['/dealerships/{dealershipId}/shoppers/{id}/events'].get
+  description: Note the highest-value operation and its absence from the agent surface.
+  update:
+    x-agent-gap:
+      mcp_tool: none
+      note: >-
+        Twenty polymorphic behavioral event types (page views, leads, sales, conversions,
+        ad clicks, enrichment, email/SMS sends, opens, clicks, replies, appointments,
+        service ROs). This is the operation that makes Fullpath a CDP rather than a contact
+        list, and it is the one shopper sub-resource with no MCP tool.
+- target: $.paths['/dealerships/{dealershipId}/audiences'].get
+  description: Note the opaque segment definition.
+  update:
+    x-opacity:
+      field: shopper_set
+      encoding: base64-encoded JSON filter definition
+      documented_format: false
+      note: >-
+        The audience's actual segmentation logic is returned as an undocumented base64 blob.
+        A client can list audiences but cannot reason about what any of them mean.
+- target: $.components.schemas.Audience.properties.public_url
+  description: Flag the capability URL.
+  update:
+    x-capability-url: true
+    x-note: >-
+      The spec states this URL "contains authentication". Treat it as a bearer credential:
+      it must not be logged, cached in a shared store, or handed to an agent's context
+      window that may be persisted.
+- target: $.components.schemas.Lead
+  description: Flag the sensitivity of the widest schema in the API.
+  update:
+    x-data-sensitivity:
+      classes: [pii, contact, financial, vehicle-identity]
+      fields_of_note:
+      - main_email_addresses
+      - cell_phone
+      - home_phone
+      - work_phone
+      - address
+      - voi_vin
+      - sold_vehicle_vin
+      - sold_vehicle_price
+      - front_gross
+      - back_gross
+      - total_gross
+      note: >-
+        A single Lead object carries consumer PII, two VINs, and the dealership's own deal
+        margins. Any agent given list_leads gets the store's gross profit per deal.
+- target: $.components.schemas.Shopper
+  description: Flag derived scoring fields as inferred, not observed.
+  update:
+    x-derived-scores:
+    - score
+    - marketing_engagement_score
+    - loyalty_score
+    - financial_durability_index
+    - aim_propensity_score
+    x-note: >-
+      Methodology for these scores is not published. They are model outputs about a named
+      consumer and should be handled as inferred personal data, not as facts.

@@ -1,0 +1,66 @@
+generated: '2026-08-06'
+method: searched
+source: https://developers.fullpath.com/openapi.yaml
+docs: https://developers.fullpath.com/
+summary: >-
+  Fullpath publishes a named staging server in the OpenAPI servers[] block and ships an
+  interactive Scalar console on the docs site. There is no self-serve sandbox: both
+  environments require a real issued credential, and no test fixtures, test cards or
+  seeded data are published.
+
+environments:
+- name: Production (Platform)
+  url: https://api.fullpath.com/v1
+  credential: Platform JWT
+- name: Production (Consent Management)
+  url: https://fullpath.com/api/v2/external/consent-management
+  credential: vendor API key issued at consent-management provisioning
+- name: Staging
+  url: https://staging-api.fullpath.com/v1
+  credential: Platform JWT (issuance path not published)
+  note: >-
+    Declared as "Staging (api.fullpath.com)" in servers[]. This is the only pre-production
+    environment Fullpath names publicly.
+
+console:
+  present: true
+  type: Scalar API Reference (embedded try-it)
+  url: https://developers.fullpath.com/
+  configuration:
+    layout: modern
+    default_http_client: shell/curl
+    proxy: https://proxy.scalar.com
+  note: >-
+    The console is live and will execute requests, but every call requires a Bearer token —
+    there is no demo key, no read-only public dataset and no mock server. In practice the
+    console is a request builder for existing customers and vendors, not a sandbox.
+  consent_console: https://developers.fullpath.com/consent.html
+
+self_serve: false
+signup_path: sales-gated (Book a Demo / vendor provisioning); no developer self-registration found.
+
+test_credentials:
+  published: false
+  test_key_prefix: null
+  note: No test-vs-live key prefixes, no test-mode flag, no published sample tokens.
+
+test_data:
+  fixtures: false
+  time_simulation: false
+  triggers: false
+  note: >-
+    No test clocks, fixture generators, event triggers or seeded dealerships. The only
+    published example values are illustrative response examples in the spec — e.g. dealers
+    "Example Motors" (client_key 40NM-00001-1) and "Downtown Auto" (40NM-00002-1) — which
+    are documentation samples, not callable test accounts.
+
+identifier_formats:
+- field: client_key
+  pattern: ^40NM-\d+-1$
+  example_from_docs: 40NM-00001-1
+  note: Consent Management dealer identifier; the pattern is enforced in both the OpenAPI and the MCP inputSchema.
+
+gaps:
+- No sandbox credential a developer can obtain without a sales conversation.
+- Staging is named but has no documented onboarding, data policy, or reset behavior.
+- No mock server or recorded-response collection (no Postman workspace found).

@@ -1,0 +1,102 @@
+generated: '2026-08-06'
+method: searched
+source: https://developers.fullpath.com/openapi.yaml
+docs: https://developers.fullpath.com/
+summary: >-
+  Lifecycle posture for the Fullpath API, searched across the developer portal, the product
+  site and the OpenAPI, then derived from the spec where the docs were silent.
+
+versioning:
+  scheme: URI path
+  current_versions:
+  - api: Fullpath Platform API
+    version: v1
+    server: https://api.fullpath.com/v1
+  - api: Fullpath Consent Management Vendor API
+    version: v2
+    server: https://fullpath.com/api/v2/external/consent-management
+  spec_info_version: 1.0.0
+  policy_published: false
+  note: >-
+    Two major versions run side by side inside one OpenAPI document with no written policy
+    for how a version is introduced, supported, or retired.
+
+deprecation:
+  policy_published: false
+  policy_url: null
+  deprecated_operations: []
+  deprecated_fields: []
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    Nothing in the spec carries `deprecated: true`, and no Sunset or Deprecation response
+    header is declared anywhere. No deprecation policy page exists on developers.fullpath.com
+    or fullpath.com. A vendor integrating against /v1 has no published notice period.
+
+status_page:
+  present: false
+  url: null
+  probes:
+  - url: https://status.fullpath.com/
+    status: 200
+    result: >-
+      Resolves but 302s onto https://www.fullpath.com/ and serves the marketing homepage
+      (title "Fullpath | AI Ecosystem for Auto Dealerships"). It is a parked/vanity subdomain,
+      NOT a status page. Recorded as absent — a 200 that renders the homepage is not evidence.
+  note: >-
+    No Statuspage/Better Uptime/Instatus property was found on any Fullpath host. For a
+    platform 2,000+ dealerships run their advertising through, this is the largest single
+    operational-transparency gap.
+
+sla:
+  published: false
+  url: null
+  note: >-
+    No public uptime commitment, support-response target, or availability SLA. Terms are
+    at https://www.fullpath.com/legal-and-trust/?nav=websiteterms but carry no numeric SLA.
+
+changelog:
+  present: true
+  url: https://www.fullpath.com/feature-releases/
+  scope: product feature releases (platform UI/product), not API-specific
+  api_specific: false
+  see: changelog/autoleadstar-changelog.yml
+  note: >-
+    Fullpath publishes a dated Feature Releases stream for the product, but there is no
+    API changelog: no dated entries for the /v1 or /v2 surfaces, and the OpenAPI has no
+    version history.
+
+support:
+  help_center: https://fullpath.zendesk.com/hc/en-us
+  security_contact: mailto:security@fullpath.com
+  general_contacts:
+  - get.started@fullpath.com
+  - support@fullpath.com
+  phone: '+1 216-242-1320'
+
+corporate:
+  founded: null
+  founded_note: >-
+    Founding year is reported inconsistently across sources (the predecessor 40Nuggets
+    dates to ~2012; AutoLeadStar as a brand to the mid-2010s). Left null rather than
+    asserted.
+  headquarters: Jerusalem, Israel
+  former_name: AutoLeadStar
+  renamed: '2023-03'
+  rename_source: https://www.fullpath.com/blog/autoleadstar-rebrands-to-fullpath/
+  acquisition:
+    acquirer: Cox Automotive
+    source: https://www.prnewswire.com/news-releases/cox-automotive-to-acquire-fullpath-bringing-ai-native-data-and-marketing-infrastructure-to-the-industrys-largest-dealer-network-302750703.html
+    note: >-
+      An announced acquisition is itself a lifecycle risk for anyone integrating: the
+      autoleadstar.com domain is already only in scope for the vulnerability-disclosure
+      policy, and API hosts have migrated to fullpath.com.
+  legacy_domains:
+  - autoleadstar.com
+  - 40nuggets.com
+  note: >-
+    The `40NM-` prefix on every Consent Management client_key (pattern ^40NM-\d+-1$) and
+    the *.40nuggets.com entry in the vulnerability-disclosure scope are surviving artifacts
+    of 40Nuggets, the company's predecessor name before AutoLeadStar. Three brand generations
+    are visible in one live API contract.

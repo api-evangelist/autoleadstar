@@ -1,0 +1,268 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/autoleadstar-fullpath-api-openapi.yml
+summary: >-
+  Entity-relationship graph derived from the $ref graph and the id-reference fields in the
+  published OpenAPI (55 component schemas, 16 operations). Every relationship below is
+  backed by a real `$ref` or a real `*_id` property in the spec — none are inferred from
+  product marketing.
+
+root: Dealership
+identifier_style: integer surrogate ids (no prefixed/typed ids), except Consent Management
+  which uses a string client_key matching ^40NM-\d+-1$.
+
+entities:
+- name: Dealership
+  schema: null
+  note: >-
+    The tenancy root. It has NO schema of its own — it exists only as the required
+    `dealershipId` path parameter on all thirteen Platform operations. There is no
+    GET /dealerships and no way to discover which dealership ids a token can reach.
+  operations: []
+
+- name: Shopper
+  schema: Shopper
+  key: id (integer)
+  operations: [listShoppers, getShopperById]
+  note: >-
+    The central entity — the unified customer profile that makes this a CDP. Carries
+    scoring fields (score, marketing_engagement_score, loyalty_score,
+    financial_durability_index, aim_propensity_score), customer_lifetime_value, location,
+    household_flag and is_enriched. Ten fields are documented "single shopper only" and
+    never appear in list responses.
+
+- name: PrimaryContact
+  schema: PrimaryContact
+  note: Embedded on Shopper via ?embed=primary_contact.
+- name: ContactDetail
+  schema: ContactDetail
+  note: All contacts for a shopper; single-shopper responses only.
+- name: Location
+  schema: Location
+- name: CustomerLifetimeValue
+  schema: CustomerLifetimeValue
+- name: ShopperEmail
+  schema: ShopperEmail
+  operations: [listShopperEmails]
+- name: ShopperPhone
+  schema: ShopperPhone
+  operations: [listShopperPhones]
+
+- name: ShopperEvent
+  schema: ShopperEvent
+  operations: [listShopperEvents]
+  polymorphic: oneOf
+  variants:
+  - PageViewEvent
+  - LeadEvent
+  - SaleEvent
+  - ConversionEvent
+  - InputTrackingEvent
+  - AdClickEvent
+  - EnrichmentEvent
+  - LeadHandlingSMSSentEvent
+  - EmailClickEvent
+  - EmailOpenEvent
+  - EmailSentEvent
+  - SMSClickEvent
+  - SMSRepliedEvent
+  - SMSSentEvent
+  - AppointmentEvent
+  - ServiceLeadEvent
+  - ServiceROEvent
+  - ServiceAppointmentEvent
+  note: >-
+    Twenty behavioral event types under one oneOf — the richest object in the API and the
+    part that actually distinguishes a CDP from a contact list. It has NO MCP tool.
+
+- name: Audience
+  schema: Audience
+  key: id (integer)
+  operations: [listAudiences, getAudienceById, listAudienceShoppers, listShopperAudiences]
+  note: >-
+    A saved segment. `shopper_set` is a base64-encoded JSON filter definition — the segment
+    logic is opaque to a client unless it decodes and interprets an undocumented format.
+    `public_url` is documented as containing authentication, i.e. a capability URL.
+
+- name: Task
+  schema: Task
+  key: id (integer)
+  operations: [listTasks]
+  soft_delete: deleted_at
+
+- name: TaskNote
+  schema: TaskNote
+  key: id (integer)
+
+- name: Activity
+  schema: Activity
+  key: id (integer)
+  operations: [listActivities]
+
+- name: Lead
+  schema: Lead
+  key: id (integer)
+  operations: [listLeads]
+  note: >-
+    The widest schema in the API (~60 flat fields). Denormalized: it carries the person
+    (name, emails, phones, address), the vehicle of interest (voi_* including voi_vin),
+    the trade-in (trade_in_*), the sold vehicle (sold_vehicle_* including VIN and price)
+    and the deal economics (front_gross, back_gross, total_gross) all on one object,
+    with no $ref to a Vehicle schema.
+
+- name: ADFLead
+  schema: ADFLead
+  note: ADF/XML-format lead, embedded on Shopper via ?embed=adf_leads.
+
+- name: Appointment
+  schema: Appointment
+  key: id (integer)
+  operations: [listAppointments]
+
+- name: Vehicle
+  schema: Vehicle
+  note: >-
+    A Vehicle schema exists in components but is reachable only through LatestSale /
+    LatestLead embeds. The Lead schema does not use it.
+
+- name: CmDealer
+  schema: CmDealer
+  key: client_key (string, ^40NM-\d+-1$)
+  operations: [listDealers]
+  note: >-
+    The Consent Management surface's own dealer entity. It does NOT share an identifier
+    with the Platform surface's integer dealershipId — the two surfaces cannot be joined
+    from the published contracts alone.
+
+- name: CmConsentContact
+  schema: CmConsentContact
+  operations: [getConsent, storeConsents]
+
+relationships:
+- from: Dealership
+  to: Shopper
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Dealership
+  to: Audience
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Dealership
+  to: Task
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Dealership
+  to: Lead
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Dealership
+  to: Appointment
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Dealership
+  to: Activity
+  type: has_many
+  via: dealershipId (path parameter)
+- from: Shopper
+  to: PrimaryContact
+  type: has_one
+  via: primary_contact ($ref)
+- from: Shopper
+  to: ContactDetail
+  type: has_many
+  via: contacts ($ref array)
+- from: Shopper
+  to: Location
+  type: has_one
+  via: location ($ref)
+- from: Shopper
+  to: CustomerLifetimeValue
+  type: has_one
+  via: customer_lifetime_value ($ref)
+- from: Shopper
+  to: LatestSale
+  type: has_one
+  via: latest_sale ($ref)
+- from: Shopper
+  to: LatestLead
+  type: has_one
+  via: latest_lead ($ref)
+- from: Shopper
+  to: ADFLead
+  type: has_many
+  via: adf_leads ($ref array)
+- from: Shopper
+  to: ShopperEmail
+  type: has_many
+  via: listShopperEmails sub-resource
+- from: Shopper
+  to: ShopperPhone
+  type: has_many
+  via: listShopperPhones sub-resource
+- from: Shopper
+  to: ShopperEvent
+  type: has_many
+  via: listShopperEvents sub-resource
+- from: Shopper
+  to: Audience
+  type: has_many
+  via: listShopperAudiences sub-resource (many-to-many)
+- from: Audience
+  to: Shopper
+  type: has_many
+  via: listAudienceShoppers sub-resource (many-to-many)
+- from: Task
+  to: Shopper
+  type: belongs_to
+  via: shopper_id
+- from: Task
+  to: Activity
+  type: has_many
+  via: activities ($ref array, ?embed=activities)
+- from: Task
+  to: TaskNote
+  type: has_many
+  via: notes ($ref array, ?embed=notes)
+- from: TaskNote
+  to: Task
+  type: belongs_to
+  via: task_id
+- from: Activity
+  to: Shopper
+  type: belongs_to
+  via: shopper_id
+- from: Activity
+  to: Task
+  type: belongs_to
+  via: task_id
+- from: Appointment
+  to: Lead
+  type: belongs_to
+  via: lead_id
+- from: LatestSale
+  to: Vehicle
+  type: has_one
+  via: $ref
+- from: LatestLead
+  to: Vehicle
+  type: has_one
+  via: $ref
+- from: CmDealer
+  to: CmConsentContact
+  type: has_many
+  via: client_key
+
+envelopes:
+  list: '{ data: [<Entity>], pagination: { page, per_page, total, total_pages } }'
+  single: '{ data: <Entity> }'
+  empty: HTTP 204 with no body
+
+observations:
+- Lead has no belongs_to Shopper. The Shopper carries latest_lead / latest_lead_date, but
+  the Lead object itself exposes no shopper_id — the join is one-directional.
+- Appointment relates to Lead, not to Shopper; Task and Activity relate to Shopper, not to
+  Lead. There is no single traversal from a shopper to their appointments.
+- Vehicle exists as a schema but the widest vehicle data (on Lead) is flat strings, so VIN
+  and vehicle identity are not modeled consistently.
+- The Consent Management entity graph is disjoint from the Platform entity graph — different
+  key space (client_key vs dealershipId), different error envelope, different server.

@@ -1,0 +1,144 @@
+generated: '2026-08-06'
+method: derived
+source: >-
+  Derived by binding every tool in the published manifest
+  (mcp/autoleadstar-mcp-tools.json, fetched from
+  https://developers.fullpath.com/mcp-tools.json) to its backing operationId in the
+  published OpenAPI 3.0 (openapi/autoleadstar-fullpath-api-openapi.yml, fetched from
+  https://developers.fullpath.com/openapi.yaml). Both documents are first-party and
+  were fetched the same day, so confidence is high throughout.
+purpose: >-
+  Make the MCP tool the first-class discovery unit and bind it to the REST operation
+  it wraps. Fullpath is the rare case where the MCP surface and the REST surface were
+  authored together and published side by side from the same docs site — the crosswalk
+  is near-total rather than divergent, which is itself the finding.
+
+surfaces:
+  rest_openapi: openapi/autoleadstar-fullpath-api-openapi.yml   # OpenAPI 3.0.0, 16 operations, 55 schemas
+  rest_servers:
+  - https://fullpath.com/api/v2/external/consent-management     # Consent Management (v2)
+  - https://api.fullpath.com/v1                                  # Platform (v1)
+  - https://staging-api.fullpath.com/v1                          # Staging
+  mcp: mcp/autoleadstar-mcp-tools.json                           # downloadable manifest; NO hosted remote endpoint
+  graphql: null
+  gated:
+  - >-
+    The live REST API is fully gated: api.fullpath.com returns 401 on every path
+    (verified against a nonsense control path), so operation behavior was not exercised —
+    only the published contracts were read.
+  - >-
+    There is no hosted MCP endpoint to run tools/list against; the tool schemas below come
+    from the provider's own static manifest, which is stronger evidence than a name list.
+
+crosswalk:
+- tool: list_dealers
+  category: consent
+  rest: [listDealers]
+  binding: rest
+  confidence: high
+  note: GET /dealers on the Consent Management server. inputSchema is an empty object — no parameters.
+- tool: get_consent
+  category: consent
+  rest: [getConsent]
+  binding: rest
+  confidence: high
+  note: GET /{contact_type}/consent. contact_type is a path param; contact_value and client_key are query params.
+- tool: store_consents
+  category: consent
+  rest: [storeConsents]
+  binding: rest
+  confidence: high
+  note: POST /{contact_type}/consents. The only write operation on the entire agent surface; bulk 1-500 contacts.
+- tool: list_shoppers
+  category: shoppers
+  rest: [listShoppers]
+  binding: rest
+  confidence: high
+  note: GET /dealerships/{dealershipId}/shoppers. Supports q, embed, page, per_page, sort.
+- tool: get_shopper
+  category: shoppers
+  rest: [getShopperById]
+  binding: rest
+  confidence: high
+- tool: get_shopper_audiences
+  category: shoppers
+  rest: [listShopperAudiences]
+  binding: rest
+  confidence: high
+- tool: list_audiences
+  category: audiences
+  rest: [listAudiences]
+  binding: rest
+  confidence: high
+- tool: get_audience
+  category: audiences
+  rest: [getAudienceById]
+  binding: rest
+  confidence: high
+- tool: get_audience_shoppers
+  category: audiences
+  rest: [listAudienceShoppers]
+  binding: rest
+  confidence: high
+- tool: list_tasks
+  category: engagement
+  rest: [listTasks]
+  binding: rest
+  confidence: high
+- tool: list_leads
+  category: engagement
+  rest: [listLeads]
+  binding: rest
+  confidence: high
+- tool: list_appointments
+  category: engagement
+  rest: [listAppointments]
+  binding: rest
+  confidence: high
+- tool: list_activities
+  category: engagement
+  rest: [listActivities]
+  binding: rest
+  confidence: high
+
+mcp_only: []
+
+rest_only:
+- operationId: listShopperEvents
+  path: GET /dealerships/{dealershipId}/shoppers/{id}/events
+  reason: >-
+    The shopper event stream (page views, leads, sales, conversions, ad clicks, enrichment,
+    email/SMS sends, opens, clicks, replies, appointments, service ROs) is the single richest
+    object in the API — 20 discriminated event schemas — and it is the one shopper sub-resource
+    with no MCP tool. An agent can read who a shopper is but not what they did.
+- operationId: listShopperEmails
+  path: GET /dealerships/{dealershipId}/shoppers/{id}/emails
+  reason: No corresponding tool; contact-channel sub-resource omitted from the manifest.
+- operationId: listShopperPhones
+  path: GET /dealerships/{dealershipId}/shoppers/{id}/phones
+  reason: No corresponding tool; contact-channel sub-resource omitted from the manifest.
+
+coverage:
+  rest_operations: 16
+  mcp_tools: 13
+  tools_bound_to_rest: 13
+  tools_unbound: 0
+  rest_operations_with_a_tool: 13
+  rest_operations_without_a_tool: 3
+  tool_binding_rate: 1.0
+  rest_exposure_rate: 0.8125
+
+findings:
+- >-
+  100% of the MCP tools bind to a published REST operation. There is no tool an agent can call
+  that a human cannot read the contract for — a materially better posture than the catalog norm,
+  where MCP tool lists routinely exceed or diverge from the REST spec.
+- >-
+  81% of the REST operations have a tool. The three that do not are all shopper sub-resources,
+  and the important one is listShopperEvents: the behavioral event stream that makes this a CDP
+  rather than a contact list is absent from the agent surface.
+- >-
+  Twelve of thirteen tools are read-only. The one write is store_consents — an agent's only way
+  to change state is to record communication consent, which is also the highest-liability write
+  in this domain (TCPA/CCPA). Worth noting that the manifest exposes it with no confirmation
+  semantics, no idempotency key, and a 500-record batch ceiling.

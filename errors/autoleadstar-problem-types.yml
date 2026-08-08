@@ -1,0 +1,108 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/autoleadstar-fullpath-api-openapi.yml
+docs: https://developers.fullpath.com/
+format: custom-json
+rfc9457: false
+summary: >-
+  Derived from every 4xx/5xx response declared in the published OpenAPI, plus the error
+  reference written into info.description. Fullpath does NOT use application/problem+json;
+  it ships two different bespoke JSON envelopes across the two surfaces in the same document.
+
+envelopes:
+- id: platform
+  applies_to: https://api.fullpath.com/v1
+  content_type: application/json
+  schema: ErrorResponse
+  shape:
+    error: string — error code or status code
+    message: string — human-readable message
+    details: string|null — additional context
+  required: [error, message]
+  example: '{ "error": "401", "message": "Unauthorized", "details": "Authentication token missing or invalid" }'
+- id: consent-management
+  applies_to: https://fullpath.com/api/v2/external/consent-management
+  content_type: application/json
+  schema: CmMessageResponse
+  shape:
+    message: string
+  required: [message]
+- id: consent-management-validation
+  applies_to: https://fullpath.com/api/v2/external/consent-management (422 only)
+  content_type: application/json
+  schema: CmValidationErrorResponse
+  shape:
+    message: string — summary of the validation failure
+    errors: object — field-level errors keyed by input name, each an array of strings
+  required: [message, errors]
+  example: '{ "message": "The contact value field is required.", "errors": { "contact_value": ["The contact value field is required."] } }'
+
+problem_types:
+- status: 204
+  title: No Content
+  meaning: The request succeeded but no records matched.
+  envelope: none
+  body: empty
+  remediation: >-
+    Treat 204 as an empty result set, not an error. Do NOT attempt to JSON-parse the body —
+    there is none. This is the most common integration trip-hazard on this API because every
+    list operation can return it.
+  operations: [listShoppers, listShopperAudiences, listShopperEvents, listShopperEmails,
+    listShopperPhones, listAudiences, listAudienceShoppers, listTasks, listLeads,
+    listAppointments, listActivities]
+- status: 400
+  title: Bad Request
+  meaning: Malformed input or invalid parameters; on the Consent surface, a business-rule failure outside form validation.
+  envelope: platform | consent-management
+  remediation: Validate query parameters against the spec (per_page max 100, sort field names, embed values) before retrying.
+  operations: [getConsent, storeConsents, listShoppers, listTasks, listLeads, listAppointments, listActivities]
+- status: 401
+  title: Unauthorized
+  meaning: Missing, invalid, or expired Bearer token.
+  envelope: platform | consent-management
+  remediation: >-
+    Re-issue the Platform JWT or check the Consent Management vendor API key. Note the
+    api.fullpath.com host returns this same 401 for EVERY path including nonexistent ones,
+    so a 401 is not evidence that the endpoint you called exists.
+  operations: [ALL]
+- status: 404
+  title: Not Found
+  meaning: No matching resource for the supplied id.
+  envelope: platform
+  remediation: Confirm the dealershipId and resource id; a shopper id is scoped to a dealership.
+  operations: [getShopperById, listShopperAudiences, listShopperEvents, listShopperEmails,
+    listShopperPhones, getAudienceById, listAudienceShoppers]
+- status: 422
+  title: Unprocessable Entity
+  meaning: Schema/form validation failure (Laravel validator).
+  envelope: consent-management-validation
+  remediation: >-
+    Read the errors map field-by-field. Common causes on storeConsents — contacts array
+    outside 1..500, contact_value missing, client_key not matching ^40NM-\d+-1$.
+  operations: [getConsent, storeConsents]
+- status: 429
+  title: Too Many Requests
+  meaning: Rate limit exceeded — 100 requests per minute per API key.
+  envelope: consent-management
+  body: '{ "message": "Too Many Attempts." }'
+  headers: [Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining]
+  remediation: Sleep for Retry-After seconds, then retry. See rate-limits/autoleadstar-rate-limits.yml.
+  operations: [listDealers, getConsent, storeConsents]
+- status: 500
+  title: Internal Server Error
+  meaning: Unhandled server-side failure.
+  envelope: platform
+  remediation: >-
+    Retry with backoff. There is no idempotency key on storeConsents, so a retried write
+    after a 500 has undefined de-duplication behavior — reconcile before retrying a batch.
+  operations: [listShoppers, getShopperById, listShopperAudiences, listShopperEvents,
+    listShopperEmails, listShopperPhones, listAudiences, getAudienceById,
+    listAudienceShoppers, listTasks, listLeads, listAppointments, listActivities]
+
+gaps:
+- No RFC 9457 application/problem+json. No `type` URI, no `instance`, no machine-readable
+  error taxonomy — `error` carries only the numeric status as a string, duplicating the HTTP code.
+- The two surfaces disagree on the envelope, so a single client library needs two error parsers.
+- 429 is declared only on the three Consent Management operations; the thirteen Platform
+  operations declare no 429 at all.
+- No 403 anywhere: authorization failures are apparently collapsed into 401.

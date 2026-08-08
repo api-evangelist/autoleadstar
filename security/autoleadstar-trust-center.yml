@@ -1,0 +1,73 @@
+generated: '2026-08-06'
+method: searched
+source: https://www.fullpath.com/legal-and-trust/
+summary: >-
+  Fullpath publishes a combined Legal & Trust Center rather than a dedicated security-portal
+  product. It is a single page with tabbed sections, discoverable from the site footer as
+  "Trust Center" and "Legal and Trust Center".
+
+trust_center:
+  url: https://www.fullpath.com/legal-and-trust/
+  http_status: 200
+  type: self-hosted page
+  vendor_portal: false
+  nda_gated: false
+  contact: security@fullpath.com
+
+sections:
+- name: Privacy Policy
+  url: https://www.fullpath.com/legal-and-trust/?nav=privacypolicy
+  last_updated: '2026-04-29'
+- name: Notice at Collection
+  url: https://www.fullpath.com/legal-and-trust/
+- name: Website Terms
+  url: https://www.fullpath.com/legal-and-trust/?nav=websiteterms
+- name: DPA (Data Processing Addendum)
+  url: https://www.fullpath.com/legal-and-trust/?nav=dpa
+- name: Sub-processors
+  url: https://www.fullpath.com/legal-and-trust/
+  last_updated: '2025-03-25'
+  note: >-
+    Named third-party sub-processor table with purpose, location, data processed and each
+    sub-processor's own privacy link. Includes Authenticom, AWS, ClickHouse, GCP and others,
+    all US-located. Annual compliance reviews and Transfer Impact Assessments are committed to.
+- name: Security
+  url: https://www.fullpath.com/legal-and-trust/
+  covers:
+  - Software Security Development Lifecycle (SSDLC)
+  - Vulnerability reporting to security@fullpath.com
+  - Certification and Compliance
+
+certifications:
+- name: ISO/IEC 27001
+  scope: information security management
+  status: claimed
+  certificate_published: false
+- name: ISO/IEC 42001
+  scope: AI management systems / AI governance
+  status: claimed
+  certificate_published: false
+
+commitments:
+- Regular surveillance audits and recertification audits to maintain certification.
+- Security integrated into every phase of the software development lifecycle (SSDLC).
+- FTC-regulation compliance for dealership clients.
+
+gaps:
+- No certificate numbers, certifying bodies, scope statements or audit dates published for
+  either ISO certification — the claims cannot be independently verified from the page.
+- No SOC 2 report, penetration-test summary, or downloadable evidence pack.
+- No machine-readable trust artifact (no /.well-known/, no CAIQ/SIG, no OSCAL).
+- No status/uptime disclosure alongside the security disclosure.
+
+x-evidence:
+  fetched: '2026-08-06'
+  url: https://www.fullpath.com/legal-and-trust/
+  http_status: 200
+  content_type: text/html
+  quote: >-
+    "Fullpath is ISO 27001 and ISO 42001 certified, the top international standard of
+    information security and AI governance. This ensures your data is always safe and that
+    you remain in compliance with FTC regulations. To maintain our certification, we commit
+    to regular surveillance audits and recertification audits, continually improving our
+    security measures."

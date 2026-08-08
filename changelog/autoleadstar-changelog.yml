@@ -1,0 +1,135 @@
+generated: '2026-08-06'
+method: searched
+source: https://www.fullpath.com/feature-releases/
+summary: >-
+  Fullpath maintains a dated, categorized Feature Releases stream for the PRODUCT. It is a
+  real changelog with per-entry dates, product-area tags and a Feature Release vs Feature
+  Upgrade distinction. It is NOT an API changelog: no entry in the recent window references
+  the /v1 or /v2 API surfaces, the OpenAPI, or the MCP tool manifest.
+
+scheme:
+  type: dated product release stream
+  api_specific: false
+  versioned: false
+  feed: null
+  note: >-
+    No RSS/Atom or JSON feed for the changelog was found, and there is no per-release
+    version number — entries are identified only by date, title and an anchor id
+    (e.g. /feature-releases/#feature-release-71464).
+
+current_version:
+  platform_api: v1
+  consent_management_api: v2
+  openapi_info_version: 1.0.0
+  note: The OpenAPI info.version has stayed at 1.0.0; there is no published spec version history.
+
+categories:
+- CDP
+- Group CDP
+- Audience Activation
+- Digital Advertising
+- Website Engagement
+- VINs-Acceleration
+- Equity
+- Data Up Management System
+- Data Enrichment
+- Dynamic Payments
+
+entries:
+- date: '2026-07-21'
+  title: Audiences Management Permission Level
+  kind: Feature Release
+  breaking: false
+  areas: [CDP]
+- date: '2026-03-25'
+  title: VINs Acceleration Overview Page
+  kind: Feature Upgrade
+  breaking: false
+  areas: [VINs-Acceleration]
+  highlight: Updated overview page with added reports and metrics.
+- date: '2026-03-23'
+  title: New Custom Campaign Builder
+  kind: Feature Upgrade
+  breaking: false
+  areas: [Audience Activation, CDP]
+  highlight: More structure for building and managing complex campaigns.
+- date: '2026-03-11'
+  title: Assign Salesperson to Opportunities
+  kind: Feature Upgrade
+  breaking: false
+  areas: [Data Up Management System]
+  highlight: Admins can assign, re-assign or override CRM salesperson data on any opportunity.
+- date: '2026-03-06'
+  title: Expanded KBB Trade Value Insights
+  kind: Feature Release
+  breaking: false
+  areas: [CDP]
+  highlight: KBB trade values available in CSV or Audience Subscriptions.
+- date: '2026-03-05'
+  title: Lifetime Value Filter
+  kind: Feature Upgrade
+  breaking: false
+  areas: [CDP, Equity]
+  highlight: LTV filter in Audience Builder based on total sales or service spend.
+- date: '2026-02-24'
+  title: Schedule Custom Website Engagement Offers
+  kind: Feature Release
+  breaking: false
+  areas: [Website Engagement]
+- date: '2026-02-24'
+  title: Date Comparison in Group CDP Dashboard
+  kind: Feature Upgrade
+  breaking: false
+  areas: [CDP]
+- date: '2026-02-11'
+  title: New Last Employee Touchpoint List
+  kind: Feature Upgrade
+  breaking: false
+  areas: [CDP]
+- date: '2026-02-10'
+  title: Lead Handling Email Channel
+  kind: Feature Upgrade
+  breaking: false
+  areas: [Audience Activation, CDP]
+  highlight: The Lead Handling Agent can follow up by email when no phone number is available.
+- date: '2026-02-07'
+  title: New Agent Performance Overview
+  kind: Feature Release
+  breaking: false
+  areas: [CDP]
+  highlight: Breakdown of Agent activities — messages sent, appointments booked.
+- date: '2026-02-02'
+  title: Splitting PMax Spend
+  kind: Feature Upgrade
+  breaking: false
+  areas: [Digital Advertising]
+  highlight: Separate budgets and performance for VLA and non-VLA campaigns.
+- date: '2026-01-28'
+  title: Store Performance Over Time
+  kind: Feature Upgrade
+  breaking: false
+  areas: [CDP]
+- date: '2026-01-19'
+  title: Cross-Group Campaign Distribution
+  kind: Feature Release
+  breaking: false
+  areas: [Audience Activation]
+  highlight: Launch custom campaigns for multiple stores simultaneously in one flow.
+
+window:
+  from: '2026-01-19'
+  to: '2026-07-21'
+  entries_captured: 14
+  note: Recent window only; the live page at the source URL is authoritative.
+
+gaps:
+- No API changelog. Additions, removals or behavior changes to /v1, /v2, the OpenAPI or the
+  MCP tool manifest are not announced anywhere a vendor integrator would see them.
+- No breaking-change flag, no version numbers, no machine-readable feed.
+- Entries are marketing-shaped ("Check it Out", "Book a Demo") rather than integration-shaped.
+
+x-evidence:
+  fetched: '2026-08-06'
+  url: https://www.fullpath.com/feature-releases/
+  http_status: 200
+  content_type: text/html
