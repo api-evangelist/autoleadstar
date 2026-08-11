@@ -34,30 +34,36 @@ tags:
 - CRM
 - Israel
 apis:
-- aid: autoleadstar:fullpath-api
-  name: Fullpath API v1
-  description: 'The Fullpath Platform API. Read dealership shopper profiles and their
-    associated emails, phones, events and audience memberships; list audiences and
-    their members; and list tasks, leads, appointments and activities for a dealership.
-    Also carries the vendor Consent Management API for listing integrated dealers
-    and reading/writing communication consent per contact channel. Bearer-token authenticated,
-    page/per_page paginated, sortable, rate limited at 100 requests per minute per
-    API key.'
+- aid: autoleadstar:fullpath-mcp-tools
+  name: Fullpath MCP Tools
+  description: >-
+    A first-party Model Context Protocol tool manifest published by Fullpath for AI assistants. Thirteen
+    tools with real JSON Schema inputSchemas covering consent management, shoppers, audiences, tasks,
+    leads, appointments and activities. Distributed as a downloadable mcp-tools.json for local MCP clients
+    rather than as a hosted remote MCP endpoint.
+  humanURL: https://developers.fullpath.com/mcp.html
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - MCP
+  - Agents
+  - Tools
+  properties:
+  - type: MCPServer
+    url: mcp/autoleadstar-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/autoleadstar-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/mcp.html
+- aid: autoleadstar:autoleadstar-activities-api
+  name: AutoLeadStar Activities API
+  description: Operations related to activities
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
-  - Shoppers
-  - Audiences
-  - Leads
-  - Tasks
-  - Appointments
-  - Activities
-  - Consent Management
+  - activities
   properties:
   - type: OpenAPI
-    url: openapi/autoleadstar-fullpath-api-openapi.yml
-  - type: Overlay
-    url: overlays/autoleadstar-fullpath-api-overlay.yaml
+    url: openapi/autoleadstar-activities-api-openapi.yml
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -72,50 +78,177 @@ apis:
     url: data-model/autoleadstar-data-model.yml
   - type: Sandbox
     url: sandbox/autoleadstar-sandbox.yml
-- aid: autoleadstar:fullpath-consent-management
-  name: Fullpath Consent Management Vendor API
-  description: 'The vendor-facing Consent Management API. Lists the dealers that have
-    a consent-management integration with the authenticated vendor, reads the current
-    communication-consent status for a single contact (email, phone_sms or phone_call)
-    at a target dealer, and stores consent records in bulk for up to 500 contacts
-    per call. Authenticated with a vendor API key issued at consent-management provisioning.'
-  humanURL: https://developers.fullpath.com/consent.html
-  baseURL: https://fullpath.com/api/v2/external/consent-management
-  tags:
-  - Consent Management
-  - Compliance
-  - TCPA
-  properties:
-  - type: OpenAPI
-    url: openapi/autoleadstar-fullpath-api-openapi.yml
   - type: Documentation
     url: https://developers.fullpath.com/consent.html
-- aid: autoleadstar:fullpath-mcp-tools
-  name: Fullpath MCP Tools
-  description: 'A first-party Model Context Protocol tool manifest published by Fullpath
-    for AI assistants. Thirteen tools with real JSON Schema inputSchemas covering
-    consent management, shoppers, audiences, tasks, leads, appointments and activities.
-    Distributed as a downloadable mcp-tools.json for local MCP clients rather than
-    as a hosted remote MCP endpoint.'
-  humanURL: https://developers.fullpath.com/mcp.html
+- aid: autoleadstar:autoleadstar-appointments-api
+  name: AutoLeadStar Appointments API
+  description: Operations related to appointments
+  humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
-  - MCP
-  - Agents
-  - Tools
+  - appointments
   properties:
-  - type: MCPServer
-    url: mcp/autoleadstar-mcp.yml
-  - type: ToolCrosswalk
-    url: mcp/autoleadstar-tool-crosswalk.yml
+  - type: OpenAPI
+    url: openapi/autoleadstar-appointments-api-openapi.yml
   - type: Documentation
-    url: https://developers.fullpath.com/mcp.html
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:autoleadstar-audiences-api
+  name: AutoLeadStar Audiences API
+  description: Operations related to audiences
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - audiences
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-audiences-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:autoleadstar-consents-api
+  name: AutoLeadStar Consents API
+  description: >-
+    Vendor Consent Management API for listing integrated dealers and reading/writing
+
+    communication consent. Defaults to
+
+    `https://fullpath.com/api/v2/external/consent-management`.
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - consents
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-consents-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:autoleadstar-leads-api
+  name: AutoLeadStar Leads API
+  description: Operations related to leads
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - leads
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-leads-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:autoleadstar-shoppers-api
+  name: AutoLeadStar Shoppers API
+  description: Operations related to shoppers
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - shoppers
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-shoppers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
+- aid: autoleadstar:autoleadstar-tasks-api
+  name: AutoLeadStar Tasks API
+  description: Operations related to tasks
+  humanURL: https://developers.fullpath.com/
+  baseURL: https://api.fullpath.com/v1
+  tags:
+  - tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/autoleadstar-tasks-api-openapi.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/
+  - type: APIReference
+    url: https://developers.fullpath.com/
+  - type: Authentication
+    url: authentication/autoleadstar-authentication.yml
+  - type: RateLimits
+    url: rate-limits/autoleadstar-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/autoleadstar-problem-types.yml
+  - type: DataModel
+    url: data-model/autoleadstar-data-model.yml
+  - type: Sandbox
+    url: sandbox/autoleadstar-sandbox.yml
+  - type: Documentation
+    url: https://developers.fullpath.com/consent.html
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/autoleadstar-fullpath-api-overlay.yaml
 - type: DomainSecurity
   url: security/autoleadstar-domain-security.yml
 - type: Website
