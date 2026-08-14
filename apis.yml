@@ -21,7 +21,7 @@ x-tier: profiled
 x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-08-06'
-modified: '2026-08-06'
+modified: '2026-08-14'
 tags:
 - Company
 - Automotive
@@ -64,6 +64,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-activities-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-activities-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-activities-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -90,6 +94,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-appointments-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-appointments-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-appointments-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -116,6 +124,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-audiences-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-audiences-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-audiences-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -147,6 +159,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-consents-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-consents-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-consents-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -173,6 +189,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-leads-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-leads-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-leads-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -199,6 +219,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-shoppers-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-shoppers-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-shoppers-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -225,6 +249,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/autoleadstar-tasks-api-openapi.yml
+  - type: PostmanCollection
+    url: collections/autoleadstar-tasks-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/autoleadstar-tasks-api.opencollection.json
   - type: Documentation
     url: https://developers.fullpath.com/
   - type: APIReference
@@ -293,6 +321,10 @@ common:
   url: conformance/autoleadstar-conformance.yml
 - type: Conventions
   url: conventions/autoleadstar-conventions.yml
+- type: Packages
+  url: packages/autoleadstar-packages.yml
+- type: Plans
+  url: plans/autoleadstar-plans-pricing.yml
 - type: Lifecycle
   url: lifecycle/autoleadstar-lifecycle.yml
 - type: AgentSkill
@@ -301,7 +333,7 @@ common:
   name: Forge Global secondary-market listing (AutoLeadStar)
   url: https://forgeglobal.com/autoleadstar_stock/
 x-enrichment:
-  date: '2026-08-06'
+  date: '2026-08-14'
   status: enriched
-  artifacts_added: 27
+  artifacts_added: 2
   pass: local-v1
