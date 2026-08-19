@@ -1,0 +1,1620 @@
+{
+  "item": [
+    {
+      "id": "712235d1-208b-4f8e-9390-f1d19082553c",
+      "name": "audiences",
+      "description": {
+        "content": "Operations related to audiences",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7686d87b-27ac-4235-ad59-95f930d404e1",
+          "name": "List audiences for a shopper",
+          "request": {
+            "name": "List audiences for a shopper",
+            "description": {
+              "content": "Returns a paginated list of audiences associated with the shopper",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "shoppers",
+                ":id",
+                "audiences"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Shopper identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4d788c90-e3a2-4315-80c3-1e98a6ca8cd4",
+              "name": "A paginated list of audiences",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "shoppers",
+                    ":id",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Shopper identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 89,\n      \"name\": \"Commercial Vehicle Prospecting\",\n      \"shopper_set\": \"eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==\",\n      \"is_starred\": 0,\n      \"is_subscribed\": 0,\n      \"is_sales_enablement\": 0,\n      \"is_data_enrichment\": 0,\n      \"created_at\": \"2026-01-08 19:02:22\",\n      \"updated_at\": \"2026-01-08 19:02:22\",\n      \"public_url\": \"https://example.com/api/v2/public/shoppers/saved-filters?key=example_key\",\n      \"updated_by\": \"System User\",\n      \"shoppers_count\": 150\n    },\n    {\n      \"id\": 89,\n      \"name\": \"Commercial Vehicle Prospecting\",\n      \"shopper_set\": \"eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==\",\n      \"is_starred\": 0,\n      \"is_subscribed\": 0,\n      \"is_sales_enablement\": 0,\n      \"is_data_enrichment\": 0,\n      \"created_at\": \"2026-01-08 19:02:22\",\n      \"updated_at\": \"2026-01-08 19:02:22\",\n      \"public_url\": \"https://example.com/api/v2/public/shoppers/saved-filters?key=example_key\",\n      \"updated_by\": \"System User\",\n      \"shoppers_count\": 150\n    }\n  ],\n  \"pagination\": {\n    \"page\": 7281,\n    \"per_page\": 76,\n    \"total\": 4138,\n    \"total_pages\": 4210\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f106c6af-bec5-46b6-a44a-34e032a847ed",
+              "name": "No audiences found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "shoppers",
+                    ":id",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Shopper identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e6ec5565-bbef-4b3c-8703-e31eeeab0832",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "shoppers",
+                    ":id",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Shopper identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41b217b5-39bd-4f5d-9fcb-03558fc0b4a5",
+              "name": "Shopper not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "shoppers",
+                    ":id",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Shopper identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc9b17f1-f5f2-458d-bafb-c6cdc08ad403",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "shoppers",
+                    ":id",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-shoppers-id-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Shopper identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5cd17457-80b6-40b2-9642-bfc34a98ca86",
+          "name": "List audiences",
+          "request": {
+            "name": "List audiences",
+            "description": {
+              "content": "Returns a paginated list of audiences",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "audiences"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-audiences-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4cf88a97-f8a0-4afc-99f7-d78a18010504",
+              "name": "A paginated list of audiences",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 89,\n      \"name\": \"Commercial Vehicle Prospecting\",\n      \"shopper_set\": \"eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==\",\n      \"is_starred\": 0,\n      \"is_subscribed\": 0,\n      \"is_sales_enablement\": 0,\n      \"is_data_enrichment\": 0,\n      \"created_at\": \"2026-01-08 19:02:22\",\n      \"updated_at\": \"2026-01-08 19:02:22\",\n      \"public_url\": \"https://example.com/api/v2/public/shoppers/saved-filters?key=example_key\",\n      \"updated_by\": \"System User\",\n      \"shoppers_count\": 150\n    },\n    {\n      \"id\": 89,\n      \"name\": \"Commercial Vehicle Prospecting\",\n      \"shopper_set\": \"eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==\",\n      \"is_starred\": 0,\n      \"is_subscribed\": 0,\n      \"is_sales_enablement\": 0,\n      \"is_data_enrichment\": 0,\n      \"created_at\": \"2026-01-08 19:02:22\",\n      \"updated_at\": \"2026-01-08 19:02:22\",\n      \"public_url\": \"https://example.com/api/v2/public/shoppers/saved-filters?key=example_key\",\n      \"updated_by\": \"System User\",\n      \"shoppers_count\": 150\n    }\n  ],\n  \"pagination\": {\n    \"page\": 5253,\n    \"per_page\": 57,\n    \"total\": 6079,\n    \"total_pages\": 196\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b70827d0-6c1c-434c-9e11-75d8b8f639af",
+              "name": "No audiences found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f9270c15-79da-4f49-bd6a-b8b763101f4d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61c744c0-f047-4359-8ca3-37f9edc70937",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6c37bd73-8078-410b-9244-413648be3afa",
+          "name": "Get a single audience",
+          "request": {
+            "name": "Get a single audience",
+            "description": {
+              "content": "Retrieves an audience by `id`.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `shoppers_count`: Include the count of shoppers in the audience\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "audiences",
+                ":id"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-audiences-id-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "embed",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to embed in the response. Available options:\nshoppers_count\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f4e7cc0c-482c-466d-849e-2af5b36eeea1",
+              "name": "The requested audience",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "embed",
+                      "value": "shoppers_count"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 89,\n  \"name\": \"Commercial Vehicle Prospecting\",\n  \"shopper_set\": \"eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==\",\n  \"is_starred\": 0,\n  \"is_subscribed\": 0,\n  \"is_sales_enablement\": 0,\n  \"is_data_enrichment\": 0,\n  \"created_at\": \"2026-01-08 19:02:22\",\n  \"updated_at\": \"2026-01-08 19:02:22\",\n  \"public_url\": \"https://example.com/api/v2/public/shoppers/saved-filters?key=example_key\",\n  \"updated_by\": \"System User\",\n  \"shoppers_count\": 150\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12db66a9-9a89-44ce-a5b8-58265a368d9f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "embed",
+                      "value": "shoppers_count"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c14ca26-81d1-4e1c-8798-3d0e31e8e0d9",
+              "name": "Audience not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "embed",
+                      "value": "shoppers_count"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c44eeaf4-888c-4c2c-8081-52990260727c",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "embed",
+                      "value": "shoppers_count"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da96b754-1595-4988-ba0c-c6f71ab3a393",
+          "name": "List shoppers in an audience",
+          "request": {
+            "name": "List shoppers in an audience",
+            "description": {
+              "content": "Returns a paginated list of shoppers belonging to the given audience",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "audiences",
+                ":id",
+                "shoppers"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d145ab03-e3b3-41bc-91ae-ffe21e419962",
+              "name": "Paginated shoppers in the audience",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id",
+                    "shoppers"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 16395039,\n      \"primary_contact\": {\n        \"source\": \"customer\",\n        \"first_name\": \"John\",\n        \"middle_name\": null,\n        \"last_name\": \"Doe\",\n        \"full_name\": \"John Doe\",\n        \"main_email_addresses\": \"john.doe@example.com\",\n        \"alternative_email_addresses\": null,\n        \"cell_phone\": \"+15555551234\",\n        \"home_phone\": \"+15555551235\",\n        \"work_phone\": null,\n        \"address\": null,\n        \"city\": \"Anytown\",\n        \"state\": \"NY\",\n        \"zipcode\": \"12345\",\n        \"timestamp\": \"2024-01-15T10:30:00Z\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"status\": null,\n        \"crm_link\": null,\n        \"creation_date\": null,\n        \"external_customer_id\": null,\n        \"customer_type\": null,\n        \"email\": \"john.doe@example.com\",\n        \"full_address\": \"Anytown, NY, 12345\"\n      },\n      \"latest_lead_date\": \"2024-01-15\",\n      \"latest_sale_date\": null,\n      \"latest_marketing_touchpoint_date\": \"2024-01-15\",\n      \"latest_sale\": null,\n      \"latest_lead\": {\n        \"id\": \"1234567890\",\n        \"salesperson\": \"Jane Smith\",\n        \"date\": \"2024-01-15\",\n        \"up_type\": \"Internet\",\n        \"source\": \"Website - Contact Form\",\n        \"status\": \"Bad\",\n        \"sub_status\": \"Duplicate lead\",\n        \"vehicle\": {\n          \"vin\": \"1HGBH41JXMN109186\",\n          \"condition\": \"new\",\n          \"year\": \"2024\",\n          \"make\": \"Toyota\",\n          \"model\": \"Camry\",\n          \"trim\": \"LE\"\n        }\n      },\n      \"marketing_engagement_score\": \"10\",\n      \"loyalty_score\": \"0\",\n      \"contacts\": [\n        {\n          \"source\": \"crm_customer\",\n          \"first_name\": \"John\",\n          \"middle_name\": null,\n          \"last_name\": \"Doe\",\n          \"full_name\": \"John Doe\",\n          \"main_email_addresses\": \"john.doe@example.com\",\n          \"alternative_email_addresses\": null,\n          \"cell_phone\": \"+15555551234\",\n          \"home_phone\": \"+15555551235\",\n          \"work_phone\": null,\n          \"address\": null,\n          \"city\": \"Anytown\",\n          \"state\": \"NY\",\n          \"zipcode\": \"12345\",\n          \"timestamp\": \"2024-01-15T10:30:00Z\",\n          \"latitude\": null,\n          \"longitude\": null,\n          \"status\": \"Active\",\n          \"crm_link\": \"https://example.com/crm/customer/123456\",\n          \"creation_date\": \"2024-01-15\",\n          \"external_customer_id\": \"EXT123456\",\n          \"customer_type\": null\n        },\n        {\n          \"source\": \"crm_customer\",\n          \"first_name\": \"John\",\n          \"middle_name\": null,\n          \"last_name\": \"Doe\",\n          \"full_name\": \"John Doe\",\n          \"main_email_addresses\": \"john.doe@example.com\",\n          \"alternative_email_addresses\": null,\n          \"cell_phone\": \"+15555551234\",\n          \"home_phone\": \"+15555551235\",\n          \"work_phone\": null,\n          \"address\": null,\n          \"city\": \"Anytown\",\n          \"state\": \"NY\",\n          \"zipcode\": \"12345\",\n          \"timestamp\": \"2024-01-15T10:30:00Z\",\n          \"latitude\": null,\n          \"longitude\": null,\n          \"status\": \"Active\",\n          \"crm_link\": \"https://example.com/crm/customer/123456\",\n          \"creation_date\": \"2024-01-15\",\n          \"external_customer_id\": \"EXT123456\",\n          \"customer_type\": null\n        }\n      ],\n      \"location\": {\n        \"title\": \"Anytown, NY, 12345\",\n        \"city\": \"Anytown\",\n        \"state\": \"NY\",\n        \"zipcode\": \"12345\",\n        \"source\": \"customer\",\n        \"address\": null,\n        \"distance_from_dealership\": null\n      },\n      \"score\": 10,\n      \"public_link\": \"https://example.com/s/abc123xyz\",\n      \"customer_lifetime_value\": {\n        \"sales\": {\n          \"count\": 0,\n          \"total\": 0,\n          \"gross\": 0\n        },\n        \"services\": {\n          \"count\": 0,\n          \"total\": 0,\n          \"gross\": 0\n        },\n        \"total_lifetime_value\": 0\n      },\n      \"latest_sale_estimated_equity\": null,\n      \"household_flag\": false,\n      \"is_enriched\": true,\n      \"salesperson\": \"Jane Smith\",\n      \"group_shopper_id\": \"GRP123456789\",\n      \"financial_durability_index\": 8.46,\n      \"aim_propensity_score\": 2.54\n    },\n    {\n      \"id\": 16395039,\n      \"primary_contact\": {\n        \"source\": \"customer\",\n        \"first_name\": \"John\",\n        \"middle_name\": null,\n        \"last_name\": \"Doe\",\n        \"full_name\": \"John Doe\",\n        \"main_email_addresses\": \"john.doe@example.com\",\n        \"alternative_email_addresses\": null,\n        \"cell_phone\": \"+15555551234\",\n        \"home_phone\": \"+15555551235\",\n        \"work_phone\": null,\n        \"address\": null,\n        \"city\": \"Anytown\",\n        \"state\": \"NY\",\n        \"zipcode\": \"12345\",\n        \"timestamp\": \"2024-01-15T10:30:00Z\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"status\": null,\n        \"crm_link\": null,\n        \"creation_date\": null,\n        \"external_customer_id\": null,\n        \"customer_type\": null,\n        \"email\": \"john.doe@example.com\",\n        \"full_address\": \"Anytown, NY, 12345\"\n      },\n      \"latest_lead_date\": \"2024-01-15\",\n      \"latest_sale_date\": null,\n      \"latest_marketing_touchpoint_date\": \"2024-01-15\",\n      \"latest_sale\": {},\n      \"latest_lead\": {\n        \"id\": \"1234567890\",\n        \"salesperson\": \"Jane Smith\",\n        \"date\": \"2024-01-15\",\n        \"up_type\": \"Internet\",\n        \"source\": \"Website - Contact Form\",\n        \"status\": \"Bad\",\n        \"sub_status\": \"Duplicate lead\",\n        \"vehicle\": {\n          \"vin\": \"1HGBH41JXMN109186\",\n          \"condition\": \"new\",\n          \"year\": \"2024\",\n          \"make\": \"Toyota\",\n          \"model\": \"Camry\",\n          \"trim\": \"LE\"\n        }\n      },\n      \"marketing_engagement_score\": \"10\",\n      \"loyalty_score\": \"0\",\n      \"contacts\": [\n        {\n          \"source\": \"crm_customer\",\n          \"first_name\": \"John\",\n          \"middle_name\": null,\n          \"last_name\": \"Doe\",\n          \"full_name\": \"John Doe\",\n          \"main_email_addresses\": \"john.doe@example.com\",\n          \"alternative_email_addresses\": null,\n          \"cell_phone\": \"+15555551234\",\n          \"home_phone\": \"+15555551235\",\n          \"work_phone\": null,\n          \"address\": null,\n          \"city\": \"Anytown\",\n          \"state\": \"NY\",\n          \"zipcode\": \"12345\",\n          \"timestamp\": \"2024-01-15T10:30:00Z\",\n          \"latitude\": null,\n          \"longitude\": null,\n          \"status\": \"Active\",\n          \"crm_link\": \"https://example.com/crm/customer/123456\",\n          \"creation_date\": \"2024-01-15\",\n          \"external_customer_id\": \"EXT123456\",\n          \"customer_type\": null\n        },\n        {\n          \"source\": \"crm_customer\",\n          \"first_name\": \"John\",\n          \"middle_name\": null,\n          \"last_name\": \"Doe\",\n          \"full_name\": \"John Doe\",\n          \"main_email_addresses\": \"john.doe@example.com\",\n          \"alternative_email_addresses\": null,\n          \"cell_phone\": \"+15555551234\",\n          \"home_phone\": \"+15555551235\",\n          \"work_phone\": null,\n          \"address\": null,\n          \"city\": \"Anytown\",\n          \"state\": \"NY\",\n          \"zipcode\": \"12345\",\n          \"timestamp\": \"2024-01-15T10:30:00Z\",\n          \"latitude\": null,\n          \"longitude\": null,\n          \"status\": \"Active\",\n          \"crm_link\": \"https://example.com/crm/customer/123456\",\n          \"creation_date\": \"2024-01-15\",\n          \"external_customer_id\": \"EXT123456\",\n          \"customer_type\": null\n        }\n      ],\n      \"location\": {\n        \"title\": \"Anytown, NY, 12345\",\n        \"city\": \"Anytown\",\n        \"state\": \"NY\",\n        \"zipcode\": \"12345\",\n        \"source\": \"customer\",\n        \"address\": null,\n        \"distance_from_dealership\": null\n      },\n      \"score\": 10,\n      \"public_link\": \"https://example.com/s/abc123xyz\",\n      \"customer_lifetime_value\": {\n        \"sales\": {\n          \"count\": 0,\n          \"total\": 0,\n          \"gross\": 0\n        },\n        \"services\": {\n          \"count\": 0,\n          \"total\": 0,\n          \"gross\": 0\n        },\n        \"total_lifetime_value\": 0\n      },\n      \"latest_sale_estimated_equity\": null,\n      \"household_flag\": false,\n      \"is_enriched\": true,\n      \"salesperson\": \"Jane Smith\",\n      \"group_shopper_id\": \"GRP123456789\",\n      \"financial_durability_index\": 8.46,\n      \"aim_propensity_score\": 2.54\n    }\n  ],\n  \"pagination\": {\n    \"page\": 7765,\n    \"per_page\": 42,\n    \"total\": 4866,\n    \"total_pages\": 3362\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3cff1e2-08c6-4016-83d2-8f736b3e3c83",
+              "name": "No shoppers found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id",
+                    "shoppers"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "65cd2edb-a346-44cd-9fa5-2caccd4592e9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id",
+                    "shoppers"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "917bfbd4-4f28-4e3a-99d8-e65df4736300",
+              "name": "Audience not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id",
+                    "shoppers"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91b9ef7c-ce06-44ec-a295-e5a808dd8b4c",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "audiences",
+                    ":id",
+                    "shoppers"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-audiences-id-shoppers-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-shoppers-id-audiences-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-audiences-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-audiences-id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-audiences-id-shoppers-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "ecc9362b-2a36-4709-ac42-99327d5773d8",
+    "name": "Autoleadstar Audiences API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged audiences across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,318 @@
+openapi: 3.2.0
+info:
+  title: Autoleadstar Activities API
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@fullpath.com
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  description: 'Operations tagged activities across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://fullpath.com/api/v2/external/consent-management
+  description: Production (fullpath.com)
+- url: https://api.fullpath.com/v1
+  description: Production (api.fullpath.com)
+- url: https://staging-api.fullpath.com/v1
+  description: Staging (api.fullpath.com)
+tags:
+- name: activities
+  description: Operations related to activities
+paths:
+  /dealerships/{dealershipId}/activities:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - activities
+      summary: List activities
+      description: 'Returns a paginated list of activities with optional filtering.
+
+
+        Additional fields can be included in the response using the `embed` parameter. Available embed options:
+
+        - `shopper` - Shopper object associated with the activity
+
+
+        Multiple embed options can be specified as a comma-separated list, e.g., `embed=shopper`.
+
+        '
+      operationId: listActivities
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: query
+        name: assigned_to
+        description: Filter by assigned user ID
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: lead_id
+        description: Filter by lead ID (integer)
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: task_id
+        description: Filter by task ID
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: type
+        description: Filter by activity type
+        schema:
+          type: string
+          enum:
+          - call
+          - email
+          - meeting
+          - note
+          - task
+        required: false
+      - in: query
+        name: start_date
+        description: Filter activities from this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: end_date
+        description: Filter activities until this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: embed
+        description: 'Comma-separated list of fields to embed in the response. Available options:
+
+          shopper
+
+          '
+        schema:
+          type: string
+        required: false
+        example: shopper
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of activities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivitiesResponse'
+        '204':
+          description: No activities found
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
+  schemas:
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+    Activity:
+      type: object
+      required:
+      - id
+      - type
+      - title
+      properties:
+        id:
+          type: integer
+          description: Unique activity identifier
+        assigned_to:
+          type:
+          - integer
+          - 'null'
+          description: User ID assigned to the activity
+        shopper_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the shopper associated with this activity
+        task_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the task associated with this activity
+        type:
+          type: string
+          enum:
+          - call
+          - email
+          - meeting
+          - note
+          - task
+          description: Type of activity
+        type_id:
+          type:
+          - integer
+          - 'null'
+          description: Type-specific identifier
+        title:
+          type: string
+          description: Title of the activity
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the activity
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Notes for the activity
+        status:
+          type:
+          - string
+          - 'null'
+          description: Status of the activity
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 creation timestamp
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 last update timestamp
+        shopper:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Embedded shopper object (when using ?embed=shopper)
+      description: Represents an activity
+    ActivitiesResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple activities with pagination info
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+x-refined-from:
+- autoleadstar-fullpath-api-openapi.yml
+- autoleadstar-mcp-tools-openapi.yml

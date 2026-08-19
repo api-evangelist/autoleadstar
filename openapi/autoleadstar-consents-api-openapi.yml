@@ -1,0 +1,471 @@
+openapi: 3.2.0
+info:
+  title: Autoleadstar Consents API
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@fullpath.com
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  description: 'Operations tagged consents across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://fullpath.com/api/v2/external/consent-management
+  description: Production (fullpath.com)
+- url: https://api.fullpath.com/v1
+  description: Production (api.fullpath.com)
+- url: https://staging-api.fullpath.com/v1
+  description: Staging (api.fullpath.com)
+tags:
+- name: consents
+  x-displayName: Consent Management
+  description: 'Vendor Consent Management API for listing integrated dealers and reading/writing
+
+    communication consent. Defaults to
+
+    `https://fullpath.com/api/v2/external/consent-management`.
+
+    '
+paths:
+  /dealers:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - consents
+      summary: List integrated dealers
+      description: 'Returns all dealers that have a consent-management integration with the
+
+        authenticated vendor (both current and previous integrations).
+
+        '
+      operationId: listDealers
+      responses:
+        '200':
+          description: Dealer list for the authenticated vendor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmDealersResponse'
+              examples:
+                vendor:
+                  summary: Vendor with multiple dealers
+                  value:
+                    dealers:
+                    - client_key: 40NM-00001-1
+                      name: Example Motors
+                      status: connected
+                      connected_at: '2026-03-15T14:22:00+00:00'
+                    - client_key: 40NM-00002-1
+                      name: Downtown Auto
+                      status: pending
+                      connected_at: null
+        '401':
+          $ref: '#/components/responses/CmUnauthorized'
+        '429':
+          $ref: '#/components/responses/CmTooManyRequests'
+  /{contact_type}/consent:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - consents
+      summary: Get consent for a contact
+      description: 'Returns the current consent status for a single contact at the target dealer.
+
+
+        When no consent record exists, the response is `200` with `opt_in` and
+
+        `consent_timestamp` set to `null` (not `404`).
+
+
+        Requires `client_key` to identify the target dealer.
+
+        '
+      operationId: getConsent
+      parameters:
+      - $ref: '#/components/parameters/CmContactType'
+      - $ref: '#/components/parameters/CmContactValue'
+      - $ref: '#/components/parameters/CmClientKey'
+      responses:
+        '200':
+          description: Consent status for the contact (including when no record exists).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmConsentResponse'
+              examples:
+                optedIn:
+                  summary: Contact has opted in
+                  value:
+                    contact_value: user@example.com
+                    opt_in: true
+                    consent_timestamp: '2026-05-12T18:30:00+00:00'
+                noRecord:
+                  summary: No consent record on file
+                  value:
+                    contact_value: user@example.com
+                    opt_in: null
+                    consent_timestamp: null
+        '400':
+          $ref: '#/components/responses/CmBadRequest'
+        '401':
+          $ref: '#/components/responses/CmUnauthorized'
+        '422':
+          $ref: '#/components/responses/CmValidationError'
+        '429':
+          $ref: '#/components/responses/CmTooManyRequests'
+  /{contact_type}/consents:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    post:
+      security:
+      - Bearer: []
+      tags:
+      - consents
+      summary: Store consents in bulk
+      description: 'Stores one or more consent records for contacts at the target dealer.
+
+        Accepts between 1 and 500 contacts per request.
+
+
+        Exact duplicates in the same request (same normalized contact value and
+
+        `consent_timestamp`) are deduplicated; the last entry wins.
+
+
+        Requires `client_key` (query string) to identify the target dealer.
+
+
+        On success, returns an empty JSON object and updates the vendor
+
+        data-received timestamp for the dealer.
+
+        '
+      operationId: storeConsents
+      parameters:
+      - $ref: '#/components/parameters/CmContactType'
+      - $ref: '#/components/parameters/CmClientKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CmStoreConsentsRequest'
+            examples:
+              emailOptIn:
+                summary: Single email opt-in
+                value:
+                  contacts:
+                  - contact_value: user@example.com
+                    opt_in: true
+                    consent_timestamp: '2026-05-12T18:30:00Z'
+              phoneOptOut:
+                summary: Phone call opt-out
+                value:
+                  contacts:
+                  - contact_value: +1 (555) 123-4567
+                    opt_in: false
+                    consent_timestamp: '2026-05-12T18:30:00Z'
+      responses:
+        '200':
+          description: Consents stored successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmEmptySuccessResponse'
+        '400':
+          description: "Business-rule or normalization failure.\n\nCommon causes:\n- One or more contacts failed validation after normalization\n  (`\"One or more contacts are invalid.\"`)\n- `client_key` missing, invalid, or not integrated with the vendor\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmMessageResponse'
+              examples:
+                invalidContacts:
+                  value:
+                    message: One or more contacts are invalid.
+                clientKeyRequired:
+                  value:
+                    message: client_key is required.
+                dealerNotIntegrated:
+                  value:
+                    message: The requested dealer is not integrated with this vendor.
+        '401':
+          $ref: '#/components/responses/CmUnauthorized'
+        '422':
+          $ref: '#/components/responses/CmValidationError'
+        '429':
+          $ref: '#/components/responses/CmTooManyRequests'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmMessageResponse'
+              examples:
+                storeFailed:
+                  value:
+                    message: Failed to store consents.
+                vendorStatusFailed:
+                  value:
+                    message: Consents were stored but vendor integration status could not be updated.
+components:
+  schemas:
+    CmMessageResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    CmDealersResponse:
+      type: object
+      required:
+      - dealers
+      properties:
+        dealers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CmDealer'
+    CmContactType:
+      type: string
+      enum:
+      - email
+      - phone_sms
+      - phone_call
+    CmEmptySuccessResponse:
+      type: object
+      description: Empty JSON object returned on successful bulk store.
+      additionalProperties: false
+      example: {}
+    CmConsentContact:
+      type: object
+      required:
+      - contact_value
+      - opt_in
+      - consent_timestamp
+      properties:
+        contact_value:
+          type: string
+          description: 'Raw contact identifier. Must be a valid email for `email`, or a valid
+
+            phone number for `phone_sms` / `phone_call`.
+
+            '
+        opt_in:
+          type: boolean
+          description: true to record opt-in; false to record opt-out.
+        consent_timestamp:
+          type: string
+          format: date-time
+          description: When the consent event occurred (ISO 8601).
+    CmValidationErrorResponse:
+      type: object
+      required:
+      - message
+      - errors
+      properties:
+        message:
+          type: string
+          description: Summary of the validation failure.
+        errors:
+          type: object
+          description: Field-level validation errors keyed by input name.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    CmConsentResponse:
+      type: object
+      required:
+      - contact_value
+      - opt_in
+      - consent_timestamp
+      properties:
+        contact_value:
+          type: string
+          description: Normalized contact value used for the lookup.
+          example: user@example.com
+        opt_in:
+          type:
+          - boolean
+          - 'null'
+          description: '`true` if opted in, `false` if opted out, `null` when no consent record
+
+            exists for this contact.
+
+            '
+        consent_timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'ISO 8601 timestamp of the consent event. `null` when no consent record
+
+            exists.
+
+            '
+    CmIntegrationStatus:
+      type: string
+      description: Consent-management integration status for a dealer.
+      enum:
+      - connected
+      - pending
+    CmStoreConsentsRequest:
+      type: object
+      required:
+      - contacts
+      properties:
+        contacts:
+          type: array
+          minItems: 1
+          maxItems: 500
+          items:
+            $ref: '#/components/schemas/CmConsentContact'
+    CmDealer:
+      type: object
+      required:
+      - client_key
+      - name
+      - status
+      - connected_at
+      properties:
+        client_key:
+          type: string
+          description: Fullpath client key (40NM-{number}-1).
+          example: 40NM-00001-1
+        name:
+          type: string
+          description: Dealer display name.
+          example: Example Motors
+        status:
+          $ref: '#/components/schemas/CmIntegrationStatus'
+        connected_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'ISO 8601 timestamp when the integration reached `connected` status.
+
+            `null` when status is not `connected` or no connection date is recorded.
+
+            '
+  responses:
+    CmValidationError:
+      description: Laravel validation failure (422 Unprocessable Entity).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmValidationErrorResponse'
+          example:
+            message: The contact value field is required.
+            errors:
+              contact_value:
+              - The contact value field is required.
+    CmBadRequest:
+      description: Request failed business-rule validation outside Laravel form validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+    CmTooManyRequests:
+      description: Rate limit exceeded (100 requests per minute per API key).
+      headers:
+        Retry-After:
+          description: Seconds until the rate limit resets.
+          schema:
+            type: integer
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+          example:
+            message: Too Many Attempts.
+    CmUnauthorized:
+      description: Missing, invalid, or expired Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+          example:
+            message: Unauthorized
+  parameters:
+    CmClientKey:
+      in: query
+      name: client_key
+      required: true
+      description: 'Fullpath client key for the target dealer (format `40NM-{number}-1`).
+
+        Required on all consent endpoints.
+
+        '
+      schema:
+        type: string
+        pattern: ^40NM-\d+-1$
+      example: 40NM-00001-1
+    CmContactType:
+      in: path
+      name: contact_type
+      required: true
+      description: Channel the consent applies to.
+      schema:
+        $ref: '#/components/schemas/CmContactType'
+    CmContactValue:
+      in: query
+      name: contact_value
+      required: true
+      description: 'Raw contact identifier to look up. Emails are lowercased; phone numbers are
+
+        standardized before lookup. The normalized value is echoed in the response.
+
+        '
+      schema:
+        type: string
+      examples:
+        email:
+          value: user@example.com
+        phone:
+          value: +1 (555) 123-4567
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+x-refined-from:
+- autoleadstar-fullpath-api-openapi.yml
+- autoleadstar-mcp-tools-openapi.yml

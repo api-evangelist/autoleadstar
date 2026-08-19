@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Consents API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "consents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List integrated dealers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealers",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all dealers that have a consent-management integration with the\nauthenticated vendor (both current and previous integrations).\n"
+        },
+        {
+          "info": {
+            "name": "Get consent for a contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/:contact_type/consent",
+            "params": [
+              {
+                "name": "contact_type",
+                "value": "",
+                "type": "path",
+                "description": "Channel the consent applies to."
+              },
+              {
+                "name": "contact_value",
+                "value": "",
+                "type": "query",
+                "description": "Raw contact identifier to look up. Emails are lowercased; phone numbers are\nstandardized before lookup. The normalized value is echoed in the response.\n"
+              },
+              {
+                "name": "client_key",
+                "value": "40NM-00001-1",
+                "type": "query",
+                "description": "Fullpath client key for the target dealer (format `40NM-{number}-1`).\nRequired on all consent endpoints.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current consent status for a single contact at the target dealer.\n\nWhen no consent record exists, the response is `200` with `opt_in` and\n`consent_timestamp` set to `null` (not `404`).\n\nRequires `client_key` to identify the target dealer.\n"
+        },
+        {
+          "info": {
+            "name": "Store consents in bulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://fullpath.com/api/v2/external/consent-management/:contact_type/consents",
+            "params": [
+              {
+                "name": "contact_type",
+                "value": "",
+                "type": "path",
+                "description": "Channel the consent applies to."
+              },
+              {
+                "name": "client_key",
+                "value": "40NM-00001-1",
+                "type": "query",
+                "description": "Fullpath client key for the target dealer (format `40NM-{number}-1`).\nRequired on all consent endpoints.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Stores one or more consent records for contacts at the target dealer.\nAccepts between 1 and 500 contacts per request.\n\nExact duplicates in the same request (same normalized contact value and\n`consent_timestamp`) are deduplicated; the last entry wins.\n\nRequires `client_key` (query string) to identify the target dealer.\n\nOn success, returns an empty JSON object and updates the vendor\ndata-received timestamp for the dealer.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

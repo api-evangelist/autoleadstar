@@ -1,0 +1,35 @@
+{
+  "provider": "autoleadstar",
+  "sources": [
+    "autoleadstar-activities-api-openapi.yml",
+    "autoleadstar-appointments-api-openapi.yml",
+    "autoleadstar-audiences-api-openapi.yml",
+    "autoleadstar-consents-api-openapi.yml",
+    "autoleadstar-leads-api-openapi.yml",
+    "autoleadstar-shoppers-api-openapi.yml",
+    "autoleadstar-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "autoleadstar-activities-api-openapi.yml",
+    "autoleadstar-appointments-api-openapi.yml",
+    "autoleadstar-audiences-api-openapi.yml",
+    "autoleadstar-consents-api-openapi.yml",
+    "autoleadstar-leads-api-openapi.yml",
+    "autoleadstar-shoppers-api-openapi.yml",
+    "autoleadstar-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "autoleadstar-activities-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-appointments-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-audiences-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-consents-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-leads-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-shoppers-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "autoleadstar-tasks-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

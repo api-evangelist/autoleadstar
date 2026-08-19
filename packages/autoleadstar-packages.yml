@@ -1,0 +1,120 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  Registry searches against npm, PyPI, RubyGems, Packagist, crates.io and GitHub, plus a
+  read of the provider's own developer portal (https://developers.fullpath.com/) and the
+  78-page www.fullpath.com sitemap, on 2026-08-14.
+docs: https://developers.fullpath.com/
+summary: >-
+  AutoLeadStar / Fullpath publishes NO first-party client libraries in any public package
+  registry, and names none on its developer portal. Integration is raw HTTP against
+  api.fullpath.com with a Bearer token, or the downloadable MCP tool manifest. This is an
+  honest zero, established by search rather than assumed.
+
+package_count: 0
+official_package_count: 0
+packages: []
+
+registries_searched:
+- registry: npm
+  endpoint: https://registry.npmjs.org/-/v1/search
+  queries:
+  - fullpath
+  - autoleadstar
+  result: >-
+    No first-party package. The npm package `fullpath` (v1.2.2, published 2016-07-24,
+    github.com/davidenq/fullpath) is an unrelated third-party directory-path utility.
+    The query `autoleadstar` returns zero results.
+  first_party_hit: false
+- registry: PyPI
+  endpoint: https://pypi.org/pypi/<name>/json
+  queries:
+  - fullpath
+  - autoleadstar
+  - fullpath-api
+  - fullpath-sdk
+  result: >-
+    `fullpath` returns HTTP 200 but is a name-squat placeholder — version 0.0.post0, summary
+    literally "This is a dummy package.", no author, no home page, no project URLs. It is NOT
+    Fullpath's. `autoleadstar`, `fullpath-api` and `fullpath-sdk` all 404.
+  first_party_hit: false
+- registry: RubyGems
+  endpoint: https://rubygems.org/api/v1/gems/<name>.json
+  queries:
+  - fullpath
+  - autoleadstar
+  result: Both 404.
+  first_party_hit: false
+- registry: Packagist
+  endpoint: https://packagist.org/search.json
+  queries:
+  - fullpath
+  result: Only unrelated PHP path/cache libraries.
+  first_party_hit: false
+- registry: crates.io
+  endpoint: https://crates.io/api/v1/crates
+  queries:
+  - fullpath
+  result: No Fullpath crate.
+  first_party_hit: false
+- registry: GitHub
+  endpoint: https://api.github.com/orgs/<org>
+  queries:
+  - fullpath
+  - fullpath-ai
+  - autoleadstar
+  result: >-
+    All three org names return 404 — the company operates no public GitHub organization.
+    Repository search for "autoleadstar" surfaces only personal repos (interview exercises
+    and forks by individuals) plus this API Evangelist profile repo. Nothing first-party.
+  first_party_hit: false
+
+docs_evidence:
+- url: https://developers.fullpath.com/
+  http_status: 200
+  finding: >-
+    The developer portal is a single Scalar-rendered reference page whose only two outbound
+    links are ./openapi.yaml and ./mcp.html. It names no SDK, no client library, no CLI and
+    no code-generation guidance.
+- url: https://www.fullpath.com/page-sitemap.xml
+  http_status: 200
+  finding: >-
+    78 published pages; grep for sdk / developer / api / cli returns nothing. The only
+    developer-adjacent pages are /integrations/ and /legal-and-trust/.
+- url: https://www.fullpath.com/integrations/
+  http_status: 200
+  finding: >-
+    The partner program page advertises "open APIs" and "Ready-to-Use Documentation" and
+    points technology partners at developers.fullpath.com — but offers no library, no
+    starter repo and no code sample beyond the Scalar console's generated curl.
+
+analysis:
+  consumption_path: >-
+    Raw HTTP. A vendor integrating the Consent Management API or the Platform /v1 API writes
+    its own client against the OpenAPI, or generates one from
+    https://developers.fullpath.com/openapi.yaml.
+  generation_ready: true
+  generation_note: >-
+    The published OpenAPI 3.0 is clean enough to generate a client from — every operation has
+    an operationId, summary, description, tags and response examples — so the absence of an
+    SDK is a distribution choice, not a spec-quality problem.
+  agent_surface_substitute: >-
+    The closest thing to a shipped client is the MCP tool manifest at
+    developers.fullpath.com/mcp-tools.json (see mcp/autoleadstar-mcp.yml). It is a static
+    JSON download, not a package: it has no registry entry, no version field and no release
+    date, so a consumer cannot tell whether the copy they hold is current.
+  decay_signal: >-
+    None available. With no published package there is no release date to read, which means
+    this pipeline has no provider-published, reliably-dated abandonment signal for Fullpath
+    in either direction — neither evidence of active maintenance nor evidence of decay.
+
+gaps:
+- No first-party SDK in any language.
+- No public GitHub organization, so no starter code, no issue tracker, no sample apps.
+- The MCP manifest — the one client-side artifact Fullpath does distribute — is unversioned
+  and undated, which is the same unpinned-distribution problem a CDN script tag has.
+
+x-evidence:
+  checked: '2026-08-14'
+  registries: 6
+  first_party_packages_found: 0

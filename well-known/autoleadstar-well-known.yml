@@ -61,3 +61,32 @@ documents:
   - No Expires field (RFC 9116 requires it).
   - No Encryption, Acknowledgments, Canonical, or Hiring fields.
   - Not served from the apex fullpath.com host (404 there).
+
+rechecks:
+- date: '2026-08-14'
+  scope: A2A Agent Card, both the 1.0 path and the legacy pre-0.3 path, on every known host
+  method: probed
+  result: no agent card anywhere
+  probes:
+  - url: https://www.fullpath.com/.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+  - url: https://www.fullpath.com/.well-known/agent.json
+    status: 404
+    content_type: text/html
+  - url: https://fullpath.com/.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+  - url: https://developers.fullpath.com/.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+  - url: https://developers.fullpath.com/.well-known/agent.json
+    status: 404
+    content_type: text/html
+  - url: https://www.autoleadstar.com/.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+  note: >-
+    Every response is a genuine 404 with an HTML error body, not an SPA catch-all answering
+    200. No a2a/ artifact is written and no AgentCard pointer is emitted: an agent card
+    asserts the PROVIDER serves the document, so it is never authored on their behalf.

@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Activities API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "activities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/activities",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "assigned_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter by assigned user ID"
+              },
+              {
+                "name": "lead_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lead ID (integer)"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by task ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity type"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities from this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities until this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "embed",
+                "value": "shopper",
+                "type": "query",
+                "description": "Comma-separated list of fields to embed in the response. Available options:\nshopper\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of activities with optional filtering.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `shopper` - Shopper object associated with the activity\n\nMultiple embed options can be specified as a comma-separated list, e.g., `embed=shopper`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

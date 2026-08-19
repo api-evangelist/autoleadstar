@@ -1,0 +1,341 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Shoppers API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "shoppers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List shoppers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Exact match query for email address or phone number (E.164 format)"
+              },
+              {
+                "name": "embed",
+                "value": "primary_contact,latest_lead_date",
+                "type": "query",
+                "description": "Comma-separated list of fields to embed in the response. Available options:\nprimary_contact, latest_lead_date, latest_sale_date, latest_sale, latest_lead, adf_leads, latest_marketing_touchpoint_date, marketing_engagement_score, loyalty_score\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending, e.g., `-created_at`)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of shoppers. Supports exact matching via the `q` query parameter for email or phone.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `primary_contact` - Primary contact information (first_name, last_name, email, phone numbers, address)\n- `latest_lead_date` - Date of the latest lead (YYYY-MM-DD)\n- `latest_sale_date` - Date of the latest sale (YYYY-MM-DD)\n- `latest_sale` - Latest sale information\n- `latest_lead` - "
+        },
+        {
+          "info": {
+            "name": "Get a single shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "embed",
+                "value": "primary_contact,contacts,location,customer_lifetime_value",
+                "type": "query",
+                "description": "Comma-separated list of fields to embed in the response.\n\nAvailable for both list and single: primary_contact, latest_lead_date, latest_sale_date, latest_sale, latest_lead, adf_leads, latest_marketing_touchpoint_date, marketing_engagement_score, loyalty_score\n\nAvailable only for single shopper: contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a shopper by `id`.\n\nAdditional fields can be included in the response using the `embed` parameter. This endpoint supports all embed options available for the list endpoint, plus additional options only available for single shopper requests.\n\n**Embed options available for both list and single shopper:**\n- `primary_contact` - Primary contact information (extended version with more fields in single shopper response)\n- `latest_lead_date` - Date of the latest lead (YYYY-MM-DD)\n- `latest_sal"
+        },
+        {
+          "info": {
+            "name": "List audiences for a shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id/audiences",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of audiences associated with the shopper"
+        },
+        {
+          "info": {
+            "name": "List events for a shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id/events",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of events associated with the shopper. Events are returned ungrouped in a flat array.\n\nSupported event types:\n- `page_view` - Website page view events\n- `lead` - Lead events from CRM\n- `sale` - Sale events from CRM\n- `conversion` - Conversion events (e.g., form submissions)\n- `input_tracking` - Input tracking events\n- `ad_click` - Ad click events\n- `enrichment` - Data enrichment events\n- `lead_handling_sms_sent` - Lead handling SMS sent events\n- `email_click` - Email cli"
+        },
+        {
+          "info": {
+            "name": "List emails for a shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id/emails",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of email addresses associated with the shopper"
+        },
+        {
+          "info": {
+            "name": "List phones for a shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id/phones",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of phone numbers associated with the shopper"
+        },
+        {
+          "info": {
+            "name": "List shoppers in an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/audiences/:id/shoppers",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of shoppers belonging to the given audience"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

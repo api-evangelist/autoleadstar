@@ -1,0 +1,591 @@
+{
+  "item": [
+    {
+      "id": "9cd332c6-50e2-489d-89b9-074624ef6e3d",
+      "name": "appointments",
+      "description": {
+        "content": "Operations related to appointments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a395ff57-4ba3-46e8-825f-d57c92ea305b",
+          "name": "List appointments",
+          "request": {
+            "name": "List appointments",
+            "description": {
+              "content": "Returns a paginated list of appointments with optional filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "appointments"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-appointments-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "assigned_to",
+                  "value": "<integer>",
+                  "description": "Filter by assigned user ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "lead_id",
+                  "value": "<integer>",
+                  "description": "Filter by lead ID (integer)"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_confirmed",
+                  "value": "<boolean>",
+                  "description": "Filter by confirmation status"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_shown",
+                  "value": "<boolean>",
+                  "description": "Filter by shown status"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Filter appointments from this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "Filter appointments until this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "02faf688-f7d6-423a-9e9d-a07815bed37d",
+              "name": "A paginated list of appointments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-appointments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "is_confirmed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_shown",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 5122,\n      \"scheduled_at\": \"2023-07-16T00:21:11.312Z\",\n      \"lead_id\": null,\n      \"lead_name\": null,\n      \"is_confirmed\": false,\n      \"is_shown\": false,\n      \"department\": \"used\"\n    },\n    {\n      \"id\": 652,\n      \"scheduled_at\": \"1994-06-19T01:10:42.715Z\",\n      \"lead_id\": null,\n      \"lead_name\": \"string\",\n      \"is_confirmed\": false,\n      \"is_shown\": true,\n      \"department\": \"used\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 2518,\n    \"per_page\": 4,\n    \"total\": 3137,\n    \"total_pages\": 6515\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8073c77-0694-4d59-8b2c-88ac2b83d282",
+              "name": "No appointments found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-appointments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "is_confirmed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_shown",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a7d39369-a09e-4034-b0e4-80499951cc8f",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-appointments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "is_confirmed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_shown",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c463f038-25ee-46d0-808a-0b1891e4bdb2",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-appointments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "is_confirmed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_shown",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "384b20ce-c5da-48a9-a048-0fd791d9f0e0",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-appointments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "is_confirmed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_shown",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-appointments-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "784b52d6-e7ee-41bf-b049-e14c024de16e",
+    "name": "Autoleadstar Appointments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged appointments across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Audiences API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "audiences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List audiences for a shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/shoppers/:id/audiences",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Shopper identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of audiences associated with the shopper"
+        },
+        {
+          "info": {
+            "name": "List audiences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/audiences",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of audiences"
+        },
+        {
+          "info": {
+            "name": "Get a single audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/audiences/:id",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier (integer)"
+              },
+              {
+                "name": "embed",
+                "value": "shoppers_count",
+                "type": "query",
+                "description": "Comma-separated list of fields to embed in the response. Available options:\nshoppers_count\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves an audience by `id`.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `shoppers_count`: Include the count of shoppers in the audience\n"
+        },
+        {
+          "info": {
+            "name": "List shoppers in an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/audiences/:id/shoppers",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier (integer)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of shoppers belonging to the given audience"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

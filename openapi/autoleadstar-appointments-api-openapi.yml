@@ -1,0 +1,258 @@
+openapi: 3.2.0
+info:
+  title: Autoleadstar Appointments API
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@fullpath.com
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  description: 'Operations tagged appointments across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://fullpath.com/api/v2/external/consent-management
+  description: Production (fullpath.com)
+- url: https://api.fullpath.com/v1
+  description: Production (api.fullpath.com)
+- url: https://staging-api.fullpath.com/v1
+  description: Staging (api.fullpath.com)
+tags:
+- name: appointments
+  description: Operations related to appointments
+paths:
+  /dealerships/{dealershipId}/appointments:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - appointments
+      summary: List appointments
+      description: Returns a paginated list of appointments with optional filtering
+      operationId: listAppointments
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: query
+        name: assigned_to
+        description: Filter by assigned user ID
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: lead_id
+        description: Filter by lead ID (integer)
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: is_confirmed
+        description: Filter by confirmation status
+        schema:
+          type: boolean
+        required: false
+      - in: query
+        name: is_shown
+        description: Filter by shown status
+        schema:
+          type: boolean
+        required: false
+      - in: query
+        name: start_date
+        description: Filter appointments from this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: end_date
+        description: Filter appointments until this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of appointments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentsResponse'
+        '204':
+          description: No appointments found
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
+  schemas:
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+    Appointment:
+      type: object
+      required:
+      - id
+      - scheduled_at
+      properties:
+        id:
+          type: integer
+          description: Unique appointment identifier
+        lead_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the lead associated with this appointment
+        lead_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the lead
+        scheduled_at:
+          type: string
+          format: date-time
+          description: ISO 8601 scheduled date and time
+        is_confirmed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment is confirmed
+        is_shown:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment was shown
+        department:
+          type:
+          - string
+          - 'null'
+          enum:
+          - new
+          - used
+          - service
+          description: Department for the appointment
+      description: Represents an appointment
+    AppointmentsResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple appointments with pagination info
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+x-refined-from:
+- autoleadstar-fullpath-api-openapi.yml
+- autoleadstar-mcp-tools-openapi.yml

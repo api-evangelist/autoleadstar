@@ -1,0 +1,617 @@
+{
+  "item": [
+    {
+      "id": "321148fb-bf1a-4b88-95fc-d1cf658414e4",
+      "name": "tasks",
+      "description": {
+        "content": "Operations related to tasks",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1fe5bfae-ae0d-4606-b2de-276a3b8aaad1",
+          "name": "List tasks",
+          "request": {
+            "name": "List tasks",
+            "description": {
+              "content": "Returns a paginated list of tasks with optional filtering.\n\nBy default, only non-deleted tasks (where `deleted_at` is null) are returned. Use the `trashed` parameter to include or filter deleted tasks.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `activities` - Array of activities associated with the task\n- `notes` - Array of task notes\n- `shopper` - Shopper object associated with the task\n\nMultiple embed options can be specified as a comma-separated list, e.g., `embed=activities,notes,shopper`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "tasks"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-tasks-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "assigned_to",
+                  "value": "<integer>",
+                  "description": "Filter by assigned user ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by task status"
+                },
+                {
+                  "disabled": false,
+                  "key": "priority",
+                  "value": "<string>",
+                  "description": "Filter by task priority"
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date_from",
+                  "value": "<date>",
+                  "description": "Filter tasks due from this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "due_date_to",
+                  "value": "<date>",
+                  "description": "Filter tasks due until this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "trashed",
+                  "value": "<string>",
+                  "description": "Filter tasks by deletion status. By default (or with `trashed=without`), only non-deleted tasks are returned.\n- `without` - Return only non-deleted tasks (default behavior)\n- `with` - Return all tasks including deleted ones\n- `only` - Return only deleted tasks\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "embed",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to embed in the response. Available options:\nactivities, notes, shopper\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ee033410-e128-4c34-9c45-bdeba312b0c7",
+              "name": "A paginated list of tasks",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-tasks-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "due_date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "due_date_to",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "trashed",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "activities,notes,shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1359,\n      \"title\": \"string\",\n      \"type\": \"string\",\n      \"status\": \"in_progress\",\n      \"created_at\": \"1996-03-30T10:05:30.302Z\",\n      \"updated_at\": \"2010-10-19T12:54:53.737Z\",\n      \"shopper_id\": null,\n      \"created_by\": 2055,\n      \"assigned_to\": null,\n      \"description\": null,\n      \"priority\": \"low\",\n      \"department\": null,\n      \"due_date\": null,\n      \"deleted_at\": null,\n      \"activities\": [\n        {\n          \"id\": 3000,\n          \"type\": \"note\",\n          \"title\": \"string\",\n          \"assigned_to\": 3483,\n          \"shopper_id\": 127,\n          \"task_id\": 6813,\n          \"type_id\": null,\n          \"description\": \"string\",\n          \"notes\": null,\n          \"status\": null,\n          \"created_at\": null,\n          \"updated_at\": \"1974-03-25T15:54:12.493Z\",\n          \"shopper\": null\n        },\n        {\n          \"id\": 5516,\n          \"type\": \"note\",\n          \"title\": \"string\",\n          \"assigned_to\": 893,\n          \"shopper_id\": null,\n          \"task_id\": 5126,\n          \"type_id\": 8616,\n          \"description\": \"string\",\n          \"notes\": null,\n          \"status\": null,\n          \"created_at\": \"2012-06-15T10:35:02.463Z\",\n          \"updated_at\": \"1983-12-29T12:01:22.227Z\",\n          \"shopper\": {\n            \"key_0\": \"string\"\n          }\n        }\n      ],\n      \"notes\": [\n        {\n          \"id\": 6134,\n          \"task_id\": 4834,\n          \"content\": \"string\",\n          \"profile_id\": 2085,\n          \"created_at\": null,\n          \"updated_at\": null,\n          \"profile\": {\n            \"key_0\": 4128.205075119032,\n            \"key_1\": 4815.151567516451\n          }\n        },\n        {\n          \"id\": 9960,\n          \"task_id\": 9359,\n          \"content\": \"string\",\n          \"profile_id\": null,\n          \"created_at\": null,\n          \"updated_at\": null,\n          \"profile\": null\n        }\n      ],\n      \"shopper\": null\n    },\n    {\n      \"id\": 5894,\n      \"title\": \"string\",\n      \"type\": \"string\",\n      \"status\": \"cancelled\",\n      \"created_at\": \"2009-08-25T17:36:15.793Z\",\n      \"updated_at\": \"1988-11-26T14:59:27.337Z\",\n      \"shopper_id\": null,\n      \"created_by\": null,\n      \"assigned_to\": null,\n      \"description\": \"string\",\n      \"priority\": \"medium\",\n      \"department\": null,\n      \"due_date\": \"2008-07-30\",\n      \"deleted_at\": \"2005-02-10T03:06:49.066Z\",\n      \"activities\": [\n        {\n          \"id\": 5038,\n          \"type\": \"meeting\",\n          \"title\": \"string\",\n          \"assigned_to\": 4368,\n          \"shopper_id\": null,\n          \"task_id\": 9957,\n          \"type_id\": null,\n          \"description\": null,\n          \"notes\": null,\n          \"status\": \"string\",\n          \"created_at\": null,\n          \"updated_at\": null,\n          \"shopper\": {\n            \"key_0\": 584.6511820469824\n          }\n        },\n        {\n          \"id\": 7168,\n          \"type\": \"email\",\n          \"title\": \"string\",\n          \"assigned_to\": 3495,\n          \"shopper_id\": null,\n          \"task_id\": 2172,\n          \"type_id\": null,\n          \"description\": \"string\",\n          \"notes\": \"string\",\n          \"status\": null,\n          \"created_at\": \"1948-12-10T20:30:01.602Z\",\n          \"updated_at\": \"1971-04-13T04:53:44.466Z\",\n          \"shopper\": {\n            \"key_0\": 4079.7447383196018\n          }\n        }\n      ],\n      \"notes\": [\n        {\n          \"id\": 4853,\n          \"task_id\": 7259,\n          \"content\": \"string\",\n          \"profile_id\": null,\n          \"created_at\": null,\n          \"updated_at\": \"1995-01-26T17:08:37.959Z\",\n          \"profile\": {\n            \"key_0\": 7535.7953300133795,\n            \"key_1\": true,\n            \"key_2\": 9302.503356480443\n          }\n        },\n        {\n          \"id\": 6625,\n          \"task_id\": 9251,\n          \"content\": \"string\",\n          \"profile_id\": null,\n          \"created_at\": \"1988-04-24T23:51:57.248Z\",\n          \"updated_at\": null,\n          \"profile\": null\n        }\n      ],\n      \"shopper\": {\n        \"key_0\": 136.95270083329493\n      }\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1291,\n    \"per_page\": 65,\n    \"total\": 2202,\n    \"total_pages\": 9062\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "029db107-ccac-4ffa-b219-de13a5ba829d",
+              "name": "No tasks found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-tasks-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "due_date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "due_date_to",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "trashed",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "activities,notes,shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d72d8339-e2c1-4869-bab4-5a077641a7dd",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-tasks-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "due_date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "due_date_to",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "trashed",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "activities,notes,shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4451daa0-05e6-4069-8b51-a1ddb5e1556a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-tasks-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "due_date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "due_date_to",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "trashed",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "activities,notes,shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c02cd12-e879-4255-92d1-b096db99f6e4",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-tasks-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "priority",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "due_date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "due_date_to",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "trashed",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "activities,notes,shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-tasks-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "88838043-c8d0-458e-9776-1bc4115fe5c4",
+    "name": "Autoleadstar Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged tasks across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}

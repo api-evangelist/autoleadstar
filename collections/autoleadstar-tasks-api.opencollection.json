@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Tasks API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/tasks",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "assigned_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter by assigned user ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by task status"
+              },
+              {
+                "name": "priority",
+                "value": "",
+                "type": "query",
+                "description": "Filter by task priority"
+              },
+              {
+                "name": "due_date_from",
+                "value": "",
+                "type": "query",
+                "description": "Filter tasks due from this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "due_date_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter tasks due until this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "trashed",
+                "value": "",
+                "type": "query",
+                "description": "Filter tasks by deletion status. By default (or with `trashed=without`), only non-deleted tasks are returned.\n- `without` - Return only non-deleted tasks (default behavior)\n- `with` - Return all tasks including deleted ones\n- `only` - Return only deleted tasks\n"
+              },
+              {
+                "name": "embed",
+                "value": "activities,notes,shopper",
+                "type": "query",
+                "description": "Comma-separated list of fields to embed in the response. Available options:\nactivities, notes, shopper\n"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of tasks with optional filtering.\n\nBy default, only non-deleted tasks (where `deleted_at` is null) are returned. Use the `trashed` parameter to include or filter deleted tasks.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `activities` - Array of activities associated with the task\n- `notes` - Array of task notes\n- `shopper` - Shopper object associated with the task\n\nMultiple embed options can be specified as a"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

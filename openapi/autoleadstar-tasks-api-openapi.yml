@@ -1,0 +1,479 @@
+openapi: 3.2.0
+info:
+  title: Autoleadstar Tasks API
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@fullpath.com
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  description: 'Operations tagged tasks across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://fullpath.com/api/v2/external/consent-management
+  description: Production (fullpath.com)
+- url: https://api.fullpath.com/v1
+  description: Production (api.fullpath.com)
+- url: https://staging-api.fullpath.com/v1
+  description: Staging (api.fullpath.com)
+tags:
+- name: tasks
+  description: Operations related to tasks
+paths:
+  /dealerships/{dealershipId}/tasks:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - tasks
+      summary: List tasks
+      description: 'Returns a paginated list of tasks with optional filtering.
+
+
+        By default, only non-deleted tasks (where `deleted_at` is null) are returned. Use the `trashed` parameter to include or filter deleted tasks.
+
+
+        Additional fields can be included in the response using the `embed` parameter. Available embed options:
+
+        - `activities` - Array of activities associated with the task
+
+        - `notes` - Array of task notes
+
+        - `shopper` - Shopper object associated with the task
+
+
+        Multiple embed options can be specified as a comma-separated list, e.g., `embed=activities,notes,shopper`.
+
+        '
+      operationId: listTasks
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: query
+        name: assigned_to
+        description: Filter by assigned user ID
+        schema:
+          type: integer
+        required: false
+      - in: query
+        name: status
+        description: Filter by task status
+        schema:
+          type: string
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - cancelled
+        required: false
+      - in: query
+        name: priority
+        description: Filter by task priority
+        schema:
+          type: string
+          enum:
+          - low
+          - medium
+          - high
+        required: false
+      - in: query
+        name: due_date_from
+        description: Filter tasks due from this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: due_date_to
+        description: Filter tasks due until this date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+        required: false
+      - in: query
+        name: trashed
+        description: 'Filter tasks by deletion status. By default (or with `trashed=without`), only non-deleted tasks are returned.
+
+          - `without` - Return only non-deleted tasks (default behavior)
+
+          - `with` - Return all tasks including deleted ones
+
+          - `only` - Return only deleted tasks
+
+          '
+        schema:
+          type: string
+          enum:
+          - with
+          - only
+          - without
+        required: false
+      - in: query
+        name: embed
+        description: 'Comma-separated list of fields to embed in the response. Available options:
+
+          activities, notes, shopper
+
+          '
+        schema:
+          type: string
+        required: false
+        example: activities,notes,shopper
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasksResponse'
+        '204':
+          description: No tasks found
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
+  schemas:
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+    Activity:
+      type: object
+      required:
+      - id
+      - type
+      - title
+      properties:
+        id:
+          type: integer
+          description: Unique activity identifier
+        assigned_to:
+          type:
+          - integer
+          - 'null'
+          description: User ID assigned to the activity
+        shopper_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the shopper associated with this activity
+        task_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the task associated with this activity
+        type:
+          type: string
+          enum:
+          - call
+          - email
+          - meeting
+          - note
+          - task
+          description: Type of activity
+        type_id:
+          type:
+          - integer
+          - 'null'
+          description: Type-specific identifier
+        title:
+          type: string
+          description: Title of the activity
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the activity
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Notes for the activity
+        status:
+          type:
+          - string
+          - 'null'
+          description: Status of the activity
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 creation timestamp
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 last update timestamp
+        shopper:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Embedded shopper object (when using ?embed=shopper)
+      description: Represents an activity
+    TasksResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple tasks with pagination info
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+    Task:
+      type: object
+      required:
+      - id
+      - title
+      - type
+      - status
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: integer
+          description: Unique task identifier
+        shopper_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the shopper associated with this task
+        created_by:
+          type:
+          - integer
+          - 'null'
+          description: User ID of the user who created the task
+        assigned_to:
+          type:
+          - integer
+          - 'null'
+          description: User ID assigned to the task
+        type:
+          type: string
+          description: Type of task
+        title:
+          type: string
+          maxLength: 255
+          description: Task title
+        description:
+          type:
+          - string
+          - 'null'
+          description: Task description
+        priority:
+          type:
+          - string
+          - 'null'
+          enum:
+          - low
+          - medium
+          - high
+          description: Priority level of the task
+        status:
+          type: string
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - cancelled
+          description: Current status of the task
+        department:
+          type:
+          - string
+          - 'null'
+          description: Department associated with the task
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Due date for the task (YYYY-MM-DD)
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO 8601 last update timestamp
+        deleted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 deletion timestamp (soft delete)
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+          description: Embedded activities (when using ?embed=activities)
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskNote'
+          description: Embedded task notes (when using ?embed=notes)
+        shopper:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Embedded shopper object (when using ?embed=shopper)
+      description: Represents a task
+    TaskNote:
+      type: object
+      required:
+      - id
+      - task_id
+      - content
+      properties:
+        id:
+          type: integer
+          description: Unique task note identifier
+        task_id:
+          type: integer
+          description: Identifier of the task this note belongs to
+        content:
+          type: string
+          description: Content of the note
+        profile_id:
+          type:
+          - integer
+          - 'null'
+          description: User ID of the profile who created the note
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 creation timestamp
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 last update timestamp
+        profile:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Embedded profile object (when using ?embed=profile)
+      description: Represents a task note
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+x-refined-from:
+- autoleadstar-fullpath-api-openapi.yml
+- autoleadstar-mcp-tools-openapi.yml

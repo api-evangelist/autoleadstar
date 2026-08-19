@@ -1,0 +1,617 @@
+{
+  "item": [
+    {
+      "id": "cd315a6d-002b-4cfd-8d2e-05b501cbb576",
+      "name": "activities",
+      "description": {
+        "content": "Operations related to activities",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3309fca9-7a64-4a30-95db-4f2250755b32",
+          "name": "List activities",
+          "request": {
+            "name": "List activities",
+            "description": {
+              "content": "Returns a paginated list of activities with optional filtering.\n\nAdditional fields can be included in the response using the `embed` parameter. Available embed options:\n- `shopper` - Shopper object associated with the activity\n\nMultiple embed options can be specified as a comma-separated list, e.g., `embed=shopper`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "activities"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-activities-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "assigned_to",
+                  "value": "<integer>",
+                  "description": "Filter by assigned user ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "lead_id",
+                  "value": "<integer>",
+                  "description": "Filter by lead ID (integer)"
+                },
+                {
+                  "disabled": false,
+                  "key": "task_id",
+                  "value": "<integer>",
+                  "description": "Filter by task ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by activity type"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "Filter activities from this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "Filter activities until this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "embed",
+                  "value": "<string>",
+                  "description": "Comma-separated list of fields to embed in the response. Available options:\nshopper\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54cfa8f8-8840-4372-aea6-55eb5b5d49b0",
+              "name": "A paginated list of activities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "activities"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-activities-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 4528,\n      \"type\": \"task\",\n      \"title\": \"string\",\n      \"assigned_to\": null,\n      \"shopper_id\": null,\n      \"task_id\": null,\n      \"type_id\": null,\n      \"description\": \"string\",\n      \"notes\": null,\n      \"status\": \"string\",\n      \"created_at\": null,\n      \"updated_at\": \"2006-07-01T07:15:47.846Z\",\n      \"shopper\": {\n        \"key_0\": 1458\n      }\n    },\n    {\n      \"id\": 5463,\n      \"type\": \"meeting\",\n      \"title\": \"string\",\n      \"assigned_to\": 1935,\n      \"shopper_id\": null,\n      \"task_id\": null,\n      \"type_id\": null,\n      \"description\": null,\n      \"notes\": \"string\",\n      \"status\": null,\n      \"created_at\": \"2016-05-11T10:48:03.220Z\",\n      \"updated_at\": \"2005-10-31T20:36:08.588Z\",\n      \"shopper\": null\n    }\n  ],\n  \"pagination\": {\n    \"page\": 3257,\n    \"per_page\": 92,\n    \"total\": 2663,\n    \"total_pages\": 6031\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9e68342-2905-46ee-a246-e75892fbe86a",
+              "name": "No activities found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "activities"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-activities-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "516d099c-a2ac-4ae4-9d5f-1ff4571302be",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "activities"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-activities-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b12fb443-0d1b-4179-8bd9-7e86d1b9ef57",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "activities"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-activities-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ad17766-fcba-4fe5-8f45-29c029757570",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "activities"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-activities-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "assigned_to",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "lead_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "embed",
+                      "value": "shopper"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-activities-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "52e74d7e-39f7-48cd-b5a1-14ff0af7030d",
+    "name": "Autoleadstar Activities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged activities across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}

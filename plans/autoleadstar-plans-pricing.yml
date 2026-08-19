@@ -1,0 +1,74 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  Direct probes of the candidate pricing paths on www.fullpath.com plus a full read of the
+  provider's own 78-page sitemap (https://www.fullpath.com/page-sitemap.xml), 2026-08-14.
+docs: https://www.fullpath.com/
+summary: >-
+  AutoLeadStar / Fullpath publishes NO pricing page and NO plan tiers. The company is sold
+  entirely through a demo request and a dealership contract; neither the product site nor the
+  developer portal names a price, a tier, an included quota or an overage rate. API access is
+  not separately priced or self-serve — it is a capability of an existing dealership or
+  vendor relationship.
+
+plan_count: 0
+plans: []
+
+pricing_model:
+  published: false
+  self_serve: false
+  free_tier: false
+  trial: false
+  api_priced_separately: false
+  sales_motion: Book a Demo / dealership contract / vendor provisioning
+  note: >-
+    The site-wide call to action is "Book a Demo" or "Get Started". There is no sign-up flow
+    that issues an API credential: the Platform JWT comes with a dealership account and the
+    Consent Management vendor API key is issued at partner provisioning. See
+    sandbox/autoleadstar-sandbox.yml — even the live Scalar console requires a real
+    issued credential, so a developer cannot price, test or budget this API without a sales
+    conversation first.
+
+probes:
+- url: https://www.fullpath.com/pricing
+  status: 404
+- url: https://www.fullpath.com/plans
+  status: 404
+- url: https://www.fullpath.com/pricing-plans
+  status: 404
+- url: https://www.fullpath.com/product/pricing
+  status: 404
+- url: https://www.fullpath.com/packages
+  status: 404
+- url: https://www.fullpath.com/page-sitemap.xml
+  status: 200
+  finding: >-
+    78 published pages enumerated by the provider's own Yoast sitemap. No page matches
+    pricing, plan, cost or package. The absence is confirmed from the provider's own index,
+    not merely from failed URL guesses.
+- url: https://developers.fullpath.com/
+  status: 200
+  finding: >-
+    The developer portal carries no pricing, quota, tier or billing information of any kind.
+
+third_party_estimates:
+  recorded: false
+  note: >-
+    Third-party dealership-software directories publish an estimated range (roughly
+    $2,000-$15,000 per month depending on store size and modules selected). That figure is
+    DELIBERATELY NOT recorded as a plan: it is not provider-published, carries no tier names,
+    no quotas and no effective date, and treating a directory's estimate as a published plan
+    would credit Fullpath with pricing transparency it has not shipped.
+
+gaps:
+- No published price, tier or quota anywhere on the provider's own surface.
+- >-
+  No API-specific pricing. Rate limits exist (100 req/min per key on Consent Management) but
+  are not tied to any published plan, so a partner cannot tell whether a higher limit is
+  purchasable.
+- No overage, no metering disclosure, no cost estimator.
+
+x-evidence:
+  checked: '2026-08-14'
+  pricing_pages_found: 0
+  sitemap_pages_enumerated: 78

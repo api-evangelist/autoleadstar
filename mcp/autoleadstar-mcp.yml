@@ -5,37 +5,28 @@ docs: https://developers.fullpath.com/mcp.html
 name: Fullpath MCP Tools
 status: published-manifest
 hosted: false
-summary: >-
-  Fullpath publishes a first-party Model Context Protocol tool manifest at
-  developers.fullpath.com/mcp-tools.json — thirteen tools with real JSON Schema
-  inputSchemas, saved verbatim here as autoleadstar-mcp-tools.json. It is a
-  DOWNLOADABLE manifest for local MCP clients, not a hosted remote MCP server:
-  the provider's own instructions are "download the mcp-tools.json file and load
-  it into your MCP-compatible client". Every tool calls the same Fullpath REST
-  API underneath with the same Bearer token.
-
+summary: 'Fullpath publishes a first-party Model Context Protocol tool manifest at developers.fullpath.com/mcp-tools.json
+  — thirteen tools with real JSON Schema inputSchemas, saved verbatim here as autoleadstar-mcp-tools.json.
+  It is a DOWNLOADABLE manifest for local MCP clients, not a hosted remote MCP server: the provider''s
+  own instructions are "download the mcp-tools.json file and load it into your MCP-compatible client".
+  Every tool calls the same Fullpath REST API underneath with the same Bearer token.'
 transport:
   remote_endpoint: null
-  note: >-
-    No hosted remote MCP endpoint was found. Probes on 2026-08-06:
-    https://api.fullpath.com/mcp -> 401, https://api.fullpath.com/v1/mcp -> 401 — but
-    api.fullpath.com returns the identical 401 JSON for a deliberate nonsense control
-    path, so those 401s are the blanket auth wall and prove nothing.
-    https://mcp.fullpath.com/ -> 200 but serves the WordPress marketing homepage
-    (title "Fullpath | AI Ecosystem for Auto Dealerships") and 302s to fullpath.com on
-    POST — it is a vanity subdomain, not an MCP server.
+  note: 'No hosted remote MCP endpoint was found. Probes on 2026-08-06: https://api.fullpath.com/mcp ->
+    401, https://api.fullpath.com/v1/mcp -> 401 — but api.fullpath.com returns the identical 401 JSON
+    for a deliberate nonsense control path, so those 401s are the blanket auth wall and prove nothing.
+    https://mcp.fullpath.com/ -> 200 but serves the WordPress marketing homepage (title "Fullpath | AI
+    Ecosystem for Auto Dealerships") and 302s to fullpath.com on POST — it is a vanity subdomain, not
+    an MCP server.'
   client_setup: Download mcp-tools.json and load it into an MCP-compatible client (Claude, Cursor, etc.).
-
 authentication:
   scheme: http bearer
   header: 'Authorization: Bearer <token>'
   note: Platform JWT for /v1 tools; Consent Management vendor API key for the consent tools.
-
 artifacts:
   tool_manifest: mcp/autoleadstar-mcp-tools.json
-  tool_reference_openapi: mcp/autoleadstar-mcp-tools-openapi.yml
+  tool_reference_openapi: openapi/_original/autoleadstar-mcp-tools-openapi.yml
   crosswalk: mcp/autoleadstar-tool-crosswalk.yml
-
 tool_count: 13
 tools:
 - name: list_dealers
@@ -64,14 +55,12 @@ tools:
   description: List appointments for a dealership with pagination and filtering.
 - name: list_activities
   description: List activities for a dealership with pagination and filtering.
-
 observations:
 - Every tool is READ-only except store_consents — the only write on the whole agent surface.
-- inputSchemas are real and constrained (client_key carries pattern ^40NM-\d+-1$, contacts array
-  is minItems 1 / maxItems 500), so an agent gets genuine validation without calling the API.
-- The manifest is a static file with no version field and no server URL; the binding to a base
-  server is left to the client, which is why the crosswalk in this repo names both servers.
-
+- inputSchemas are real and constrained (client_key carries pattern ^40NM-\d+-1$, contacts array is minItems
+  1 / maxItems 500), so an agent gets genuine validation without calling the API.
+- The manifest is a static file with no version field and no server URL; the binding to a base server
+  is left to the client, which is why the crosswalk in this repo names both servers.
 x-evidence:
   fetched: '2026-08-06'
   manifest_url: https://developers.fullpath.com/mcp-tools.json
@@ -79,3 +68,40 @@ x-evidence:
   manifest_content_type: application/json
   docs_url: https://developers.fullpath.com/mcp.html
   docs_http_status: 200
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: probed
+  checked: '2026-08-14'
+  source: >-
+    Re-probed 2026-08-14 by the enrichment pipeline. Fullpath ships a first-party MCP TOOL
+    MANIFEST (a static mcp-tools.json download) but does NOT run an MCP server: there is no
+    remote endpoint an MCP client can POST to, and no stdio package to install. `mode: none`
+    is recorded because neither of the two things that make a server reachable exists —
+    not because the provider published nothing.
+  correction: >-
+    A prior catalog MCP census stamped `mode: remote` with
+    `endpoint: https://api.fullpath.com/mcp` and `probe: wall`. That endpoint is NOT verified
+    and has been removed. api.fullpath.com answers 401 with a byte-identical JSON body on
+    every path, including a deliberate nonsense control path, so the 401 at /mcp is the
+    blanket auth wall and is not evidence that an MCP transport exists there.
+  probes:
+  - url: https://api.fullpath.com/mcp
+    method: POST tools/list
+    status: 401
+    body: '{"error":"401","message":"Unauthorized","details":"Authentication token missing or invalid"}'
+    verdict: blanket-auth-wall (not evidence)
+  - url: https://api.fullpath.com/v1/mcp
+    method: POST tools/list
+    status: 401
+    body: identical to the control path
+    verdict: blanket-auth-wall (not evidence)
+  - url: https://api.fullpath.com/zzz-bogus-control-9987
+    method: POST tools/list
+    status: 401
+    body: identical to both /mcp probes
+    verdict: CONTROL — proves the 401s above carry no information
+  checked_by: local-v1 enrichment pass

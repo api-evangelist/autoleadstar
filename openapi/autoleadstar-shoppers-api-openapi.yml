@@ -1,0 +1,4152 @@
+openapi: 3.2.0
+info:
+  title: Autoleadstar Shoppers API
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@fullpath.com
+  termsOfService: https://www.fullpath.com/legal-and-trust/
+  description: 'Operations tagged shoppers across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://fullpath.com/api/v2/external/consent-management
+  description: Production (fullpath.com)
+- url: https://api.fullpath.com/v1
+  description: Production (api.fullpath.com)
+- url: https://staging-api.fullpath.com/v1
+  description: Staging (api.fullpath.com)
+tags:
+- name: shoppers
+  description: Operations related to shoppers
+paths:
+  /dealerships/{dealershipId}/shoppers:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List shoppers
+      description: 'Returns a paginated list of shoppers. Supports exact matching via the `q` query parameter for email or phone.
+
+
+        Additional fields can be included in the response using the `embed` parameter. Available embed options:
+
+        - `primary_contact` - Primary contact information (first_name, last_name, email, phone numbers, address)
+
+        - `latest_lead_date` - Date of the latest lead (YYYY-MM-DD)
+
+        - `latest_sale_date` - Date of the latest sale (YYYY-MM-DD)
+
+        - `latest_sale` - Latest sale information
+
+        - `latest_lead` - Latest lead information including vehicle details
+
+        - `adf_leads` - Array of ADF leads
+
+        - `latest_marketing_touchpoint_date` - Date of the latest marketing touchpoint (YYYY-MM-DD)
+
+        - `marketing_engagement_score` - Marketing engagement score
+
+        - `loyalty_score` - Loyalty score
+
+
+        Multiple embed options can be specified as a comma-separated list, e.g., `embed=primary_contact,latest_lead_date,latest_lead`.
+
+        '
+      operationId: listShoppers
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: query
+        name: q
+        description: Exact match query for email address or phone number (E.164 format)
+        schema:
+          type: string
+        required: false
+      - in: query
+        name: embed
+        description: 'Comma-separated list of fields to embed in the response. Available options:
+
+          primary_contact, latest_lead_date, latest_sale_date, latest_sale, latest_lead, adf_leads, latest_marketing_touchpoint_date, marketing_engagement_score, loyalty_score
+
+          '
+        schema:
+          type: string
+        required: false
+        example: primary_contact,latest_lead_date
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending, e.g., `-created_at`)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of shoppers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppersResponse'
+        '204':
+          description: No shoppers found
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/shoppers/{id}:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: Get a single shopper
+      description: 'Retrieves a shopper by `id`.
+
+
+        Additional fields can be included in the response using the `embed` parameter. This endpoint supports all embed options available for the list endpoint, plus additional options only available for single shopper requests.
+
+
+        **Embed options available for both list and single shopper:**
+
+        - `primary_contact` - Primary contact information (extended version with more fields in single shopper response)
+
+        - `latest_lead_date` - Date of the latest lead (YYYY-MM-DD)
+
+        - `latest_sale_date` - Date of the latest sale (YYYY-MM-DD)
+
+        - `latest_sale` - Latest sale information
+
+        - `latest_lead` - Latest lead information including vehicle details
+
+        - `adf_leads` - Array of ADF leads
+
+        - `latest_marketing_touchpoint_date` - Date of the latest marketing touchpoint (YYYY-MM-DD)
+
+        - `marketing_engagement_score` - Marketing engagement score
+
+        - `loyalty_score` - Loyalty score
+
+
+        **Additional embed options available only for single shopper:**
+
+        - `contacts` - Array of all contacts associated with the shopper
+
+        - `location` - Location information (city, state, zipcode, etc.)
+
+        - `score` - Shopper score
+
+        - `public_link` - Public link for the shopper
+
+        - `customer_lifetime_value` - Customer lifetime value information (sales, services, total)
+
+        - `latest_sale_estimated_equity` - Estimated equity from latest sale
+
+        - `household_flag` - Whether this is a household shopper
+
+        - `customer_tags` - Array of customer tags
+
+        - `is_enriched` - Whether the shopper data has been enriched
+
+        - `salesperson` - Assigned salesperson
+
+        - `group_shopper_id` - Group shopper identifier
+
+        - `financial_durability_index` - Financial durability index
+
+        - `aim_propensity_score` - AIM propensity score
+
+
+        Multiple embed options can be specified as a comma-separated list, e.g., `embed=primary_contact,contacts,location,customer_lifetime_value`.
+
+        '
+      operationId: getShopperById
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Shopper identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: embed
+        description: 'Comma-separated list of fields to embed in the response.
+
+
+          Available for both list and single: primary_contact, latest_lead_date, latest_sale_date, latest_sale, latest_lead, adf_leads, latest_marketing_touchpoint_date, marketing_engagement_score, loyalty_score
+
+
+          Available only for single shopper: contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score
+
+          '
+        schema:
+          type: string
+        required: false
+        example: primary_contact,contacts,location,customer_lifetime_value
+      responses:
+        '200':
+          description: Shopper found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shopper'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Shopper not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/shoppers/{id}/audiences:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List audiences for a shopper
+      description: Returns a paginated list of audiences associated with the shopper
+      operationId: listShopperAudiences
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Shopper identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of audiences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudiencesResponse'
+        '204':
+          description: No audiences found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Shopper not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/shoppers/{id}/events:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List events for a shopper
+      description: 'Returns a paginated list of events associated with the shopper. Events are returned ungrouped in a flat array.
+
+
+        Supported event types:
+
+        - `page_view` - Website page view events
+
+        - `lead` - Lead events from CRM
+
+        - `sale` - Sale events from CRM
+
+        - `conversion` - Conversion events (e.g., form submissions)
+
+        - `input_tracking` - Input tracking events
+
+        - `ad_click` - Ad click events
+
+        - `enrichment` - Data enrichment events
+
+        - `lead_handling_sms_sent` - Lead handling SMS sent events
+
+        - `email_click` - Email click events
+
+        - `email_open` - Email open events
+
+        - `email_sent` - Email sent events
+
+        - `sms_click` - SMS click events
+
+        - `sms_replied` - SMS replied events
+
+        - `sms_sent` - SMS sent events
+
+        - `appointment` - Appointment events
+
+        - `service_lead` - Service lead events from CRM
+
+        - `service_ro` - Service repair order events from CRM
+
+        - `service_appointment` - Service appointment events
+
+        '
+      operationId: listShopperEvents
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Shopper identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of events
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - pagination
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShopperEvent'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '204':
+          description: No events found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Shopper not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/shoppers/{id}/emails:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List emails for a shopper
+      description: Returns a paginated list of email addresses associated with the shopper
+      operationId: listShopperEmails
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Shopper identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of email addresses
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - pagination
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShopperEmail'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '204':
+          description: No emails found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Shopper not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/shoppers/{id}/phones:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List phones for a shopper
+      description: Returns a paginated list of phone numbers associated with the shopper
+      operationId: listShopperPhones
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Shopper identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A paginated list of phone numbers
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - pagination
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShopperPhone'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '204':
+          description: No phones found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Shopper not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dealerships/{dealershipId}/audiences/{id}/shoppers:
+    servers:
+    - url: https://fullpath.com/api/v2/external/consent-management
+      description: Production (fullpath.com)
+    - url: https://api.fullpath.com/v1
+      description: Production (api.fullpath.com)
+    - url: https://staging-api.fullpath.com/v1
+      description: Staging (api.fullpath.com)
+    get:
+      security:
+      - Bearer: []
+      tags:
+      - shoppers
+      summary: List shoppers in an audience
+      description: Returns a paginated list of shoppers belonging to the given audience
+      operationId: listAudienceShoppers
+      parameters:
+      - $ref: '#/components/parameters/DealershipId'
+      - in: path
+        name: id
+        required: true
+        description: Audience identifier (integer)
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: Page number (1-based)
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        required: false
+      - in: query
+        name: sort
+        description: Sort order (comma-separated field names with optional - prefix for descending)
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: Paginated shoppers in the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudienceShoppersResponse'
+        '204':
+          description: No shoppers found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Audience not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    SalesServices:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of sales/services
+          example: 0
+        total:
+          type: number
+          description: Total value
+          example: 0
+        gross:
+          type: number
+          description: Gross value
+          example: 0
+      description: Sales or services summary
+    LeadHandlingSMSSentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - lead_handling_sms_sent
+          example: lead_handling_sms_sent
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: lead_handling
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: null
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: '5551234567'
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: 1234567
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: null
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: null
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: 0
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: needs_human
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: Lead handling SMS sent event
+    EmailClickEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - email_click
+          example: email_click
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: john.doe@example.com
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: null
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: null
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: null
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: Email click event
+    EmailOpenEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - email_open
+          example: email_open
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: john.doe@example.com
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: null
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: null
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: null
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: Email open event
+    Vehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Identification Number
+          example: 1HGBH41JXMN109186
+        condition:
+          type:
+          - string
+          - 'null'
+          description: Vehicle condition (e.g., new, used)
+          example: new
+        year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle year
+          example: '2024'
+        make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle make
+          example: Toyota
+        model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle model
+          example: Camry
+        trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle trim
+          example: LE
+      description: Vehicle information
+    PageViewEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '21289228'
+        type:
+          type: string
+          enum:
+          - page_view
+          example: page_view
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: ''
+        website_user_id:
+          type:
+          - string
+          - 'null'
+          description: Website user identifier
+          example: '1234567890'
+        website_page_id:
+          type:
+          - integer
+          - 'null'
+          description: Website page identifier
+          example: 16346
+        time_on_page:
+          type:
+          - integer
+          - 'null'
+          description: Time spent on page in seconds
+          example: null
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL of the page viewed
+          example: https://example-dealership.com/new-vehicles/?_dFR%5Bbody%5D%5B0%5D=Trucks
+        clickable_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Clickable URL
+          example: https://example-dealership.com/new-vehicles/?_dFR%5Bbody%5D%5B0%5D=Trucks
+        url_title:
+          type:
+          - string
+          - 'null'
+          description: Title of the page
+          example: New Vehicles at Example Dealership
+        session_number:
+          type:
+          - string
+          - 'null'
+          description: Session number
+          example: null
+        page_view_in_session:
+          type:
+          - string
+          - 'null'
+          description: Page view number in session
+          example: null
+        referrer:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Referrer URL
+          example: null
+        utm_source:
+          type:
+          - string
+          - 'null'
+          description: UTM source parameter
+          example: null
+        utm_medium:
+          type:
+          - string
+          - 'null'
+          description: UTM medium parameter
+          example: null
+        utm_campaign:
+          type:
+          - string
+          - 'null'
+          description: UTM campaign parameter
+          example: ''
+        utm_term:
+          type:
+          - string
+          - 'null'
+          description: UTM term parameter
+          example: null
+        utm_content:
+          type:
+          - string
+          - 'null'
+          description: UTM content parameter
+          example: null
+        gclid:
+          type:
+          - string
+          - 'null'
+          description: Google Click ID
+          example: null
+        device:
+          type:
+          - string
+          - 'null'
+          description: Device type (e.g., phone, desktop, tablet)
+          example: phone
+        browser:
+          type:
+          - string
+          - 'null'
+          description: Browser name
+          example: Chrome
+        browser_version:
+          type:
+          - string
+          - 'null'
+          description: Browser version
+          example: '136'
+        screen_resolution:
+          type:
+          - string
+          - 'null'
+          description: Screen resolution
+          example: 960x412
+        os:
+          type:
+          - string
+          - 'null'
+          description: Operating system
+          example: Android 10
+        ip_address:
+          type:
+          - string
+          - 'null'
+          description: IP address (anonymized in examples)
+          example: 192.0.2.1
+        browser_language:
+          type:
+          - string
+          - 'null'
+          description: Browser language
+          example: en-US
+        country_code:
+          type:
+          - string
+          - 'null'
+          description: Country code
+          example: US
+        country_name:
+          type:
+          - string
+          - 'null'
+          description: Country name
+          example: United States of America
+        latitude:
+          type:
+          - string
+          - 'null'
+          description: Latitude coordinate
+          example: '40.7128'
+        longitude:
+          type:
+          - string
+          - 'null'
+          description: Longitude coordinate
+          example: '-74.0060'
+        city:
+          type:
+          - string
+          - 'null'
+          description: City name
+          example: Anytown
+        region:
+          type:
+          - string
+          - 'null'
+          description: Region/state name
+          example: New York
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        tracking_cookie:
+          type:
+          - string
+          - 'null'
+          description: Tracking cookie identifier
+          example: 1.fake123.1234567890.8.6.1234567890.1234567890.4.0
+        is_last_call:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a last call event
+          example: false
+        is_vdp:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a Vehicle Detail Page
+          example: false
+        traffic_source:
+          type:
+          - string
+          - 'null'
+          description: Traffic source
+          example: direct
+      description: Page view event
+    ContactDetail:
+      type:
+      - object
+      - 'null'
+      properties:
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the contact (e.g., crm_customer, website_conversion)
+          example: crm_customer
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: Middle name
+          example: null
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        full_name:
+          type:
+          - string
+          - 'null'
+          description: Full name
+          example: John Doe
+        main_email_addresses:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Main email address
+          example: john.doe@example.com
+        alternative_email_addresses:
+          type:
+          - string
+          - 'null'
+          description: Alternative email addresses
+          example: null
+        cell_phone:
+          type:
+          - string
+          - 'null'
+          description: Cell phone number
+          example: '+15555551234'
+        home_phone:
+          type:
+          - string
+          - 'null'
+          description: Home phone number
+          example: '+15555551235'
+        work_phone:
+          type:
+          - string
+          - 'null'
+          description: Work phone number
+          example: null
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the contact was created/updated
+          example: '2024-01-15T10:30:00Z'
+        latitude:
+          type:
+          - number
+          - 'null'
+          description: Latitude coordinate
+          example: null
+        longitude:
+          type:
+          - number
+          - 'null'
+          description: Longitude coordinate
+          example: null
+        status:
+          type:
+          - string
+          - 'null'
+          description: Contact status
+          example: Active
+        crm_link:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Link to CRM customer dashboard
+          example: https://example.com/crm/customer/123456
+        creation_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Creation date (YYYY-MM-DD)
+          example: '2024-01-15'
+        external_customer_id:
+          type:
+          - string
+          - 'null'
+          description: External customer identifier
+          example: EXT123456
+        customer_type:
+          type:
+          - string
+          - 'null'
+          description: Customer type
+          example: null
+      description: Contact information for a shopper
+    SMSSentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - sms_sent
+          example: sms_sent
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: null
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: '+15551234567'
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: null
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: false
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: SMS sent event
+    ShopperEvent:
+      oneOf:
+      - $ref: '#/components/schemas/PageViewEvent'
+      - $ref: '#/components/schemas/LeadEvent'
+      - $ref: '#/components/schemas/SaleEvent'
+      - $ref: '#/components/schemas/ConversionEvent'
+      - $ref: '#/components/schemas/InputTrackingEvent'
+      - $ref: '#/components/schemas/AdClickEvent'
+      - $ref: '#/components/schemas/EnrichmentEvent'
+      - $ref: '#/components/schemas/LeadHandlingSMSSentEvent'
+      - $ref: '#/components/schemas/EmailClickEvent'
+      - $ref: '#/components/schemas/EmailOpenEvent'
+      - $ref: '#/components/schemas/EmailSentEvent'
+      - $ref: '#/components/schemas/SMSClickEvent'
+      - $ref: '#/components/schemas/SMSRepliedEvent'
+      - $ref: '#/components/schemas/SMSSentEvent'
+      - $ref: '#/components/schemas/AppointmentEvent'
+      - $ref: '#/components/schemas/ServiceLeadEvent'
+      - $ref: '#/components/schemas/ServiceROEvent'
+      - $ref: '#/components/schemas/ServiceAppointmentEvent'
+      discriminator:
+        propertyName: type
+        mapping:
+          page_view: '#/components/schemas/PageViewEvent'
+          lead: '#/components/schemas/LeadEvent'
+          sale: '#/components/schemas/SaleEvent'
+          conversion: '#/components/schemas/ConversionEvent'
+          input_tracking: '#/components/schemas/InputTrackingEvent'
+          ad_click: '#/components/schemas/AdClickEvent'
+          enrichment: '#/components/schemas/EnrichmentEvent'
+          lead_handling_sms_sent: '#/components/schemas/LeadHandlingSMSSentEvent'
+          email_click: '#/components/schemas/EmailClickEvent'
+          email_open: '#/components/schemas/EmailOpenEvent'
+          email_sent: '#/components/schemas/EmailSentEvent'
+          sms_click: '#/components/schemas/SMSClickEvent'
+          sms_replied: '#/components/schemas/SMSRepliedEvent'
+          sms_sent: '#/components/schemas/SMSSentEvent'
+          appointment: '#/components/schemas/AppointmentEvent'
+          service_lead: '#/components/schemas/ServiceLeadEvent'
+          service_ro: '#/components/schemas/ServiceROEvent'
+          service_appointment: '#/components/schemas/ServiceAppointmentEvent'
+      description: Represents an event associated with a shopper. Events are returned ungrouped in a flat array.
+    ShopperEmail:
+      type: object
+      required:
+      - id
+      - email
+      - created_at
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the email record
+        email:
+          type: string
+          format: email
+          description: Email address
+        is_primary:
+          type: boolean
+          description: Whether this is the primary email address
+        is_emailable:
+          type: boolean
+          description: Whether this email can be used for sending
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the email was added
+      description: Represents an email address associated with a shopper
+    ServiceAppointmentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '123456789'
+        type:
+          type: string
+          enum:
+          - service_appointment
+          example: service_appointment
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T00:00:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        vehicle:
+          type:
+          - object
+          - 'null'
+          properties:
+            vin:
+              type:
+              - string
+              - 'null'
+              description: Vehicle Identification Number
+              example: 1HGBH41JXMN109186
+            year:
+              type:
+              - string
+              - 'null'
+              description: Vehicle year
+              example: '2024'
+            make:
+              type:
+              - string
+              - 'null'
+              description: Vehicle make
+              example: ExampleMake
+            model:
+              type:
+              - string
+              - 'null'
+              description: Vehicle model
+              example: ExampleModel
+          description: Vehicle information
+          example:
+            vin: 1HGBH41JXMN109186
+            year: '2024'
+            make: ExampleMake
+            model: ExampleModel
+      description: Service appointment event
+    AudiencesResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Audience'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple audiences with pagination info
+    ShoppersResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shopper'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple shoppers with pagination info
+    ServiceROEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '1234567890'
+        type:
+          type: string
+          enum:
+          - service_ro
+          example: service_ro
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T00:00:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        crm_lead_id:
+          type:
+          - string
+          - 'null'
+          description: CRM lead identifier
+          example: '1234567890'
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '9876543210'
+        vehicle_canonical_details:
+          type:
+          - object
+          - 'null'
+          properties:
+            vin:
+              type:
+              - string
+              - 'null'
+              example: 1HGBH41JXMN109186
+            year:
+              type:
+              - string
+              - 'null'
+              example: '2024'
+            make:
+              type:
+              - string
+              - 'null'
+              example: ExampleMake
+            model:
+              type:
+              - string
+              - 'null'
+              example: ExampleModel
+            trim:
+              type:
+              - string
+              - 'null'
+              example: LT
+          description: Vehicle canonical details
+          example: null
+        lead_id:
+          type:
+          - string
+          - 'null'
+          description: Lead identifier
+          example: '1234567890'
+        customer:
+          type:
+          - string
+          - 'null'
+          description: Customer identifier
+          example: '9876543210'
+        vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Identification Number
+          example: 1HGBH41JXMN109186
+        year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle year
+          example: '2024'
+        make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle make
+          example: ExampleMake
+        model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle model
+          example: ExampleModel
+        trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle trim
+          example: null
+        source:
+          type:
+          - string
+          - 'null'
+          description: Service RO source
+          example: null
+        service_type:
+          type:
+          - string
+          - 'null'
+          description: Service type
+          example: null
+        service_sub_type:
+          type:
+          - string
+          - 'null'
+          description: Service sub type
+          example: null
+        service_source:
+          type:
+          - string
+          - 'null'
+          description: Service source
+          example: null
+        service_operation_codes:
+          type:
+          - string
+          - 'null'
+          description: Service operation codes
+          example: '66'
+        service_status:
+          type:
+          - string
+          - 'null'
+          description: Service status (e.g., "Closed", "Completed")
+          example: null
+        gross:
+          type:
+          - string
+          - 'null'
+          description: Gross amount
+          example: '3.50'
+        ro_total:
+          type:
+          - string
+          - 'null'
+          description: Repair order total amount
+          example: '35.00'
+        date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Service RO date (YYYY-MM-DD)
+          example: '2024-01-15'
+      description: Service repair order event
+    ShopperPhone:
+      type: object
+      required:
+      - id
+      - phone
+      - created_at
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the phone record
+        phone:
+          type: string
+          pattern: ^\+[1-9]\d{1,14}$
+          description: Phone number in E.164 format
+        is_primary:
+          type: boolean
+          description: Whether this is the primary phone number
+        is_textable:
+          type: boolean
+          description: Whether this phone can be used for sending text messages
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the phone was added
+      description: Represents a phone number associated with a shopper
+    Audience:
+      type: object
+      required:
+      - id
+      - name
+      - shopper_set
+      - is_starred
+      - is_subscribed
+      - is_sales_enablement
+      - is_data_enrichment
+      - created_at
+      - updated_at
+      - public_url
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the audience
+          example: 89
+        name:
+          type: string
+          description: Name of the audience
+          example: Commercial Vehicle Prospecting
+        shopper_set:
+          type: string
+          description: Base64-encoded JSON filter definition for the shopper set
+          example: eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==
+        is_starred:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is starred (1) or not (0)
+          example: 0
+        is_subscribed:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is subscribed (1) or not (0)
+          example: 0
+        is_sales_enablement:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is used for sales enablement (1) or not (0)
+          example: 0
+        is_data_enrichment:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is used for data enrichment (1) or not (0)
+          example: 0
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the audience was created
+          example: '2026-01-08 19:02:22'
+        updated_by:
+          type:
+          - string
+          - 'null'
+          description: Name of the user who last updated the audience
+          example: System User
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 timestamp when the audience was last updated
+          example: '2026-01-08 19:02:22'
+        public_url:
+          type: string
+          format: uri
+          description: Public URL for accessing the audience (contains authentication key)
+          example: https://example.com/api/v2/public/shoppers/saved-filters?key=example_key
+        shoppers_count:
+          type: integer
+          minimum: 0
+          description: Number of shoppers in the audience. Only included when `embed=shoppers_count` is specified.
+          example: 150
+      description: Represents an audience (saved shopper filter). Additional fields are available via the embed parameter.
+    Location:
+      type:
+      - object
+      - 'null'
+      properties:
+        title:
+          type:
+          - string
+          - 'null'
+          description: Full location title
+          example: Anytown, NY, 12345
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the location data
+          example: customer
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        distance_from_dealership:
+          type:
+          - number
+          - 'null'
+          description: Distance from dealership (in miles or kilometers)
+          example: null
+      description: Location information for a shopper
+    EmailSentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - email_sent
+          example: email_sent
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: john.doe@example.com
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: null
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: null
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: null
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: Email sent event
+    AudienceShoppersResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shopper'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing shoppers in an audience with pagination info
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+    AppointmentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '1234567890'
+        type:
+          type: string
+          enum:
+          - appointment
+          example: appointment
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        crm_lead_id:
+          type:
+          - string
+          - 'null'
+          description: CRM lead identifier
+          example: '1234567890'
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '9876543210'
+        vehicle_canonical_details:
+          type:
+          - object
+          - 'null'
+          description: Vehicle canonical details
+          example: null
+        is_confirmed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment is confirmed
+          example: false
+        is_shown:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment was shown
+          example: true
+        results:
+          type:
+          - string
+          - 'null'
+          description: Appointment results
+          example: null
+        salesperson:
+          type:
+          - string
+          - 'null'
+          description: Assigned salesperson
+          example: null
+      description: Appointment event
+    EnrichmentEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '100365000312'
+        type:
+          type: string
+          enum:
+          - enrichment
+          example: enrichment
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: enrichment
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        verified:
+          type:
+          - object
+          - 'null'
+          properties:
+            emails:
+              type: array
+              items:
+                type: string
+              example: []
+            phones:
+              type: array
+              items:
+                type: string
+              example:
+              - '5551234567'
+            vehicles:
+              type: array
+              items:
+                type: object
+              example: []
+          description: Verified data
+          example: null
+        enriched:
+          type:
+          - object
+          - 'null'
+          properties:
+            emails:
+              type: array
+              items:
+                type: string
+              example:
+              - john.doe@example.com
+            phones:
+              type: array
+              items:
+                type: string
+              example:
+              - '5551234568'
+            vehicles:
+              type: array
+              items:
+                type: object
+                properties:
+                  model:
+                    type: string
+                    example: CAMRY
+                  year:
+                    type: string
+                    example: '2020'
+                  make:
+                    type: string
+                    example: TOYOTA
+                  vin:
+                    type: string
+                    example: 1HGBH41JXMN109186
+            address:
+              type:
+              - object
+              - 'null'
+              properties:
+                address:
+                  type: string
+                  example: 123 Main St
+                city:
+                  type: string
+                  example: Anytown
+                state:
+                  type: string
+                  example: NY
+                zipcode:
+                  type: string
+                  example: '12345'
+          description: Enriched data
+          example: null
+        match_status:
+          type:
+          - string
+          - 'null'
+          description: Match status
+          example: Active
+      description: Enrichment event
+    ADFLead:
+      type:
+      - object
+      - 'null'
+      description: ADF lead information
+    AdClickEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '987654'
+        type:
+          type: string
+          enum:
+          - ad_click
+          example: ad_click
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: last_call
+        website_user:
+          type:
+          - string
+          - 'null'
+          description: Website user identifier
+          example: '1234567890'
+        sources:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Sources
+          example: []
+        channel:
+          type:
+          - string
+          - 'null'
+          description: Channel
+          example: search
+        objective:
+          type:
+          - string
+          - 'null'
+          description: Objective
+          example: new-inventory
+        bundle:
+          type:
+          - string
+          - 'null'
+          description: Bundle
+          example: model
+        platform:
+          type:
+          - string
+          - 'null'
+          description: Platform
+          example: google
+        equity:
+          type:
+          - boolean
+          - 'null'
+          description: Equity flag
+          example: false
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: false
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        landing_page_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Landing page URL
+          example: https://example-dealership.com/inventory/vehicle/
+        landing_page_title:
+          type:
+          - string
+          - 'null'
+          description: Landing page title
+          example: New 2024 Vehicle
+      description: Ad click event
+    SMSClickEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - sms_click
+          example: sms_click
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: null
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: '+15551234567'
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: 1234567
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: false
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: SMS click event
+    LeadEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '1952484172'
+        type:
+          type: string
+          enum:
+          - lead
+          example: lead
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T00:00:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        crm_lead_id:
+          type:
+          - string
+          - 'null'
+          description: CRM lead identifier
+          example: '1952484172'
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '9876543210'
+        vehicle_canonical_details:
+          type:
+          - object
+          - 'null'
+          description: Vehicle canonical details
+          example: null
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: Middle name
+          example: null
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        main_email_addresses:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Main email address
+          example: john.doe@example.com
+        alternative_email_addresses:
+          type:
+          - string
+          - 'null'
+          description: Alternative email addresses
+          example: null
+        cell_phone:
+          type:
+          - string
+          - 'null'
+          description: Cell phone number
+          example: '5551234567'
+        home_phone:
+          type:
+          - string
+          - 'null'
+          description: Home phone number
+          example: '5551234567'
+        work_phone:
+          type:
+          - string
+          - 'null'
+          description: Work phone number
+          example: null
+        additional_phone_numbers:
+          type:
+          - string
+          - 'null'
+          description: Additional phone numbers
+          example: ''
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        date_entered:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date entered (YYYY-MM-DD)
+          example: '2024-01-15'
+        up_type:
+          type:
+          - string
+          - 'null'
+          description: UP type
+          example: Internet
+        source:
+          type:
+          - string
+          - 'null'
+          description: Lead source
+          example: Di - Get E-Price - New
+        sub_source:
+          type:
+          - string
+          - 'null'
+          description: Sub source
+          example: null
+        status:
+          type:
+          - string
+          - 'null'
+          description: Lead status
+          example: Bad
+        assigned_salesperson:
+          type:
+          - string
+          - 'null'
+          description: Assigned salesperson
+          example: Jane Smith
+        voi_condition:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest condition
+          example: new
+        voi_year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest year
+          example: '2024'
+        voi_make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest make
+          example: Toyota
+        voi_model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest model
+          example: Camry
+        voi_trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest trim
+          example: AWD Z71
+        voi_sku:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest SKU
+          example: C12345
+        voi_vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest VIN
+          example: 1HGBH41JXMN109186
+        voi_miles:
+          type:
+          - integer
+          - 'null'
+          description: Vehicle of interest miles
+          example: null
+        interested_in_trade_in:
+          type:
+          - boolean
+          - 'null'
+          description: Interested in trade-in
+          example: null
+        trade_in_vehicle:
+          type:
+          - string
+          - 'null'
+          description: Trade-in vehicle
+          example: null
+        trade_in_year:
+          type:
+          - string
+          - 'null'
+          description: Trade-in year
+          example: null
+        trade_in_make:
+          type:
+          - string
+          - 'null'
+          description: Trade-in make
+          example: null
+        trade_in_model:
+          type:
+          - string
+          - 'null'
+          description: Trade-in model
+          example: null
+        trade_in_trim:
+          type:
+          - string
+          - 'null'
+          description: Trade-in trim
+          example: null
+        trade_in_estimation:
+          type:
+          - string
+          - 'null'
+          description: Trade-in estimation
+          example: ''
+        is_sold:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the vehicle is sold
+          example: false
+        still_owns:
+          type:
+          - boolean
+          - 'null'
+          description: Whether customer still owns the vehicle
+          example: true
+        sale_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Sale date (YYYY-MM-DD)
+          example: null
+        sold_vehicle_condition:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle condition
+          example: null
+        sold_vehicle_year:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle year
+          example: null
+        sold_vehicle_make:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle make
+          example: null
+        sold_vehicle_model:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle model
+          example: null
+        sold_vehicle_trim:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle trim
+          example: null
+        sold_vehicle_sku:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle SKU
+          example: null
+        sold_vehicle_vin:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle VIN
+          example: null
+        sold_vehicle_price:
+          type:
+          - number
+          - 'null'
+          description: Sold vehicle price
+          example: null
+        front_gross:
+          type:
+          - number
+          - 'null'
+          description: Front gross
+          example: 0
+        back_gross:
+          type:
+          - number
+          - 'null'
+          description: Back gross
+          example: 0
+        total_gross:
+          type:
+          - number
+          - 'null'
+          description: Total gross
+          example: null
+        vehicle_images:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Vehicle images
+          example: []
+        push_to_crm:
+          type:
+          - boolean
+          - 'null'
+          description: Push to CRM
+          example: null
+        sale_term:
+          type:
+          - string
+          - 'null'
+          description: Sale term
+          example: null
+        purchase_type:
+          type:
+          - string
+          - 'null'
+          description: Purchase type
+          example: null
+      description: Lead event
+    CustomerLifetimeValue:
+      type:
+      - object
+      - 'null'
+      properties:
+        sales:
+          $ref: '#/components/schemas/SalesServices'
+        services:
+          $ref: '#/components/schemas/SalesServices'
+        total_lifetime_value:
+          type: number
+          description: Total lifetime value
+          example: 0
+      description: Customer lifetime value information
+    LatestLead:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          description: Lead identifier
+          example: '1234567890'
+        salesperson:
+          type:
+          - string
+          - 'null'
+          description: Name of the salesperson
+          example: Jane Smith
+        date:
+          type: string
+          format: date
+          description: Lead date (YYYY-MM-DD)
+          example: '2024-01-15'
+        up_type:
+          type:
+          - string
+          - 'null'
+          description: UP type
+          example: Internet
+        source:
+          type:
+          - string
+          - 'null'
+          description: Lead source
+          example: Website - Contact Form
+        status:
+          type:
+          - string
+          - 'null'
+          description: Lead status
+          example: Bad
+        sub_status:
+          type:
+          - string
+          - 'null'
+          description: Lead sub-status
+          example: Duplicate lead
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+      description: Latest lead information for a shopper
+    SMSRepliedEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          description: Unique identifier for the event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        type:
+          type: string
+          enum:
+          - sms_replied
+          example: sms_replied
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: nurture
+        delivery:
+          type:
+          - string
+          - 'null'
+          description: Delivery identifier
+          example: fakeDeliveryHash1234567890
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '12345678'
+        shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Shopper identifier
+          example: '12345678'
+        recipient_name:
+          type:
+          - string
+          - 'null'
+          description: Recipient name
+          example: John Doe
+        recipient_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Recipient email
+          example: null
+        recipient_phone_number:
+          type:
+          - string
+          - 'null'
+          description: Recipient phone number
+          example: '+15551234567'
+        sms_thread:
+          type:
+          - integer
+          - 'null'
+          description: SMS thread identifier
+          example: 1234567
+        has_equity_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has equity content
+          example: false
+        has_dynamic_payments_content:
+          type:
+          - boolean
+          - 'null'
+          description: Has dynamic payments content
+          example: false
+        incoming_replies_count:
+          type:
+          - integer
+          - 'null'
+          description: Incoming replies count
+          example: null
+        lead_handling_delivery_category:
+          type:
+          - string
+          - 'null'
+          description: Lead handling delivery category
+          example: null
+        delivery_text:
+          type:
+          - string
+          - 'null'
+          description: Delivery text
+          example: null
+      description: SMS replied event
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+    Shopper:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: integer
+          description: Unique shopper identifier
+          example: 16395039
+        primary_contact:
+          $ref: '#/components/schemas/PrimaryContact'
+        latest_lead_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest lead (YYYY-MM-DD)
+          example: '2024-01-15'
+        latest_sale_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest sale (YYYY-MM-DD)
+          example: null
+        latest_marketing_touchpoint_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest marketing touchpoint (YYYY-MM-DD)
+          example: '2024-01-15'
+        latest_sale:
+          $ref: '#/components/schemas/LatestSale'
+        latest_lead:
+          $ref: '#/components/schemas/LatestLead'
+        adf_leads:
+          type: array
+          items:
+            $ref: '#/components/schemas/ADFLead'
+          description: Array of ADF leads
+          example: []
+        marketing_engagement_score:
+          type:
+          - string
+          - 'null'
+          description: Marketing engagement score
+          example: '10'
+        loyalty_score:
+          type:
+          - string
+          - 'null'
+          description: Loyalty score
+          example: '0'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetail'
+          description: Array of all contacts associated with the shopper (single shopper only)
+        location:
+          $ref: '#/components/schemas/Location'
+        score:
+          type:
+          - integer
+          - 'null'
+          description: Shopper score (single shopper only)
+          example: 10
+        public_link:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Public link for the shopper (single shopper only)
+          example: https://example.com/s/abc123xyz
+        customer_lifetime_value:
+          $ref: '#/components/schemas/CustomerLifetimeValue'
+        latest_sale_estimated_equity:
+          type:
+          - number
+          - 'null'
+          description: Estimated equity from latest sale (single shopper only)
+          example: null
+        household_flag:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a household shopper (single shopper only)
+          example: false
+        customer_tags:
+          type: array
+          items:
+            type: string
+          description: Array of customer tags (single shopper only)
+          example: []
+        is_enriched:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the shopper data has been enriched (single shopper only)
+          example: true
+        salesperson:
+          type:
+          - string
+          - 'null'
+          description: Assigned salesperson (single shopper only)
+          example: Jane Smith
+        group_shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Group shopper identifier (single shopper only)
+          example: GRP123456789
+        financial_durability_index:
+          type:
+          - number
+          - 'null'
+          description: Financial durability index (single shopper only)
+          example: 8.46
+        aim_propensity_score:
+          type:
+          - number
+          - 'null'
+          description: AIM propensity score (single shopper only)
+          example: 2.54
+      description: Represents a shopper. Additional fields are available via the embed parameter. Some fields (contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score) are only available when getting a single shopper.
+    LatestSale:
+      type:
+      - object
+      - 'null'
+      description: Latest sale information for a shopper. Structure similar to LatestLead.
+    ServiceLeadEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '1234567890'
+        type:
+          type: string
+          enum:
+          - service_lead
+          example: service_lead
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T00:00:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        crm_lead_id:
+          type:
+          - string
+          - 'null'
+          description: CRM lead identifier
+          example: '1234567890'
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '9876543210'
+        vehicle_canonical_details:
+          type:
+          - object
+          - 'null'
+          description: Vehicle canonical details
+          example: null
+        lead_id:
+          type:
+          - string
+          - 'null'
+          description: Lead identifier
+          example: '1234567890'
+        customer:
+          type:
+          - string
+          - 'null'
+          description: Customer identifier
+          example: '9876543210'
+        vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Identification Number
+          example: 1HGBH41JXMN109186
+        year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle year
+          example: '2024'
+        make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle make
+          example: ExampleMake
+        model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle model
+          example: ExampleModel
+        trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle trim
+          example: null
+        source:
+          type:
+          - string
+          - 'null'
+          description: Service lead source
+          example: null
+        service_type:
+          type:
+          - string
+          - 'null'
+          description: Service type (e.g., "slr")
+          example: slr
+        service_sub_type:
+          type:
+          - string
+          - 'null'
+          description: Service sub type
+          example: null
+        service_source:
+          type:
+          - string
+          - 'null'
+          description: Service source
+          example: null
+        service_status:
+          type:
+          - string
+          - 'null'
+          description: Service status (e.g., "Completed", "Active/Open")
+          example: Completed
+        is_ro:
+          type:
+          - string
+          - 'null'
+          description: Whether this is a repair order (e.g., "0", "1")
+          example: '0'
+        gross:
+          type:
+          - number
+          - 'null'
+          description: Gross amount
+          example: null
+        ro_total:
+          type:
+          - string
+          - 'null'
+          description: Repair order total amount
+          example: '338.43'
+      description: Service lead event
+    SaleEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: MURP251221
+        type:
+          type: string
+          enum:
+          - sale
+          example: sale
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T00:00:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: crm
+        crm_lead_id:
+          type:
+          - string
+          - 'null'
+          description: CRM lead identifier
+          example: '1234567890'
+        crm_customer:
+          type:
+          - string
+          - 'null'
+          description: CRM customer identifier
+          example: '9876543210'
+        vehicle_canonical_details:
+          type:
+          - object
+          - 'null'
+          properties:
+            vin:
+              type:
+              - string
+              - 'null'
+              example: 1HGBH41JXMN109186
+            year:
+              type:
+              - string
+              - 'null'
+              example: '2024'
+            make:
+              type:
+              - string
+              - 'null'
+              example: ExampleMake
+            model:
+              type:
+              - string
+              - 'null'
+              example: ExampleModel
+            trim:
+              type:
+              - string
+              - 'null'
+              example: LT
+          description: Vehicle canonical details
+          example: null
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: Middle name
+          example: null
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        main_email_addresses:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Main email address
+          example: john.doe@example.com
+        alternative_email_addresses:
+          type:
+          - string
+          - 'null'
+          description: Alternative email addresses
+          example: null
+        cell_phone:
+          type:
+          - string
+          - 'null'
+          description: Cell phone number
+          example: '5551234567'
+        home_phone:
+          type:
+          - string
+          - 'null'
+          description: Home phone number
+          example: '5551234567'
+        work_phone:
+          type:
+          - string
+          - 'null'
+          description: Work phone number
+          example: null
+        additional_phone_numbers:
+          type:
+          - string
+          - 'null'
+          description: Additional phone numbers
+          example: ''
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        date_entered:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date entered (YYYY-MM-DD)
+          example: '2024-01-15'
+        up_type:
+          type:
+          - string
+          - 'null'
+          description: UP type
+          example: Internet
+        source:
+          type:
+          - string
+          - 'null'
+          description: Lead source
+          example: GM 3rd Party
+        sub_source:
+          type:
+          - string
+          - 'null'
+          description: Sub source
+          example: null
+        status:
+          type:
+          - string
+          - 'null'
+          description: Sale status
+          example: FINALIZED
+        assigned_salesperson:
+          type:
+          - string
+          - 'null'
+          description: Assigned salesperson
+          example: Jane Smith
+        voi_condition:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest condition
+          example: new
+        voi_year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest year
+          example: '2024'
+        voi_make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest make
+          example: Toyota
+        voi_model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest model
+          example: Camry
+        voi_trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest trim
+          example: AWD LT
+        voi_sku:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest SKU
+          example: C12345
+        voi_vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle of interest VIN
+          example: 1HGBH41JXMN109186
+        voi_miles:
+          type:
+          - integer
+          - 'null'
+          description: Vehicle of interest miles
+          example: null
+        interested_in_trade_in:
+          type:
+          - boolean
+          - 'null'
+          description: Interested in trade-in
+          example: null
+        trade_in_vehicle:
+          type:
+          - string
+          - 'null'
+          description: Trade-in vehicle
+          example: null
+        trade_in_year:
+          oneOf:
+          - type: integer
+          - type: string
+          description: Trade-in year (can be integer or string)
+          example: null
+        trade_in_make:
+          type:
+          - string
+          - 'null'
+          description: Trade-in make
+          example: null
+        trade_in_model:
+          type:
+          - string
+          - 'null'
+          description: Trade-in model
+          example: null
+        trade_in_trim:
+          type:
+          - string
+          - 'null'
+          description: Trade-in trim
+          example: null
+        trade_in_estimation:
+          type:
+          - string
+          - 'null'
+          description: Trade-in estimation
+          example: ''
+        is_sold:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the vehicle is sold
+          example: true
+        still_owns:
+          type:
+          - boolean
+          - 'null'
+          description: Whether customer still owns the vehicle
+          example: true
+        sale_date:
+          type:
+          - string
+          - 'null'
+          description: Sale date (YYYY-MM-DD HH:MM:SS format)
+          example: '2024-01-15 00:00:00'
+        sold_vehicle_condition:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle condition
+          example: new
+        sold_vehicle_year:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle year
+          example: '2024'
+        sold_vehicle_make:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle make
+          example: Toyota
+        sold_vehicle_model:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle model
+          example: Camry
+        sold_vehicle_trim:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle trim
+          example: LT
+        sold_vehicle_sku:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle SKU
+          example: C12345
+        sold_vehicle_vin:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle VIN
+          example: 1HGBH41JXMN109186
+        sold_vehicle_price:
+          type:
+          - string
+          - 'null'
+          description: Sold vehicle price
+          example: '23021.00'
+        front_gross:
+          type:
+          - number
+          - 'null'
+          description: Front gross
+          example: 1917
+        back_gross:
+          type:
+          - number
+          - 'null'
+          description: Back gross
+          example: 690
+        total_gross:
+          type:
+          - number
+          - 'null'
+          description: Total gross
+          example: 2607.68
+        vehicle_images:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Vehicle images
+          example: []
+        push_to_crm:
+          type:
+          - boolean
+          - 'null'
+          description: Push to CRM
+          example: null
+        sale_term:
+          type:
+          - string
+          - 'null'
+          description: Sale term
+          example: '60'
+        purchase_type:
+          type:
+          - string
+          - 'null'
+          description: Purchase type
+          example: finance
+        term:
+          type:
+          - string
+          - 'null'
+          description: Loan term in months
+          example: '60'
+        apr:
+          type:
+          - string
+          - 'null'
+          description: Annual percentage rate
+          example: '5.99'
+        down_payment:
+          type:
+          - string
+          - 'null'
+          description: Down payment amount
+          example: '24598.42'
+        monthly_payment:
+          type:
+          - string
+          - 'null'
+          description: Monthly payment amount
+          example: '444.95'
+        last_payment_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Last payment date (YYYY-MM-DD)
+          example: '2030-12-20'
+      description: Sale event
+    PrimaryContact:
+      type:
+      - object
+      - 'null'
+      properties:
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the contact (e.g., customer, crm_customer)
+          example: customer
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: Middle name
+          example: null
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        full_name:
+          type:
+          - string
+          - 'null'
+          description: Full name
+          example: John Doe
+        main_email_addresses:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Main email address
+          example: john.doe@example.com
+        alternative_email_addresses:
+          type:
+          - string
+          - 'null'
+          description: Alternative email addresses
+          example: null
+        cell_phone:
+          type:
+          - string
+          - 'null'
+          description: Cell phone number
+          example: '+15555551234'
+        home_phone:
+          type:
+          - string
+          - 'null'
+          description: Home phone number
+          example: '+15555551235'
+        work_phone:
+          type:
+          - string
+          - 'null'
+          description: Work phone number
+          example: null
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the contact was created/updated
+          example: '2024-01-15T10:30:00Z'
+        latitude:
+          type:
+          - number
+          - 'null'
+          description: Latitude coordinate
+          example: null
+        longitude:
+          type:
+          - number
+          - 'null'
+          description: Longitude coordinate
+          example: null
+        status:
+          type:
+          - string
+          - 'null'
+          description: Contact status
+          example: null
+        crm_link:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Link to CRM customer dashboard
+          example: null
+        creation_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Creation date (YYYY-MM-DD)
+          example: null
+        external_customer_id:
+          type:
+          - string
+          - 'null'
+          description: External customer identifier
+          example: null
+        customer_type:
+          type:
+          - string
+          - 'null'
+          description: Customer type
+          example: null
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Email address (legacy field, use main_email_addresses)
+          example: john.doe@example.com
+        full_address:
+          type:
+          - string
+          - 'null'
+          description: Full address (legacy field, use city, state, zipcode)
+          example: Anytown, NY, 12345
+      description: Primary contact information for a shopper. Extended version available in single shopper responses.
+    InputTrackingEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '765432'
+        type:
+          type: string
+          enum:
+          - input_tracking
+          example: input_tracking
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: ''
+        website_user:
+          type:
+          - string
+          - 'null'
+          description: Website user identifier
+          example: '1234567890'
+        sources:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Sources
+          example: null
+      description: Input tracking event
+    ConversionEvent:
+      type: object
+      required:
+      - identifier
+      - type
+      - timestamp
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the event
+          example: '987654321'
+        type:
+          type: string
+          enum:
+          - conversion
+          example: conversion
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the event occurred
+          example: '2024-01-15T10:30:00Z'
+        product:
+          type:
+          - string
+          - 'null'
+          description: Product identifier
+          example: connect
+        website_user:
+          type:
+          - string
+          - 'null'
+          description: Website user identifier
+          example: '1234567890'
+        sources:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Sources
+          example: []
+        module:
+          type:
+          - string
+          - 'null'
+          description: Module name
+          example: Trade In
+        conversion:
+          type:
+          - object
+          - 'null'
+          properties:
+            type:
+              type:
+              - string
+              - 'null'
+              example: connect
+            timestamp:
+              type:
+              - string
+              - 'null'
+              example: '2024-01-15 10:30:00'
+            website_pageview:
+              type:
+              - string
+              - 'null'
+              example: null
+            first_name:
+              type:
+              - string
+              - 'null'
+              example: John
+            middle_name:
+              type:
+              - string
+              - 'null'
+              example: null
+            last_name:
+              type:
+              - string
+              - 'null'
+              example: Doe
+            full_name:
+              type:
+              - string
+              - 'null'
+              example: John
+            main_email_addresses:
+              type:
+              - string
+              - 'null'
+              format: email
+              example: john.doe@example.com
+            main_phone_number:
+              type:
+              - string
+              - 'null'
+              example: '5551234567'
+            additional_details:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_condition:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_year:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_make:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_model:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_trim:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_sku:
+              type:
+              - string
+              - 'null'
+              example: null
+            voi_vin:
+              type:
+              - string
+              - 'null'
+              example: null
+        description:
+          type:
+          - string
+          - 'null'
+          description: Conversion details
+          example: null
+      description: Conversion event
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Platform JWT or Consent Management vendor API key.
+
+        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
+
+        '
+x-refined-from:
+- autoleadstar-fullpath-api-openapi.yml
+- autoleadstar-mcp-tools-openapi.yml

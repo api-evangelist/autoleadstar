@@ -1,0 +1,1040 @@
+{
+  "item": [
+    {
+      "id": "2699289e-8942-4241-8536-6a411a52b92d",
+      "name": "consents",
+      "description": {
+        "content": "Vendor Consent Management API for listing integrated dealers and reading/writing\ncommunication consent. Defaults to\n`https://fullpath.com/api/v2/external/consent-management`.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9c4c01e8-e9c0-45e7-9d78-ce52bb67a643",
+          "name": "List integrated dealers",
+          "request": {
+            "name": "List integrated dealers",
+            "description": {
+              "content": "Returns all dealers that have a consent-management integration with the\nauthenticated vendor (both current and previous integrations).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealers"
+              ],
+              "host": [
+                "{{dealers-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "134d7218-8361-4e9e-bf8b-9e829de98a76",
+              "name": "Dealer list for the authenticated vendor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealers"
+                  ],
+                  "host": [
+                    "{{dealers-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"dealers\": [\n    {\n      \"client_key\": \"40NM-00001-1\",\n      \"name\": \"Example Motors\",\n      \"status\": \"connected\",\n      \"connected_at\": \"2026-03-15T14:22:00+00:00\"\n    },\n    {\n      \"client_key\": \"40NM-00002-1\",\n      \"name\": \"Downtown Auto\",\n      \"status\": \"pending\",\n      \"connected_at\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ca7e13e-cb97-487b-a47e-0725ee8c0c26",
+              "name": "Missing, invalid, or expired Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealers"
+                  ],
+                  "host": [
+                    "{{dealers-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7bb878c-34da-4328-8f26-ae00f64e910a",
+              "name": "Rate limit exceeded (100 requests per minute per API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealers"
+                  ],
+                  "host": [
+                    "{{dealers-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the rate limit resets.",
+                  "key": "Retry-After",
+                  "value": "1608"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Limit",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Attempts.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b7001835-7049-4870-8717-6f8e6ef4dec0",
+          "name": "Get consent for a contact",
+          "request": {
+            "name": "Get consent for a contact",
+            "description": {
+              "content": "Returns the current consent status for a single contact at the target dealer.\n\nWhen no consent record exists, the response is `200` with `opt_in` and\n`consent_timestamp` set to `null` (not `404`).\n\nRequires `client_key` to identify the target dealer.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":contact_type",
+                "consent"
+              ],
+              "host": [
+                "{{contact_type-consent-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contact_value",
+                  "value": "<string>",
+                  "description": "(Required) Raw contact identifier to look up. Emails are lowercased; phone numbers are\nstandardized before lookup. The normalized value is echoed in the response.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "client_key",
+                  "value": "<string>",
+                  "description": "(Required) Fullpath client key for the target dealer (format `40NM-{number}-1`).\nRequired on all consent endpoints.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_type",
+                  "description": "(Required) Channel the consent applies to."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0d37afa8-b007-4a9e-b283-c6da56e82e83",
+              "name": "Consent status for the contact (including when no record exists).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consent"
+                  ],
+                  "host": [
+                    "{{contact_type-consent-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contact_value",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contact_value\": \"user@example.com\",\n  \"opt_in\": true,\n  \"consent_timestamp\": \"2026-05-12T18:30:00+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a8832de-868a-420f-9204-62364d78ce5e",
+              "name": "Request failed business-rule validation outside Laravel form validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consent"
+                  ],
+                  "host": [
+                    "{{contact_type-consent-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contact_value",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f52073d6-b702-4c50-89d2-428c8f17500e",
+              "name": "Missing, invalid, or expired Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consent"
+                  ],
+                  "host": [
+                    "{{contact_type-consent-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contact_value",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d95046cc-d1fc-4098-b6f1-92bf969dd994",
+              "name": "Laravel validation failure (422 Unprocessable Entity).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consent"
+                  ],
+                  "host": [
+                    "{{contact_type-consent-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contact_value",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The contact value field is required.\",\n  \"errors\": {\n    \"contact_value\": [\n      \"The contact value field is required.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e423fd33-445c-4e50-b2f9-2a6c460722e9",
+              "name": "Rate limit exceeded (100 requests per minute per API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consent"
+                  ],
+                  "host": [
+                    "{{contact_type-consent-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contact_value",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the rate limit resets.",
+                  "key": "Retry-After",
+                  "value": "1608"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Limit",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Attempts.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2967dc46-7021-49df-9e44-3bb07da4c7cf",
+          "name": "Store consents in bulk",
+          "request": {
+            "name": "Store consents in bulk",
+            "description": {
+              "content": "Stores one or more consent records for contacts at the target dealer.\nAccepts between 1 and 500 contacts per request.\n\nExact duplicates in the same request (same normalized contact value and\n`consent_timestamp`) are deduplicated; the last entry wins.\n\nRequires `client_key` (query string) to identify the target dealer.\n\nOn success, returns an empty JSON object and updates the vendor\ndata-received timestamp for the dealer.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":contact_type",
+                "consents"
+              ],
+              "host": [
+                "{{contact_type-consents-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "client_key",
+                  "value": "<string>",
+                  "description": "(Required) Fullpath client key for the target dealer (format `40NM-{number}-1`).\nRequired on all consent endpoints.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_type",
+                  "description": "(Required) Channel the consent applies to."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"<string>\",\n      \"opt_in\": \"<boolean>\",\n      \"consent_timestamp\": \"<dateTime>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3afab29d-abac-4cf0-a6ef-19ce1904d21e",
+              "name": "Consents stored successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consents"
+                  ],
+                  "host": [
+                    "{{contact_type-consents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"user@example.com\",\n      \"opt_in\": true,\n      \"consent_timestamp\": \"2026-05-12T18:30:00Z\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad08e158-3e2c-40ef-a6c1-26100f8043c9",
+              "name": "Business-rule or normalization failure.\n\nCommon causes:\n- One or more contacts failed validation after normalization\n  (`\"One or more contacts are invalid.\"`)\n- `client_key` missing, invalid, or not integrated with the vendor\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consents"
+                  ],
+                  "host": [
+                    "{{contact_type-consents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"user@example.com\",\n      \"opt_in\": true,\n      \"consent_timestamp\": \"2026-05-12T18:30:00Z\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"One or more contacts are invalid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ad9e462-bcdd-48cd-bd02-b5ece3ce6126",
+              "name": "Missing, invalid, or expired Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consents"
+                  ],
+                  "host": [
+                    "{{contact_type-consents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"user@example.com\",\n      \"opt_in\": true,\n      \"consent_timestamp\": \"2026-05-12T18:30:00Z\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e54d9723-5ccc-4c9f-a671-f1e8063da648",
+              "name": "Laravel validation failure (422 Unprocessable Entity).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consents"
+                  ],
+                  "host": [
+                    "{{contact_type-consents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"user@example.com\",\n      \"opt_in\": true,\n      \"consent_timestamp\": \"2026-05-12T18:30:00Z\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The contact value field is required.\",\n  \"errors\": {\n    \"contact_value\": [\n      \"The contact value field is required.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "367388ee-992d-4cc7-8bd2-f4da70b61ae4",
+              "name": "Rate limit exceeded (100 requests per minute per API key).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":contact_type",
+                    "consents"
+                  ],
+                  "host": [
+                    "{{contact_type-consents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "client_key",
+                      "value": "40NM-00001-1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_type",
+                      "description": "(Required) Channel the consent applies to."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contacts\": [\n    {\n      \"contact_value\": \"user@example.com\",\n      \"opt_in\": true,\n      \"consent_timestamp\": \"2026-05-12T18:30:00Z\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the rate limit resets.",
+                  "key": "Retry-After",
+                  "value": "1608"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Limit",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1608",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Attempts.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealers-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "contact_type-consent-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "contact_type-consents-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "9885eb0a-c92b-4b5c-859f-d4e8402db7a3",
+    "name": "Autoleadstar Consents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged consents across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}

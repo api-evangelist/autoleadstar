@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Leads API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "leads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List leads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/leads",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter leads from this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter leads until this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lead status"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of leads with optional filtering"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

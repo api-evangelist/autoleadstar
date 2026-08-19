@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Autoleadstar Appointments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "appointments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List appointments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://fullpath.com/api/v2/external/consent-management/dealerships/:dealershipId/appointments",
+            "params": [
+              {
+                "name": "dealershipId",
+                "value": "",
+                "type": "path",
+                "description": "Dealership identifier (integer)"
+              },
+              {
+                "name": "assigned_to",
+                "value": "",
+                "type": "query",
+                "description": "Filter by assigned user ID"
+              },
+              {
+                "name": "lead_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lead ID (integer)"
+              },
+              {
+                "name": "is_confirmed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by confirmation status"
+              },
+              {
+                "name": "is_shown",
+                "value": "",
+                "type": "query",
+                "description": "Filter by shown status"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter appointments from this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter appointments until this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of appointments with optional filtering"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

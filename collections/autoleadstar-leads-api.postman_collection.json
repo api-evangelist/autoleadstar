@@ -1,0 +1,513 @@
+{
+  "item": [
+    {
+      "id": "469e6887-4407-49c0-8650-bcba23f9dfcc",
+      "name": "leads",
+      "description": {
+        "content": "Operations related to leads",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a44fe07d-fb82-4b34-8a23-f6b629235e3e",
+          "name": "List leads",
+          "request": {
+            "name": "List leads",
+            "description": {
+              "content": "Returns a paginated list of leads with optional filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dealerships",
+                ":dealershipId",
+                "leads"
+              ],
+              "host": [
+                "{{dealerships-dealershipId-leads-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<date>",
+                  "description": "Filter leads from this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<date>",
+                  "description": "Filter leads until this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by lead status"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort order (comma-separated field names with optional - prefix for descending)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "dealershipId",
+                  "description": "(Required) Dealership identifier (integer)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "90061c7c-12f2-4586-b10c-95a4b44152ac",
+              "name": "A paginated list of leads",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "leads"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-leads-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1941026099,\n      \"created_at\": \"2025-12-16T00:00:00Z\",\n      \"crm_lead_id\": \"1941026099\",\n      \"crm_customer\": \"709290931\",\n      \"vehicle_canonical_details\": null,\n      \"first_name\": \"John\",\n      \"middle_name\": null,\n      \"last_name\": \"Doe\",\n      \"main_email_addresses\": \"john.doe@example.com\",\n      \"alternative_email_addresses\": null,\n      \"cell_phone\": \"5551234567\",\n      \"home_phone\": \"5551234567\",\n      \"work_phone\": \"5551234567\",\n      \"additional_phone_numbers\": \"\",\n      \"address\": \"123 Main St\",\n      \"city\": \"Anytown\",\n      \"state\": \"MA\",\n      \"zipcode\": \"12345\",\n      \"date_entered\": \"2025-12-16\",\n      \"up_type\": \"Internet\",\n      \"source\": \"Chevrolet Drp Request Details 2 Tier 3\",\n      \"sub_source\": null,\n      \"status\": \"Sold\",\n      \"assigned_salesperson\": \"Jane Smith\",\n      \"voi_condition\": \"new\",\n      \"voi_year\": \"2026\",\n      \"voi_make\": \"Chevrolet\",\n      \"voi_model\": \"Suburban\",\n      \"voi_trim\": \"RST\",\n      \"voi_sku\": \"C86373\",\n      \"voi_vin\": \"1GN12345678901234\",\n      \"voi_miles\": null,\n      \"interested_in_trade_in\": null,\n      \"trade_in_vehicle\": null,\n      \"trade_in_year\": null,\n      \"trade_in_make\": null,\n      \"trade_in_model\": null,\n      \"trade_in_trim\": null,\n      \"trade_in_estimation\": \"\",\n      \"is_sold\": false,\n      \"still_owns\": true,\n      \"sale_date\": null,\n      \"sold_vehicle_condition\": null,\n      \"sold_vehicle_year\": null,\n      \"sold_vehicle_make\": null,\n      \"sold_vehicle_model\": null,\n      \"sold_vehicle_trim\": null,\n      \"sold_vehicle_sku\": null,\n      \"sold_vehicle_vin\": null,\n      \"sold_vehicle_price\": null,\n      \"front_gross\": 0,\n      \"back_gross\": 0,\n      \"total_gross\": null,\n      \"push_to_crm\": null,\n      \"sale_term\": null,\n      \"purchase_type\": null\n    },\n    {\n      \"id\": 1941026099,\n      \"created_at\": \"2025-12-16T00:00:00Z\",\n      \"crm_lead_id\": \"1941026099\",\n      \"crm_customer\": \"709290931\",\n      \"vehicle_canonical_details\": null,\n      \"first_name\": \"John\",\n      \"middle_name\": null,\n      \"last_name\": \"Doe\",\n      \"main_email_addresses\": \"john.doe@example.com\",\n      \"alternative_email_addresses\": null,\n      \"cell_phone\": \"5551234567\",\n      \"home_phone\": \"5551234567\",\n      \"work_phone\": \"5551234567\",\n      \"additional_phone_numbers\": \"\",\n      \"address\": \"123 Main St\",\n      \"city\": \"Anytown\",\n      \"state\": \"MA\",\n      \"zipcode\": \"12345\",\n      \"date_entered\": \"2025-12-16\",\n      \"up_type\": \"Internet\",\n      \"source\": \"Chevrolet Drp Request Details 2 Tier 3\",\n      \"sub_source\": null,\n      \"status\": \"Sold\",\n      \"assigned_salesperson\": \"Jane Smith\",\n      \"voi_condition\": \"new\",\n      \"voi_year\": \"2026\",\n      \"voi_make\": \"Chevrolet\",\n      \"voi_model\": \"Suburban\",\n      \"voi_trim\": \"RST\",\n      \"voi_sku\": \"C86373\",\n      \"voi_vin\": \"1GN12345678901234\",\n      \"voi_miles\": null,\n      \"interested_in_trade_in\": null,\n      \"trade_in_vehicle\": null,\n      \"trade_in_year\": null,\n      \"trade_in_make\": null,\n      \"trade_in_model\": null,\n      \"trade_in_trim\": null,\n      \"trade_in_estimation\": \"\",\n      \"is_sold\": false,\n      \"still_owns\": true,\n      \"sale_date\": null,\n      \"sold_vehicle_condition\": null,\n      \"sold_vehicle_year\": null,\n      \"sold_vehicle_make\": null,\n      \"sold_vehicle_model\": null,\n      \"sold_vehicle_trim\": null,\n      \"sold_vehicle_sku\": null,\n      \"sold_vehicle_vin\": null,\n      \"sold_vehicle_price\": null,\n      \"front_gross\": 0,\n      \"back_gross\": 0,\n      \"total_gross\": null,\n      \"push_to_crm\": null,\n      \"sale_term\": null,\n      \"purchase_type\": null\n    }\n  ],\n  \"pagination\": {\n    \"page\": 6587,\n    \"per_page\": 12,\n    \"total\": 5052,\n    \"total_pages\": 3795\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40705a62-4749-44cf-9a4b-f2b06642b668",
+              "name": "No leads found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "leads"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-leads-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b96c87ca-5ca1-494d-86de-f50033f72161",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "leads"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-leads-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71f3d771-07db-465f-914a-995cdb6b1b25",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "leads"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-leads-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11f9f725-b388-45e7-b339-ebfa59ce7081",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dealerships",
+                    ":dealershipId",
+                    "leads"
+                  ],
+                  "host": [
+                    "{{dealerships-dealershipId-leads-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "dealershipId",
+                      "description": "(Required) Dealership identifier (integer)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\",\n  \"details\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://fullpath.com/api/v2/external/consent-management",
+      "key": "dealerships-dealershipId-leads-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "7e870b3f-8a16-48cc-a8dc-ad2fbad9d20f",
+    "name": "Autoleadstar Leads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged leads across 2 of this provider's published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: API Support\n Email: support@fullpath.com",
+      "type": "text/plain"
+    }
+  }
+}
