@@ -60,6 +60,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Activities
+  tags_raw:
   - activities
   properties:
   - type: OpenAPI
@@ -90,6 +92,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Appointments
+  tags_raw:
   - appointments
   properties:
   - type: OpenAPI
@@ -120,6 +124,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Audiences
+  tags_raw:
   - audiences
   properties:
   - type: OpenAPI
@@ -155,6 +161,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Consents
+  tags_raw:
   - consents
   properties:
   - type: OpenAPI
@@ -185,6 +193,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Leads
+  tags_raw:
   - leads
   properties:
   - type: OpenAPI
@@ -215,6 +225,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Shoppers
+  tags_raw:
   - shoppers
   properties:
   - type: OpenAPI
@@ -245,6 +257,8 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
+  - Task
+  tags_raw:
   - tasks
   properties:
   - type: OpenAPI
