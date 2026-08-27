@@ -343,9 +343,6 @@ common:
   url: lifecycle/autoleadstar-lifecycle.yml
 - type: AgentSkill
   url: skills/_index.yml
-- type: Website
-  name: Forge Global secondary-market listing (AutoLeadStar)
-  url: https://forgeglobal.com/autoleadstar_stock/
 x-enrichment:
   date: '2026-08-14'
   status: enriched
