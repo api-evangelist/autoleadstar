@@ -14,6 +14,18 @@ description: 'AutoLeadStar is an automotive marketing technology company founded
   more than 2,000 dealership clients across North America and 200+ pre-built integrations,
   and was acquired by Cox Automotive.'
 url: https://raw.githubusercontent.com/api-evangelist/autoleadstar/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://developers.fullpath.com/fullpath-logo.png
 x-type: company
 x-source: harvest:secondary-market
