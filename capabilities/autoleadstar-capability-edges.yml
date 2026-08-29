@@ -1,0 +1,35 @@
+slug: autoleadstar
+provider: AutoLeadStar
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Automotive & Mobility
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: audiences
+  spec_file: autoleadstar-audiences-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.85
+  evidence: GET /dealerships/{dealershipId}/audiences  listAudiences; GET /dealerships/{dealershipId}/audiences/{id}/shoppers  List
+    shoppers in an audience
+  reason: Audiences group shoppers into addressable segments within the dealership CDP — this is customer
+    segmentation (segments and their membership), not campaign execution.
+- tag: shoppers
+  spec_file: autoleadstar-shoppers-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.85
+  evidence: GET /dealerships/{dealershipId}/shoppers/{id}  getShopperById; listShopperEmails, listShopperPhones,
+    listShopperEvents; schemas Shopper, PrimaryContact, ContactDetail, CustomerLifetimeValue
+  reason: Unified shopper profile with resolved contact identifiers (emails, phones) and event history
+    is exactly the CDP golden-record / customer master capability.

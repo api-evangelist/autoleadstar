@@ -301,6 +301,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/autoleadstar-capability-edges.yml
+  name: AutoLeadStar Business Capability Map
 - type: Overlay
   url: overlays/autoleadstar-fullpath-api-overlay.yaml
 - type: DomainSecurity
