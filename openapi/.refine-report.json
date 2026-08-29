@@ -22,13 +22,6 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "autoleadstar-activities-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-appointments-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-audiences-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-consents-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-leads-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-shoppers-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "autoleadstar-tasks-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
   "skipped": []

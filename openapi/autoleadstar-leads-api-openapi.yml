@@ -113,41 +113,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    DealershipId:
-      in: path
-      name: dealershipId
-      required: true
-      description: Dealership identifier (integer)
-      schema:
-        type: integer
   schemas:
-    Pagination:
+    ErrorResponse:
       type: object
       required:
-      - page
-      - per_page
-      - total
-      - total_pages
+      - error
+      - message
       properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Current page number (1-based)
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          description: Number of items per page
-        total:
-          type: integer
-          minimum: 0
-          description: Total number of items
-        total_pages:
-          type: integer
-          minimum: 0
-          description: Total number of pages
-      description: Pagination metadata
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+    LeadsResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple leads with pagination info
     Lead:
       type: object
       required:
@@ -496,37 +493,40 @@ components:
           description: Purchase type
           example: null
       description: Represents a lead with comprehensive vehicle and customer information
-    ErrorResponse:
+    Pagination:
       type: object
       required:
-      - error
-      - message
+      - page
+      - per_page
+      - total
+      - total_pages
       properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
-    LeadsResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Lead'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple leads with pagination info
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
   securitySchemes:
     Bearer:
       type: http

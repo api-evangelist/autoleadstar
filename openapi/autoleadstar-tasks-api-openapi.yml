@@ -174,98 +174,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    DealershipId:
-      in: path
-      name: dealershipId
-      required: true
-      description: Dealership identifier (integer)
-      schema:
-        type: integer
   schemas:
-    Pagination:
-      type: object
-      required:
-      - page
-      - per_page
-      - total
-      - total_pages
-      properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Current page number (1-based)
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          description: Number of items per page
-        total:
-          type: integer
-          minimum: 0
-          description: Total number of items
-        total_pages:
-          type: integer
-          minimum: 0
-          description: Total number of pages
-      description: Pagination metadata
-    Activity:
+    TaskNote:
       type: object
       required:
       - id
-      - type
-      - title
+      - task_id
+      - content
       properties:
         id:
           type: integer
-          description: Unique activity identifier
-        assigned_to:
-          type:
-          - integer
-          - 'null'
-          description: User ID assigned to the activity
-        shopper_id:
-          type:
-          - integer
-          - 'null'
-          description: Identifier of the shopper associated with this activity
+          description: Unique task note identifier
         task_id:
+          type: integer
+          description: Identifier of the task this note belongs to
+        content:
+          type: string
+          description: Content of the note
+        profile_id:
           type:
           - integer
           - 'null'
-          description: Identifier of the task associated with this activity
-        type:
-          type: string
-          enum:
-          - call
-          - email
-          - meeting
-          - note
-          - task
-          description: Type of activity
-        type_id:
-          type:
-          - integer
-          - 'null'
-          description: Type-specific identifier
-        title:
-          type: string
-          description: Title of the activity
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the activity
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Notes for the activity
-        status:
-          type:
-          - string
-          - 'null'
-          description: Status of the activity
+          description: User ID of the profile who created the note
         created_at:
           type:
           - string
@@ -278,13 +208,13 @@ components:
           - 'null'
           format: date-time
           description: ISO 8601 last update timestamp
-        shopper:
+        profile:
           type:
           - object
           - 'null'
           additionalProperties: true
-          description: Embedded shopper object (when using ?embed=shopper)
-      description: Represents an activity
+          description: Embedded profile object (when using ?embed=profile)
+      description: Represents a task note
     TasksResponse:
       type: object
       required:
@@ -298,24 +228,6 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
       description: Response containing multiple tasks with pagination info
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
     Task:
       type: object
       required:
@@ -415,27 +327,81 @@ components:
           additionalProperties: true
           description: Embedded shopper object (when using ?embed=shopper)
       description: Represents a task
-    TaskNote:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
+    Activity:
       type: object
       required:
       - id
-      - task_id
-      - content
+      - type
+      - title
       properties:
         id:
           type: integer
-          description: Unique task note identifier
-        task_id:
-          type: integer
-          description: Identifier of the task this note belongs to
-        content:
-          type: string
-          description: Content of the note
-        profile_id:
+          description: Unique activity identifier
+        assigned_to:
           type:
           - integer
           - 'null'
-          description: User ID of the profile who created the note
+          description: User ID assigned to the activity
+        shopper_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the shopper associated with this activity
+        task_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the task associated with this activity
+        type:
+          type: string
+          enum:
+          - call
+          - email
+          - meeting
+          - note
+          - task
+          description: Type of activity
+        type_id:
+          type:
+          - integer
+          - 'null'
+          description: Type-specific identifier
+        title:
+          type: string
+          description: Title of the activity
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the activity
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Notes for the activity
+        status:
+          type:
+          - string
+          - 'null'
+          description: Status of the activity
         created_at:
           type:
           - string
@@ -448,13 +414,47 @@ components:
           - 'null'
           format: date-time
           description: ISO 8601 last update timestamp
-        profile:
+        shopper:
           type:
           - object
           - 'null'
           additionalProperties: true
-          description: Embedded profile object (when using ?embed=profile)
-      description: Represents a task note
+          description: Embedded shopper object (when using ?embed=shopper)
+      description: Represents an activity
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
   securitySchemes:
     Bearer:
       type: http
