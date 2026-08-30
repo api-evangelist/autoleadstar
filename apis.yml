@@ -173,7 +173,7 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
-  - Consents
+  - consents
   tags_raw:
   - consents
   properties:
@@ -237,7 +237,7 @@ apis:
   humanURL: https://developers.fullpath.com/
   baseURL: https://api.fullpath.com/v1
   tags:
-  - Shoppers
+  - shoppers
   tags_raw:
   - shoppers
   properties:
