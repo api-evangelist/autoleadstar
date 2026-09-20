@@ -49,6 +49,9 @@ x-tier-reason: enrichment
 specificationVersion: '0.23'
 created: '2026-08-06'
 modified: '2026-08-14'
+x-docs-platform: scalar
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-19
 tags:
 - Company
 - Automotive
