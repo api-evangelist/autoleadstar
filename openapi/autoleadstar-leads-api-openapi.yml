@@ -1,12 +1,15 @@
 openapi: 3.2.0
 info:
-  title: Autoleadstar Leads API
   version: 1.0.0
+  title: Fullpath API v1 - OpenAPI 3.0 Leads API
+  description: '# Fullpath API Introduction
+
+
+    Welcome to the Fullpath API.'
+  termsOfService: https://www.fullpath.com/legal-and-trust/
   contact:
     name: API Support
     email: support@fullpath.com
-  termsOfService: https://www.fullpath.com/legal-and-trust/
-  description: 'Operations tagged leads across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://fullpath.com/api/v2/external/consent-management
   description: Production (fullpath.com)
@@ -15,22 +18,15 @@ servers:
 - url: https://staging-api.fullpath.com/v1
   description: Staging (api.fullpath.com)
 tags:
-- name: leads
+- name: Leads
   description: Operations related to leads
 paths:
   /dealerships/{dealershipId}/leads:
-    servers:
-    - url: https://fullpath.com/api/v2/external/consent-management
-      description: Production (fullpath.com)
-    - url: https://api.fullpath.com/v1
-      description: Production (api.fullpath.com)
-    - url: https://staging-api.fullpath.com/v1
-      description: Staging (api.fullpath.com)
     get:
       security:
       - Bearer: []
       tags:
-      - leads
+      - Leads
       summary: List leads
       description: Returns a paginated list of leads with optional filtering
       operationId: listLeads
@@ -114,24 +110,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
     LeadsResponse:
       type: object
       required:
@@ -145,6 +123,32 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
       description: Response containing multiple leads with pagination info
+    Pagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
     Lead:
       type: object
       required:
@@ -493,32 +497,24 @@ components:
           description: Purchase type
           example: null
       description: Represents a lead with comprehensive vehicle and customer information
-    Pagination:
+    ErrorResponse:
       type: object
       required:
-      - page
-      - per_page
-      - total
-      - total_pages
+      - error
+      - message
       properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Current page number (1-based)
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          description: Number of items per page
-        total:
-          type: integer
-          minimum: 0
-          description: Total number of items
-        total_pages:
-          type: integer
-          minimum: 0
-          description: Total number of pages
-      description: Pagination metadata
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
   parameters:
     DealershipId:
       in: path
@@ -537,15 +533,3 @@ components:
         In Scalar, paste only the raw token/key (no `Bearer ` prefix).
 
         '
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: 'Platform JWT or Consent Management vendor API key.
-
-        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
-
-        '
-x-refined-from:
-- autoleadstar-fullpath-api-openapi.yml
-- autoleadstar-mcp-tools-openapi.yml

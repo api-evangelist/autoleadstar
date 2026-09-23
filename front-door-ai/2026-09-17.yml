@@ -1,0 +1,33 @@
+# Front Door AI Index — autoleadstar — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: autoleadstar
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.fullpath.com
+  final_host: www.fullpath.com
+  ownership: own
+  owner: autoleadstar
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 42
+  host_score: 42
+  density: 23.19
+  words: 1811
+  tiers:
+    agentic: 12
+    core: 29
+    model: 1
+  ambiguous: 20
+  top_terms:
+    AI: 29
+    agent: 10
+    AI agent: 9
+    smart: 4
+    agentic: 3
+    intelligence: 3
+    automation: 2
+    ChatGPT: 1
+    predictive: 1

@@ -1,13 +1,7 @@
 {
   "provider": "autoleadstar",
   "sources": [
-    "autoleadstar-activities-api-openapi.yml",
-    "autoleadstar-appointments-api-openapi.yml",
-    "autoleadstar-audiences-api-openapi.yml",
-    "autoleadstar-consents-api-openapi.yml",
-    "autoleadstar-leads-api-openapi.yml",
-    "autoleadstar-shoppers-api-openapi.yml",
-    "autoleadstar-tasks-api-openapi.yml"
+    "_original/autoleadstar-fullpath-api-openapi.yml"
   ],
   "outputs": [
     "autoleadstar-activities-api-openapi.yml",
@@ -22,7 +16,19 @@
   "errors": [],
   "warnings": [],
   "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "autoleadstar-fullpath-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/autoleadstar-mcp-tools-openapi.yml: archived document superseded by a larger archived document",
+    "autoleadstar-activities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-appointments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-audiences-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-consents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-leads-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-shoppers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "autoleadstar-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

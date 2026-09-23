@@ -1,12 +1,15 @@
 openapi: 3.2.0
 info:
-  title: Autoleadstar Activities API
   version: 1.0.0
+  title: Fullpath API v1 - OpenAPI 3.0 Activities API
+  description: '# Fullpath API Introduction
+
+
+    Welcome to the Fullpath API.'
+  termsOfService: https://www.fullpath.com/legal-and-trust/
   contact:
     name: API Support
     email: support@fullpath.com
-  termsOfService: https://www.fullpath.com/legal-and-trust/
-  description: 'Operations tagged activities across 2 of this provider''s published API definitions: autoleadstar-fullpath-api-openapi.yml, autoleadstar-mcp-tools-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://fullpath.com/api/v2/external/consent-management
   description: Production (fullpath.com)
@@ -15,22 +18,15 @@ servers:
 - url: https://staging-api.fullpath.com/v1
   description: Staging (api.fullpath.com)
 tags:
-- name: activities
+- name: Activities
   description: Operations related to activities
 paths:
   /dealerships/{dealershipId}/activities:
-    servers:
-    - url: https://fullpath.com/api/v2/external/consent-management
-      description: Production (fullpath.com)
-    - url: https://api.fullpath.com/v1
-      description: Production (api.fullpath.com)
-    - url: https://staging-api.fullpath.com/v1
-      description: Staging (api.fullpath.com)
     get:
       security:
       - Bearer: []
       tags:
-      - activities
+      - Activities
       summary: List activities
       description: 'Returns a paginated list of activities with optional filtering.
 
@@ -40,9 +36,7 @@ paths:
         - `shopper` - Shopper object associated with the activity
 
 
-        Multiple embed options can be specified as a comma-separated list, e.g., `embed=shopper`.
-
-        '
+        Multiple embed options can be specified as a comma-separated list, e.g., `embed=shopper`.'
       operationId: listActivities
       parameters:
       - $ref: '#/components/parameters/DealershipId'
@@ -153,37 +147,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
-    ActivitiesResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Activity'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple activities with pagination info
     Activity:
       type: object
       required:
@@ -260,6 +223,19 @@ components:
           additionalProperties: true
           description: Embedded shopper object (when using ?embed=shopper)
       description: Represents an activity
+    ActivitiesResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple activities with pagination info
     Pagination:
       type: object
       required:
@@ -286,6 +262,24 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
   parameters:
     DealershipId:
       in: path
@@ -304,15 +298,3 @@ components:
         In Scalar, paste only the raw token/key (no `Bearer ` prefix).
 
         '
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: 'Platform JWT or Consent Management vendor API key.
-
-        In Scalar, paste only the raw token/key (no `Bearer ` prefix).
-
-        '
-x-refined-from:
-- autoleadstar-fullpath-api-openapi.yml
-- autoleadstar-mcp-tools-openapi.yml
