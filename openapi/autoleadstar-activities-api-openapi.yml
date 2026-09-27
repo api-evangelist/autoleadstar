@@ -146,7 +146,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
   schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
     Activity:
       type: object
       required:
@@ -223,19 +249,6 @@ components:
           additionalProperties: true
           description: Embedded shopper object (when using ?embed=shopper)
       description: Represents an activity
-    ActivitiesResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Activity'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple activities with pagination info
     Pagination:
       type: object
       required:
@@ -262,32 +275,19 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
-    ErrorResponse:
+    ActivitiesResponse:
       type: object
       required:
-      - error
-      - message
+      - data
+      - pagination
       properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
-  parameters:
-    DealershipId:
-      in: path
-      name: dealershipId
-      required: true
-      description: Dealership identifier (integer)
-      schema:
-        type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple activities with pagination info
   securitySchemes:
     Bearer:
       type: http

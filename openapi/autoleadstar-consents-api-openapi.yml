@@ -199,117 +199,44 @@ paths:
                   value:
                     message: Consents were stored but vendor integration status could not be updated.
 components:
-  responses:
-    CmTooManyRequests:
-      description: Rate limit exceeded (100 requests per minute per API key).
-      headers:
-        Retry-After:
-          description: Seconds until the rate limit resets.
-          schema:
-            type: integer
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CmMessageResponse'
-          example:
-            message: Too Many Attempts.
-    CmUnauthorized:
-      description: Missing, invalid, or expired Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CmMessageResponse'
-          example:
-            message: Unauthorized
-    CmValidationError:
-      description: Laravel validation failure (422 Unprocessable Entity).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CmValidationErrorResponse'
-          example:
-            message: The contact value field is required.
-            errors:
-              contact_value:
-              - The contact value field is required.
-    CmBadRequest:
-      description: Request failed business-rule validation outside Laravel form validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CmMessageResponse'
-  schemas:
-    CmConsentContact:
-      type: object
-      required:
-      - contact_value
-      - opt_in
-      - consent_timestamp
-      properties:
-        contact_value:
-          type: string
-          description: 'Raw contact identifier. Must be a valid email for `email`, or a valid
+  parameters:
+    CmClientKey:
+      in: query
+      name: client_key
+      required: true
+      description: 'Fullpath client key for the target dealer (format `40NM-{number}-1`).
 
-            phone number for `phone_sms` / `phone_call`.
+        Required on all consent endpoints.
 
-            '
-        opt_in:
-          type: boolean
-          description: true to record opt-in; false to record opt-out.
-        consent_timestamp:
-          type: string
-          format: date-time
-          description: When the consent event occurred (ISO 8601).
+        '
+      schema:
+        type: string
+        pattern: ^40NM-\d+-1$
+      example: 40NM-00001-1
     CmContactType:
-      type: string
-      enum:
-      - email
-      - phone_sms
-      - phone_call
-    CmMessageResponse:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-    CmDealersResponse:
-      type: object
-      required:
-      - dealers
-      properties:
-        dealers:
-          type: array
-          items:
-            $ref: '#/components/schemas/CmDealer'
-    CmIntegrationStatus:
-      type: string
-      description: Consent-management integration status for a dealer.
-      enum:
-      - connected
-      - pending
-    CmStoreConsentsRequest:
-      type: object
-      required:
-      - contacts
-      properties:
-        contacts:
-          type: array
-          minItems: 1
-          maxItems: 500
-          items:
-            $ref: '#/components/schemas/CmConsentContact'
-    CmEmptySuccessResponse:
-      type: object
-      description: Empty JSON object returned on successful bulk store.
-      additionalProperties: false
-      example: {}
+      in: path
+      name: contact_type
+      required: true
+      description: Channel the consent applies to.
+      schema:
+        $ref: '#/components/schemas/CmContactType'
+    CmContactValue:
+      in: query
+      name: contact_value
+      required: true
+      description: 'Raw contact identifier to look up. Emails are lowercased; phone numbers are
+
+        standardized before lookup. The normalized value is echoed in the response.
+
+        '
+      schema:
+        type: string
+      examples:
+        email:
+          value: user@example.com
+        phone:
+          value: +1 (555) 123-4567
+  schemas:
     CmDealer:
       type: object
       required:
@@ -338,6 +265,36 @@ components:
             `null` when status is not `connected` or no connection date is recorded.
 
             '
+    CmDealersResponse:
+      type: object
+      required:
+      - dealers
+      properties:
+        dealers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CmDealer'
+    CmConsentContact:
+      type: object
+      required:
+      - contact_value
+      - opt_in
+      - consent_timestamp
+      properties:
+        contact_value:
+          type: string
+          description: 'Raw contact identifier. Must be a valid email for `email`, or a valid
+
+            phone number for `phone_sms` / `phone_call`.
+
+            '
+        opt_in:
+          type: boolean
+          description: true to record opt-in; false to record opt-out.
+        consent_timestamp:
+          type: string
+          format: date-time
+          description: When the consent event occurred (ISO 8601).
     CmConsentResponse:
       type: object
       required:
@@ -368,6 +325,41 @@ components:
             exists.
 
             '
+    CmContactType:
+      type: string
+      enum:
+      - email
+      - phone_sms
+      - phone_call
+    CmMessageResponse:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    CmIntegrationStatus:
+      type: string
+      description: Consent-management integration status for a dealer.
+      enum:
+      - connected
+      - pending
+    CmStoreConsentsRequest:
+      type: object
+      required:
+      - contacts
+      properties:
+        contacts:
+          type: array
+          minItems: 1
+          maxItems: 500
+          items:
+            $ref: '#/components/schemas/CmConsentContact'
+    CmEmptySuccessResponse:
+      type: object
+      description: Empty JSON object returned on successful bulk store.
+      additionalProperties: false
+      example: {}
     CmValidationErrorResponse:
       type: object
       required:
@@ -384,43 +376,51 @@ components:
             type: array
             items:
               type: string
-  parameters:
-    CmContactType:
-      in: path
-      name: contact_type
-      required: true
-      description: Channel the consent applies to.
-      schema:
-        $ref: '#/components/schemas/CmContactType'
-    CmClientKey:
-      in: query
-      name: client_key
-      required: true
-      description: 'Fullpath client key for the target dealer (format `40NM-{number}-1`).
-
-        Required on all consent endpoints.
-
-        '
-      schema:
-        type: string
-        pattern: ^40NM-\d+-1$
-      example: 40NM-00001-1
-    CmContactValue:
-      in: query
-      name: contact_value
-      required: true
-      description: 'Raw contact identifier to look up. Emails are lowercased; phone numbers are
-
-        standardized before lookup. The normalized value is echoed in the response.
-
-        '
-      schema:
-        type: string
-      examples:
-        email:
-          value: user@example.com
-        phone:
-          value: +1 (555) 123-4567
+  responses:
+    CmTooManyRequests:
+      description: Rate limit exceeded (100 requests per minute per API key).
+      headers:
+        Retry-After:
+          description: Seconds until the rate limit resets.
+          schema:
+            type: integer
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+          example:
+            message: Too Many Attempts.
+    CmBadRequest:
+      description: Request failed business-rule validation outside Laravel form validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+    CmValidationError:
+      description: Laravel validation failure (422 Unprocessable Entity).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmValidationErrorResponse'
+          example:
+            message: The contact value field is required.
+            errors:
+              contact_value:
+              - The contact value field is required.
+    CmUnauthorized:
+      description: Missing, invalid, or expired Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CmMessageResponse'
+          example:
+            message: Unauthorized
   securitySchemes:
     Bearer:
       type: http

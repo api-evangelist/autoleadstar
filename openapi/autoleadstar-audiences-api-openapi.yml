@@ -270,24 +270,68 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ADFLead:
+    CustomerLifetimeValue:
       type:
       - object
       - 'null'
-      description: ADF lead information
-    AudiencesResponse:
-      type: object
-      required:
-      - data
-      - pagination
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Audience'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple audiences with pagination info
+        sales:
+          $ref: '#/components/schemas/SalesServices'
+        services:
+          $ref: '#/components/schemas/SalesServices'
+        total_lifetime_value:
+          type: number
+          description: Total lifetime value
+          example: 0
+      description: Customer lifetime value information
+    Location:
+      type:
+      - object
+      - 'null'
+      properties:
+        title:
+          type:
+          - string
+          - 'null'
+          description: Full location title
+          example: Anytown, NY, 12345
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the location data
+          example: customer
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        distance_from_dealership:
+          type:
+          - number
+          - 'null'
+          description: Distance from dealership (in miles or kilometers)
+          example: null
+      description: Location information for a shopper
     AudienceShoppersResponse:
       type: object
       required:
@@ -456,106 +500,24 @@ components:
           description: Full address (legacy field, use city, state, zipcode)
           example: Anytown, NY, 12345
       description: Primary contact information for a shopper. Extended version available in single shopper responses.
-    LatestSale:
-      type:
-      - object
-      - 'null'
-      description: Latest sale information for a shopper. Structure similar to LatestLead.
-    Location:
-      type:
-      - object
-      - 'null'
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
       properties:
-        title:
-          type:
-          - string
-          - 'null'
-          description: Full location title
-          example: Anytown, NY, 12345
-        city:
-          type:
-          - string
-          - 'null'
-          description: City
-          example: Anytown
-        state:
-          type:
-          - string
-          - 'null'
-          description: State
-          example: NY
-        zipcode:
-          type:
-          - string
-          - 'null'
-          description: ZIP code
-          example: '12345'
-        source:
-          type:
-          - string
-          - 'null'
-          description: Source of the location data
-          example: customer
-        address:
-          type:
-          - string
-          - 'null'
-          description: Street address
-          example: null
-        distance_from_dealership:
-          type:
-          - number
-          - 'null'
-          description: Distance from dealership (in miles or kilometers)
-          example: null
-      description: Location information for a shopper
-    LatestLead:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
+        error:
           type: string
-          description: Lead identifier
-          example: '1234567890'
-        salesperson:
-          type:
-          - string
-          - 'null'
-          description: Name of the salesperson
-          example: Jane Smith
-        date:
+          description: Error code or status code
+        message:
           type: string
-          format: date
-          description: Lead date (YYYY-MM-DD)
-          example: '2024-01-15'
-        up_type:
+          description: Human-readable error message
+        details:
           type:
           - string
           - 'null'
-          description: UP type
-          example: Internet
-        source:
-          type:
-          - string
-          - 'null'
-          description: Lead source
-          example: Website - Contact Form
-        status:
-          type:
-          - string
-          - 'null'
-          description: Lead status
-          example: Bad
-        sub_status:
-          type:
-          - string
-          - 'null'
-          description: Lead sub-status
-          example: Duplicate lead
-        vehicle:
-          $ref: '#/components/schemas/Vehicle'
-      description: Latest lead information for a shopper
+          description: Additional error details
+      description: Standard structure for API error responses
     Vehicle:
       type:
       - object
@@ -598,36 +560,11 @@ components:
           description: Vehicle trim
           example: LE
       description: Vehicle information
-    SalesServices:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of sales/services
-          example: 0
-        total:
-          type: number
-          description: Total value
-          example: 0
-        gross:
-          type: number
-          description: Gross value
-          example: 0
-      description: Sales or services summary
-    CustomerLifetimeValue:
+    ADFLead:
       type:
       - object
       - 'null'
-      properties:
-        sales:
-          $ref: '#/components/schemas/SalesServices'
-        services:
-          $ref: '#/components/schemas/SalesServices'
-        total_lifetime_value:
-          type: number
-          description: Total lifetime value
-          example: 0
-      description: Customer lifetime value information
+      description: ADF lead information
     ContactDetail:
       type:
       - object
@@ -770,115 +707,66 @@ components:
           description: Customer type
           example: null
       description: Contact information for a shopper
-    Pagination:
-      type: object
-      required:
-      - page
-      - per_page
-      - total
-      - total_pages
-      properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Current page number (1-based)
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          description: Number of items per page
-        total:
-          type: integer
-          minimum: 0
-          description: Total number of items
-        total_pages:
-          type: integer
-          minimum: 0
-          description: Total number of pages
-      description: Pagination metadata
-    Audience:
-      type: object
-      required:
-      - id
-      - name
-      - shopper_set
-      - is_starred
-      - is_subscribed
-      - is_sales_enablement
-      - is_data_enrichment
-      - created_at
-      - updated_at
-      - public_url
+    LatestLead:
+      type:
+      - object
+      - 'null'
       properties:
         id:
-          type: integer
-          description: Unique identifier for the audience
-          example: 89
-        name:
           type: string
-          description: Name of the audience
-          example: Commercial Vehicle Prospecting
-        shopper_set:
-          type: string
-          description: Base64-encoded JSON filter definition for the shopper set
-          example: eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==
-        is_starred:
-          type: integer
-          enum:
-          - 0
-          - 1
-          description: Whether the audience is starred (1) or not (0)
-          example: 0
-        is_subscribed:
-          type: integer
-          enum:
-          - 0
-          - 1
-          description: Whether the audience is subscribed (1) or not (0)
-          example: 0
-        is_sales_enablement:
-          type: integer
-          enum:
-          - 0
-          - 1
-          description: Whether the audience is used for sales enablement (1) or not (0)
-          example: 0
-        is_data_enrichment:
-          type: integer
-          enum:
-          - 0
-          - 1
-          description: Whether the audience is used for data enrichment (1) or not (0)
-          example: 0
-        created_at:
-          type: string
-          format: date-time
-          description: ISO 8601 timestamp when the audience was created
-          example: '2026-01-08 19:02:22'
-        updated_by:
+          description: Lead identifier
+          example: '1234567890'
+        salesperson:
           type:
           - string
           - 'null'
-          description: Name of the user who last updated the audience
-          example: System User
-        updated_at:
+          description: Name of the salesperson
+          example: Jane Smith
+        date:
+          type: string
+          format: date
+          description: Lead date (YYYY-MM-DD)
+          example: '2024-01-15'
+        up_type:
           type:
           - string
           - 'null'
-          format: date-time
-          description: ISO 8601 timestamp when the audience was last updated
-          example: '2026-01-08 19:02:22'
-        public_url:
-          type: string
-          format: uri
-          description: Public URL for accessing the audience (contains authentication key)
-          example: https://example.com/api/v2/public/shoppers/saved-filters?key=example_key
-        shoppers_count:
-          type: integer
-          minimum: 0
-          description: Number of shoppers in the audience. Only included when `embed=shoppers_count` is specified.
-          example: 150
-      description: Represents an audience (saved shopper filter). Additional fields are available via the embed parameter.
+          description: UP type
+          example: Internet
+        source:
+          type:
+          - string
+          - 'null'
+          description: Lead source
+          example: Website - Contact Form
+        status:
+          type:
+          - string
+          - 'null'
+          description: Lead status
+          example: Bad
+        sub_status:
+          type:
+          - string
+          - 'null'
+          description: Lead sub-status
+          example: Duplicate lead
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+      description: Latest lead information for a shopper
+    AudiencesResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Audience'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple audiences with pagination info
     Shopper:
       type: object
       required:
@@ -1004,24 +892,136 @@ components:
           description: AIM propensity score (single shopper only)
           example: 2.54
       description: Represents a shopper. Additional fields are available via the embed parameter. Some fields (contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score) are only available when getting a single shopper.
-    ErrorResponse:
+    LatestSale:
+      type:
+      - object
+      - 'null'
+      description: Latest sale information for a shopper. Structure similar to LatestLead.
+    Pagination:
       type: object
       required:
-      - error
-      - message
+      - page
+      - per_page
+      - total
+      - total_pages
       properties:
-        error:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
+    Audience:
+      type: object
+      required:
+      - id
+      - name
+      - shopper_set
+      - is_starred
+      - is_subscribed
+      - is_sales_enablement
+      - is_data_enrichment
+      - created_at
+      - updated_at
+      - public_url
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the audience
+          example: 89
+        name:
           type: string
-          description: Error code or status code
-        message:
+          description: Name of the audience
+          example: Commercial Vehicle Prospecting
+        shopper_set:
           type: string
-          description: Human-readable error message
-        details:
+          description: Base64-encoded JSON filter definition for the shopper set
+          example: eyJvciI6W3siYW5kIjpbeyJoYXNfbGVhZCI6eyJkYXRlIjp7ImZyb20iOiItNiBtb250aHMifSwidmVoaWNsZV9ib2R5X2NsYXNzIjoiQ2FyZ28gVmFuIn19XX1dfQ==
+        is_starred:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is starred (1) or not (0)
+          example: 0
+        is_subscribed:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is subscribed (1) or not (0)
+          example: 0
+        is_sales_enablement:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is used for sales enablement (1) or not (0)
+          example: 0
+        is_data_enrichment:
+          type: integer
+          enum:
+          - 0
+          - 1
+          description: Whether the audience is used for data enrichment (1) or not (0)
+          example: 0
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the audience was created
+          example: '2026-01-08 19:02:22'
+        updated_by:
           type:
           - string
           - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
+          description: Name of the user who last updated the audience
+          example: System User
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 timestamp when the audience was last updated
+          example: '2026-01-08 19:02:22'
+        public_url:
+          type: string
+          format: uri
+          description: Public URL for accessing the audience (contains authentication key)
+          example: https://example.com/api/v2/public/shoppers/saved-filters?key=example_key
+        shoppers_count:
+          type: integer
+          minimum: 0
+          description: Number of shoppers in the audience. Only included when `embed=shoppers_count` is specified.
+          example: 150
+      description: Represents an audience (saved shopper filter). Additional fields are available via the embed parameter.
+    SalesServices:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of sales/services
+          example: 0
+        total:
+          type: number
+          description: Total value
+          example: 0
+        gross:
+          type: number
+          description: Gross value
+          example: 0
+      description: Sales or services summary
   parameters:
     DealershipId:
       in: path

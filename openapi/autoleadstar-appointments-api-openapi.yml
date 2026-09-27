@@ -130,32 +130,37 @@ components:
       schema:
         type: integer
   schemas:
-    Pagination:
+    AppointmentsResponse:
       type: object
       required:
-      - page
-      - per_page
-      - total
-      - total_pages
+      - data
+      - pagination
       properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Current page number (1-based)
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          description: Number of items per page
-        total:
-          type: integer
-          minimum: 0
-          description: Total number of items
-        total_pages:
-          type: integer
-          minimum: 0
-          description: Total number of pages
-      description: Pagination metadata
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple appointments with pagination info
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
     Appointment:
       type: object
       required:
@@ -199,37 +204,32 @@ components:
           - service
           description: Department for the appointment
       description: Represents an appointment
-    AppointmentsResponse:
+    Pagination:
       type: object
       required:
-      - data
-      - pagination
+      - page
+      - per_page
+      - total
+      - total_pages
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Appointment'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple appointments with pagination info
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-based)
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        total_pages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+      description: Pagination metadata
   securitySchemes:
     Bearer:
       type: http
