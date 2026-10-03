@@ -109,46 +109,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    DealershipId:
-      in: path
-      name: dealershipId
-      required: true
-      description: Dealership identifier (integer)
-      schema:
-        type: integer
   schemas:
-    LeadsResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Lead'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple leads with pagination info
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
     Lead:
       type: object
       required:
@@ -497,6 +458,37 @@ components:
           description: Purchase type
           example: null
       description: Represents a lead with comprehensive vehicle and customer information
+    LeadsResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple leads with pagination info
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
     Pagination:
       type: object
       required:
@@ -523,6 +515,14 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
+  parameters:
+    DealershipId:
+      in: path
+      name: dealershipId
+      required: true
+      description: Dealership identifier (integer)
+      schema:
+        type: integer
   securitySchemes:
     Bearer:
       type: http
