@@ -135,6 +135,49 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
       description: Response containing multiple appointments with pagination info
+    Appointment:
+      type: object
+      required:
+      - id
+      - scheduled_at
+      properties:
+        id:
+          type: integer
+          description: Unique appointment identifier
+        lead_id:
+          type:
+          - integer
+          - 'null'
+          description: Identifier of the lead associated with this appointment
+        lead_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the lead
+        scheduled_at:
+          type: string
+          format: date-time
+          description: ISO 8601 scheduled date and time
+        is_confirmed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment is confirmed
+        is_shown:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the appointment was shown
+        department:
+          type:
+          - string
+          - 'null'
+          enum:
+          - new
+          - used
+          - service
+          description: Department for the appointment
+      description: Represents an appointment
     ErrorResponse:
       type: object
       required:
@@ -179,49 +222,6 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
-    Appointment:
-      type: object
-      required:
-      - id
-      - scheduled_at
-      properties:
-        id:
-          type: integer
-          description: Unique appointment identifier
-        lead_id:
-          type:
-          - integer
-          - 'null'
-          description: Identifier of the lead associated with this appointment
-        lead_name:
-          type:
-          - string
-          - 'null'
-          description: Name of the lead
-        scheduled_at:
-          type: string
-          format: date-time
-          description: ISO 8601 scheduled date and time
-        is_confirmed:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the appointment is confirmed
-        is_shown:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the appointment was shown
-        department:
-          type:
-          - string
-          - 'null'
-          enum:
-          - new
-          - used
-          - service
-          description: Department for the appointment
-      description: Represents an appointment
   parameters:
     DealershipId:
       in: path

@@ -270,6 +270,349 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    LatestSale:
+      type:
+      - object
+      - 'null'
+      description: Latest sale information for a shopper. Structure similar to LatestLead.
+    Vehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        vin:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Identification Number
+          example: 1HGBH41JXMN109186
+        condition:
+          type:
+          - string
+          - 'null'
+          description: Vehicle condition (e.g., new, used)
+          example: new
+        year:
+          type:
+          - string
+          - 'null'
+          description: Vehicle year
+          example: '2024'
+        make:
+          type:
+          - string
+          - 'null'
+          description: Vehicle make
+          example: Toyota
+        model:
+          type:
+          - string
+          - 'null'
+          description: Vehicle model
+          example: Camry
+        trim:
+          type:
+          - string
+          - 'null'
+          description: Vehicle trim
+          example: LE
+      description: Vehicle information
+    SalesServices:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of sales/services
+          example: 0
+        total:
+          type: number
+          description: Total value
+          example: 0
+        gross:
+          type: number
+          description: Gross value
+          example: 0
+      description: Sales or services summary
+    ContactDetail:
+      type:
+      - object
+      - 'null'
+      properties:
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the contact (e.g., crm_customer, website_conversion)
+          example: crm_customer
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: First name
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: Middle name
+          example: null
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Last name
+          example: Doe
+        full_name:
+          type:
+          - string
+          - 'null'
+          description: Full name
+          example: John Doe
+        main_email_addresses:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: Main email address
+          example: john.doe@example.com
+        alternative_email_addresses:
+          type:
+          - string
+          - 'null'
+          description: Alternative email addresses
+          example: null
+        cell_phone:
+          type:
+          - string
+          - 'null'
+          description: Cell phone number
+          example: '+15555551234'
+        home_phone:
+          type:
+          - string
+          - 'null'
+          description: Home phone number
+          example: '+15555551235'
+        work_phone:
+          type:
+          - string
+          - 'null'
+          description: Work phone number
+          example: null
+        address:
+          type:
+          - string
+          - 'null'
+          description: Street address
+          example: null
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+          example: Anytown
+        state:
+          type:
+          - string
+          - 'null'
+          description: State
+          example: NY
+        zipcode:
+          type:
+          - string
+          - 'null'
+          description: ZIP code
+          example: '12345'
+        timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the contact was created/updated
+          example: '2024-01-15T10:30:00Z'
+        latitude:
+          type:
+          - number
+          - 'null'
+          description: Latitude coordinate
+          example: null
+        longitude:
+          type:
+          - number
+          - 'null'
+          description: Longitude coordinate
+          example: null
+        status:
+          type:
+          - string
+          - 'null'
+          description: Contact status
+          example: Active
+        crm_link:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Link to CRM customer dashboard
+          example: https://example.com/crm/customer/123456
+        creation_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Creation date (YYYY-MM-DD)
+          example: '2024-01-15'
+        external_customer_id:
+          type:
+          - string
+          - 'null'
+          description: External customer identifier
+          example: EXT123456
+        customer_type:
+          type:
+          - string
+          - 'null'
+          description: Customer type
+          example: null
+      description: Contact information for a shopper
+    AudiencesResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Audience'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple audiences with pagination info
+    Shopper:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: integer
+          description: Unique shopper identifier
+          example: 16395039
+        primary_contact:
+          $ref: '#/components/schemas/PrimaryContact'
+        latest_lead_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest lead (YYYY-MM-DD)
+          example: '2024-01-15'
+        latest_sale_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest sale (YYYY-MM-DD)
+          example: null
+        latest_marketing_touchpoint_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date of the latest marketing touchpoint (YYYY-MM-DD)
+          example: '2024-01-15'
+        latest_sale:
+          $ref: '#/components/schemas/LatestSale'
+        latest_lead:
+          $ref: '#/components/schemas/LatestLead'
+        adf_leads:
+          type: array
+          items:
+            $ref: '#/components/schemas/ADFLead'
+          description: Array of ADF leads
+          example: []
+        marketing_engagement_score:
+          type:
+          - string
+          - 'null'
+          description: Marketing engagement score
+          example: '10'
+        loyalty_score:
+          type:
+          - string
+          - 'null'
+          description: Loyalty score
+          example: '0'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetail'
+          description: Array of all contacts associated with the shopper (single shopper only)
+        location:
+          $ref: '#/components/schemas/Location'
+        score:
+          type:
+          - integer
+          - 'null'
+          description: Shopper score (single shopper only)
+          example: 10
+        public_link:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Public link for the shopper (single shopper only)
+          example: https://example.com/s/abc123xyz
+        customer_lifetime_value:
+          $ref: '#/components/schemas/CustomerLifetimeValue'
+        latest_sale_estimated_equity:
+          type:
+          - number
+          - 'null'
+          description: Estimated equity from latest sale (single shopper only)
+          example: null
+        household_flag:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this is a household shopper (single shopper only)
+          example: false
+        customer_tags:
+          type: array
+          items:
+            type: string
+          description: Array of customer tags (single shopper only)
+          example: []
+        is_enriched:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the shopper data has been enriched (single shopper only)
+          example: true
+        salesperson:
+          type:
+          - string
+          - 'null'
+          description: Assigned salesperson (single shopper only)
+          example: Jane Smith
+        group_shopper_id:
+          type:
+          - string
+          - 'null'
+          description: Group shopper identifier (single shopper only)
+          example: GRP123456789
+        financial_durability_index:
+          type:
+          - number
+          - 'null'
+          description: Financial durability index (single shopper only)
+          example: 8.46
+        aim_propensity_score:
+          type:
+          - number
+          - 'null'
+          description: AIM propensity score (single shopper only)
+          example: 2.54
+      description: Represents a shopper. Additional fields are available via the embed parameter. Some fields (contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score) are only available when getting a single shopper.
     Audience:
       type: object
       required:
@@ -353,11 +696,11 @@ components:
           description: Number of shoppers in the audience. Only included when `embed=shoppers_count` is specified.
           example: 150
       description: Represents an audience (saved shopper filter). Additional fields are available via the embed parameter.
-    LatestSale:
+    ADFLead:
       type:
       - object
       - 'null'
-      description: Latest sale information for a shopper. Structure similar to LatestLead.
+      description: ADF lead information
     PrimaryContact:
       type:
       - object
@@ -513,58 +856,6 @@ components:
           description: Full address (legacy field, use city, state, zipcode)
           example: Anytown, NY, 12345
       description: Primary contact information for a shopper. Extended version available in single shopper responses.
-    LatestLead:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-          description: Lead identifier
-          example: '1234567890'
-        salesperson:
-          type:
-          - string
-          - 'null'
-          description: Name of the salesperson
-          example: Jane Smith
-        date:
-          type: string
-          format: date
-          description: Lead date (YYYY-MM-DD)
-          example: '2024-01-15'
-        up_type:
-          type:
-          - string
-          - 'null'
-          description: UP type
-          example: Internet
-        source:
-          type:
-          - string
-          - 'null'
-          description: Lead source
-          example: Website - Contact Form
-        status:
-          type:
-          - string
-          - 'null'
-          description: Lead status
-          example: Bad
-        sub_status:
-          type:
-          - string
-          - 'null'
-          description: Lead sub-status
-          example: Duplicate lead
-        vehicle:
-          $ref: '#/components/schemas/Vehicle'
-      description: Latest lead information for a shopper
-    ADFLead:
-      type:
-      - object
-      - 'null'
-      description: ADF lead information
     Location:
       type:
       - object
@@ -613,164 +904,66 @@ components:
           description: Distance from dealership (in miles or kilometers)
           example: null
       description: Location information for a shopper
-    ContactDetail:
+    LatestLead:
       type:
       - object
       - 'null'
       properties:
+        id:
+          type: string
+          description: Lead identifier
+          example: '1234567890'
+        salesperson:
+          type:
+          - string
+          - 'null'
+          description: Name of the salesperson
+          example: Jane Smith
+        date:
+          type: string
+          format: date
+          description: Lead date (YYYY-MM-DD)
+          example: '2024-01-15'
+        up_type:
+          type:
+          - string
+          - 'null'
+          description: UP type
+          example: Internet
         source:
           type:
           - string
           - 'null'
-          description: Source of the contact (e.g., crm_customer, website_conversion)
-          example: crm_customer
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: First name
-          example: John
-        middle_name:
-          type:
-          - string
-          - 'null'
-          description: Middle name
-          example: null
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: Last name
-          example: Doe
-        full_name:
-          type:
-          - string
-          - 'null'
-          description: Full name
-          example: John Doe
-        main_email_addresses:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: Main email address
-          example: john.doe@example.com
-        alternative_email_addresses:
-          type:
-          - string
-          - 'null'
-          description: Alternative email addresses
-          example: null
-        cell_phone:
-          type:
-          - string
-          - 'null'
-          description: Cell phone number
-          example: '+15555551234'
-        home_phone:
-          type:
-          - string
-          - 'null'
-          description: Home phone number
-          example: '+15555551235'
-        work_phone:
-          type:
-          - string
-          - 'null'
-          description: Work phone number
-          example: null
-        address:
-          type:
-          - string
-          - 'null'
-          description: Street address
-          example: null
-        city:
-          type:
-          - string
-          - 'null'
-          description: City
-          example: Anytown
-        state:
-          type:
-          - string
-          - 'null'
-          description: State
-          example: NY
-        zipcode:
-          type:
-          - string
-          - 'null'
-          description: ZIP code
-          example: '12345'
-        timestamp:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the contact was created/updated
-          example: '2024-01-15T10:30:00Z'
-        latitude:
-          type:
-          - number
-          - 'null'
-          description: Latitude coordinate
-          example: null
-        longitude:
-          type:
-          - number
-          - 'null'
-          description: Longitude coordinate
-          example: null
+          description: Lead source
+          example: Website - Contact Form
         status:
           type:
           - string
           - 'null'
-          description: Contact status
-          example: Active
-        crm_link:
+          description: Lead status
+          example: Bad
+        sub_status:
           type:
           - string
           - 'null'
-          format: uri
-          description: Link to CRM customer dashboard
-          example: https://example.com/crm/customer/123456
-        creation_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Creation date (YYYY-MM-DD)
-          example: '2024-01-15'
-        external_customer_id:
-          type:
-          - string
-          - 'null'
-          description: External customer identifier
-          example: EXT123456
-        customer_type:
-          type:
-          - string
-          - 'null'
-          description: Customer type
-          example: null
-      description: Contact information for a shopper
-    SalesServices:
+          description: Lead sub-status
+          example: Duplicate lead
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+      description: Latest lead information for a shopper
+    AudienceShoppersResponse:
       type: object
+      required:
+      - data
+      - pagination
       properties:
-        count:
-          type: integer
-          description: Number of sales/services
-          example: 0
-        total:
-          type: number
-          description: Total value
-          example: 0
-        gross:
-          type: number
-          description: Gross value
-          example: 0
-      description: Sales or services summary
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shopper'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing shoppers in an audience with pagination info
     ErrorResponse:
       type: object
       required:
@@ -789,213 +982,6 @@ components:
           - 'null'
           description: Additional error details
       description: Standard structure for API error responses
-    AudienceShoppersResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Shopper'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing shoppers in an audience with pagination info
-    CustomerLifetimeValue:
-      type:
-      - object
-      - 'null'
-      properties:
-        sales:
-          $ref: '#/components/schemas/SalesServices'
-        services:
-          $ref: '#/components/schemas/SalesServices'
-        total_lifetime_value:
-          type: number
-          description: Total lifetime value
-          example: 0
-      description: Customer lifetime value information
-    Vehicle:
-      type:
-      - object
-      - 'null'
-      properties:
-        vin:
-          type:
-          - string
-          - 'null'
-          description: Vehicle Identification Number
-          example: 1HGBH41JXMN109186
-        condition:
-          type:
-          - string
-          - 'null'
-          description: Vehicle condition (e.g., new, used)
-          example: new
-        year:
-          type:
-          - string
-          - 'null'
-          description: Vehicle year
-          example: '2024'
-        make:
-          type:
-          - string
-          - 'null'
-          description: Vehicle make
-          example: Toyota
-        model:
-          type:
-          - string
-          - 'null'
-          description: Vehicle model
-          example: Camry
-        trim:
-          type:
-          - string
-          - 'null'
-          description: Vehicle trim
-          example: LE
-      description: Vehicle information
-    Shopper:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: integer
-          description: Unique shopper identifier
-          example: 16395039
-        primary_contact:
-          $ref: '#/components/schemas/PrimaryContact'
-        latest_lead_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Date of the latest lead (YYYY-MM-DD)
-          example: '2024-01-15'
-        latest_sale_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Date of the latest sale (YYYY-MM-DD)
-          example: null
-        latest_marketing_touchpoint_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: Date of the latest marketing touchpoint (YYYY-MM-DD)
-          example: '2024-01-15'
-        latest_sale:
-          $ref: '#/components/schemas/LatestSale'
-        latest_lead:
-          $ref: '#/components/schemas/LatestLead'
-        adf_leads:
-          type: array
-          items:
-            $ref: '#/components/schemas/ADFLead'
-          description: Array of ADF leads
-          example: []
-        marketing_engagement_score:
-          type:
-          - string
-          - 'null'
-          description: Marketing engagement score
-          example: '10'
-        loyalty_score:
-          type:
-          - string
-          - 'null'
-          description: Loyalty score
-          example: '0'
-        contacts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactDetail'
-          description: Array of all contacts associated with the shopper (single shopper only)
-        location:
-          $ref: '#/components/schemas/Location'
-        score:
-          type:
-          - integer
-          - 'null'
-          description: Shopper score (single shopper only)
-          example: 10
-        public_link:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Public link for the shopper (single shopper only)
-          example: https://example.com/s/abc123xyz
-        customer_lifetime_value:
-          $ref: '#/components/schemas/CustomerLifetimeValue'
-        latest_sale_estimated_equity:
-          type:
-          - number
-          - 'null'
-          description: Estimated equity from latest sale (single shopper only)
-          example: null
-        household_flag:
-          type:
-          - boolean
-          - 'null'
-          description: Whether this is a household shopper (single shopper only)
-          example: false
-        customer_tags:
-          type: array
-          items:
-            type: string
-          description: Array of customer tags (single shopper only)
-          example: []
-        is_enriched:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the shopper data has been enriched (single shopper only)
-          example: true
-        salesperson:
-          type:
-          - string
-          - 'null'
-          description: Assigned salesperson (single shopper only)
-          example: Jane Smith
-        group_shopper_id:
-          type:
-          - string
-          - 'null'
-          description: Group shopper identifier (single shopper only)
-          example: GRP123456789
-        financial_durability_index:
-          type:
-          - number
-          - 'null'
-          description: Financial durability index (single shopper only)
-          example: 8.46
-        aim_propensity_score:
-          type:
-          - number
-          - 'null'
-          description: AIM propensity score (single shopper only)
-          example: 2.54
-      description: Represents a shopper. Additional fields are available via the embed parameter. Some fields (contacts, location, score, public_link, customer_lifetime_value, latest_sale_estimated_equity, household_flag, customer_tags, is_enriched, salesperson, group_shopper_id, financial_durability_index, aim_propensity_score) are only available when getting a single shopper.
-    AudiencesResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Audience'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple audiences with pagination info
     Pagination:
       type: object
       required:
@@ -1022,6 +1008,20 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
+    CustomerLifetimeValue:
+      type:
+      - object
+      - 'null'
+      properties:
+        sales:
+          $ref: '#/components/schemas/SalesServices'
+        services:
+          $ref: '#/components/schemas/SalesServices'
+        total_lifetime_value:
+          type: number
+          description: Total lifetime value
+          example: 0
+      description: Customer lifetime value information
   parameters:
     DealershipId:
       in: path
