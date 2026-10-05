@@ -1,0 +1,12 @@
+{
+ "url": "https://developers.fullpath.com/mcp-openapi.yaml",
+ "requested_url": "https://developers.fullpath.com/mcp-openapi.yaml",
+ "status": 200,
+ "content_type": "application/yaml",
+ "bytes": 27450,
+ "sha256": "055461e5ad904b188f4f5f4844a7b5d1370a06d8f6e14ac81c967e903e570af9",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.929), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
