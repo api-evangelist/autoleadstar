@@ -122,19 +122,24 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    AppointmentsResponse:
+    ErrorResponse:
       type: object
       required:
-      - data
-      - pagination
+      - error
+      - message
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Appointment'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Response containing multiple appointments with pagination info
+        error:
+          type: string
+          description: Error code or status code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type:
+          - string
+          - 'null'
+          description: Additional error details
+      description: Standard structure for API error responses
     Appointment:
       type: object
       required:
@@ -178,24 +183,6 @@ components:
           - service
           description: Department for the appointment
       description: Represents an appointment
-    ErrorResponse:
-      type: object
-      required:
-      - error
-      - message
-      properties:
-        error:
-          type: string
-          description: Error code or status code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type:
-          - string
-          - 'null'
-          description: Additional error details
-      description: Standard structure for API error responses
     Pagination:
       type: object
       required:
@@ -222,6 +209,19 @@ components:
           minimum: 0
           description: Total number of pages
       description: Pagination metadata
+    AppointmentsResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      description: Response containing multiple appointments with pagination info
   parameters:
     DealershipId:
       in: path
