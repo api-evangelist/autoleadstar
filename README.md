@@ -64,5 +64,141 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-AutoLeadStar is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/autoleadstar_stock/
+AutoLeadStar is an automotive marketing technology company founded in 2015 in Jerusalem, Israel, that rebranded as Fullpath in March 2023 after raising a $40M Series C. It builds an enhanced Customer Data Platform (CDP) and AI ecosystem for franchise car dealerships, unifying first-party data from the dealership CRM, DMS, website, inventory feed and advertising accounts into a single shopper profile, then activating it through digital advertising, VIN-specific campaigns, equity mining, email/SMS audience activation, website personalization and an AI chat agent. The company opened a public API for the platform in November 2022 and today publishes a Scalar-rendered OpenAPI 3.0 reference at developers.fullpath.com covering shoppers, audiences, leads, tasks, appointments, activities and a vendor Consent Management API, alongside a downloadable Model Context Protocol tool manifest. Fullpath reports more than 2,000 dealership clients across North America and 200+ pre-built integrations, and was acquired by Cox Automotive.
+
+**Areas:** Company · Automotive · Customer Data Platform · Marketing Automation · Dealership · Advertising · Artificial Intelligence · Consent Management · CRM · Israel
+
+## AutoLeadStar on APIs.io
+
+Everything profiled for AutoLeadStar is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/autoleadstar/](https://apis.io/providers/autoleadstar/)** — or go straight to one of the APIs or properties below.
+
+### APIs (8)
+
+- [Fullpath MCP Tools](https://apis.io/apis/autoleadstar/fullpath-mcp-tools/) — A first-party Model Context Protocol tool manifest published by Fullpath for AI assistants. Thirteen tools with real JSON Schema inputSchemas covering…
+- [AutoLeadStar Activities API](https://apis.io/apis/autoleadstar/autoleadstar-activities-api/) — Operations related to activities
+- [AutoLeadStar Appointments API](https://apis.io/apis/autoleadstar/autoleadstar-appointments-api/) — Operations related to appointments
+- [AutoLeadStar Audiences API](https://apis.io/apis/autoleadstar/autoleadstar-audiences-api/) — Operations related to audiences
+- [AutoLeadStar Consents API](https://apis.io/apis/autoleadstar/autoleadstar-consents-api/) — Vendor Consent Management API for listing integrated dealers and reading/writing communication consent. Defaults to…
+- [AutoLeadStar Leads API](https://apis.io/apis/autoleadstar/autoleadstar-leads-api/) — Operations related to leads
+- [AutoLeadStar Shoppers API](https://apis.io/apis/autoleadstar/autoleadstar-shoppers-api/) — Operations related to shoppers
+- [AutoLeadStar Tasks API](https://apis.io/apis/autoleadstar/autoleadstar-tasks-api/) — Operations related to tasks
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Fullpath MCP Tools](https://apis.io/servers/autoleadstar/fullpath-mcp-tools/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [Autoleadstar Activities API](https://apis.io/collections/autoleadstar/open-autoleadstar-activities-api/)
+- [Autoleadstar Appointments API](https://apis.io/collections/autoleadstar/open-autoleadstar-appointments-api/)
+- [Autoleadstar Audiences API](https://apis.io/collections/autoleadstar/open-autoleadstar-audiences-api/)
+- [Autoleadstar Consents API](https://apis.io/collections/autoleadstar/open-autoleadstar-consents-api/)
+- [Autoleadstar Leads API](https://apis.io/collections/autoleadstar/open-autoleadstar-leads-api/)
+- [Autoleadstar Shoppers API](https://apis.io/collections/autoleadstar/open-autoleadstar-shoppers-api/)
+- [Autoleadstar Tasks API](https://apis.io/collections/autoleadstar/open-autoleadstar-tasks-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Autoleadstar Fullpath Api Overlay](https://apis.io/overlays/autoleadstar/autoleadstar-fullpath-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Autoleadstar Authentication](https://apis.io/security/autoleadstar/autoleadstar-authentication/)
+- [Autoleadstar Domain Security](https://apis.io/security/autoleadstar/autoleadstar-domain-security/)
+- [Autoleadstar Trust Center](https://apis.io/security/autoleadstar/autoleadstar-trust-center/)
+- [Autoleadstar Vulnerability Disclosure](https://apis.io/security/autoleadstar/autoleadstar-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Autoleadstar Plans Pricing](https://apis.io/plans/autoleadstar/autoleadstar-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Autoleadstar Rate Limits](https://apis.io/rate-limits/autoleadstar/autoleadstar-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.fullpath.com/)
+- [Documentation](https://developers.fullpath.com/)
+- [API reference](https://developers.fullpath.com/)
+- [Sign up](https://app.fullpath.com/)
+- [Support](https://fullpath.zendesk.com/hc/en-us)
+- [Changelog](https://www.fullpath.com/feature-releases/)
+- [Blog](https://www.fullpath.com/blog/)
+- [Security](https://www.fullpath.com/vulnerability-disclosure-policy)
+- [Compliance](https://www.fullpath.com/legal-and-trust/)
+- [Terms of service](https://www.fullpath.com/legal-and-trust/?nav=websiteterms)
+- [Privacy policy](https://www.fullpath.com/legal-and-trust/?nav=privacypolicy)
+
+## API Evangelist rating
+
+**Kin Score 52.0** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 52.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 47.4 |
+| Developer ergonomics | 55.4 |
+| Access clarity | 50.0 |
+
+**Agent readiness 39.1** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 32.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/autoleadstar/](https://apis.io/providers/autoleadstar/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for AutoLeadStar: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/autoleadstar/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
